@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>My Garden</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green-dark:#2D5016;--green-mid:#4A7C2F;--green-light:#EAF3DE;--green-soft:#C8E6A0;
+  --blue-light:#E6F1FB;--blue-mid:#3A7BC8;
+  --amber-light:#FFF8EC;--amber-mid:#E8A020;
+  --red-light:#FFF0F0;--red-mid:#D94040;
+  --text-main:#1C1C1C;--text-soft:#6B6B6B;--text-hint:#9E9E9E;
+  --bg:#F7F5F0;--white:#FFFFFF;--border:rgba(0,0,0,0.09);
+  --radius-sm:10px;--radius-md:16px;--radius-lg:22px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text-main);min-height:100vh;max-width:430px;margin:0 auto}
+.screen{display:none;min-height:100vh;flex-direction:column}
+.screen.active{display:flex}
+
+/* ── SHARED ── */
+.back-btn{display:inline-flex;align-items:center;gap:6px;background:none;border:none;font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text-soft);cursor:pointer;padding:0;margin-bottom:18px}
+.back-btn.light{color:rgba(255,255,255,0.75)}
+.section-label{font-size:11px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--text-hint);margin:8px 0 10px 4px}
+.section-label:not(:first-child){margin-top:22px}
+
+/* ── HOME ── */
+.home-header{background:var(--green-dark);padding:52px 24px 28px;position:relative;overflow:hidden}
+.home-header::before{content:'';position:absolute;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,0.05);top:-60px;right:-40px}
+.home-header::after{content:'';position:absolute;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,0.04);bottom:-20px;left:30px}
+.home-title{font-family:'Lora',serif;font-size:30px;font-weight:400;color:#fff;margin-bottom:4px;position:relative}
+.home-subtitle{font-size:14px;color:rgba(255,255,255,0.65);position:relative}
+.home-body{padding:20px 16px;flex:1}
+
+.plant-row{background:var(--white);border-radius:var(--radius-md);padding:14px 16px;display:flex;align-items:center;gap:14px;margin-bottom:8px;cursor:pointer;border:1px solid var(--border);transition:transform .12s}
+.plant-row:active{transform:scale(0.98)}
+.plant-emoji-wrap{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.plant-row-name{font-size:16px;font-weight:500;color:var(--text-main)}
+.plant-row-hint{font-size:12px;color:var(--text-soft);margin-top:2px}
+.plant-row-arrow{margin-left:auto;font-size:20px;color:var(--text-hint)}
+.incomplete-badge{display:inline-block;background:#FFF0F0;color:var(--red-mid);font-size:11px;font-weight:500;padding:2px 8px;border-radius:20px;margin-top:3px}
+
+.add-btn{width:100%;background:var(--green-dark);color:#fff;border:none;border-radius:var(--radius-md);padding:16px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:24px;transition:background .15s}
+.add-btn:active{background:var(--green-mid)}
+
+/* ── DETAIL ── */
+.detail-header{background:var(--green-dark);padding:48px 24px 24px}
+.detail-top{display:flex;align-items:center;gap:16px}
+.detail-icon{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0}
+.detail-plant-name{font-family:'Lora',serif;font-size:24px;font-weight:400;color:#fff}
+.detail-plant-type{font-size:13px;color:rgba(255,255,255,0.65);margin-top:3px}
+.detail-body{padding:16px 16px 32px;flex:1}
+
+.edit-btn{width:100%;background:none;border:1.5px solid var(--green-mid);border-radius:var(--radius-md);padding:13px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;color:var(--green-dark);cursor:pointer;margin-bottom:12px;display:flex;align-items:center;justify-content:center;gap:8px}
+.edit-btn:active{background:var(--green-light)}
+.delete-btn{width:100%;background:none;border:1.5px solid rgba(217,64,64,0.3);border-radius:var(--radius-md);padding:12px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--red-mid);cursor:pointer;margin-top:8px}
+.delete-btn:active{background:var(--red-light)}
+
+.care-block{background:var(--white);border-radius:var(--radius-md);padding:16px;margin-bottom:10px;border:1px solid var(--border);display:flex;gap:14px;align-items:flex-start}
+.care-icon{font-size:24px;width:34px;text-align:center;flex-shrink:0}
+.care-label{font-size:11px;font-weight:500;letter-spacing:.5px;text-transform:uppercase;color:var(--text-hint);margin-bottom:4px}
+.care-value{font-size:15px;font-weight:500;color:var(--text-main);line-height:1.4}
+.care-note{font-size:13px;color:var(--text-soft);margin-top:4px;line-height:1.5}
+.empty-value{font-size:14px;color:var(--text-hint);font-style:italic}
+
+.tip-block{background:var(--amber-light);border-radius:var(--radius-md);padding:16px;margin-bottom:10px;border:1px solid rgba(232,160,32,0.2);display:flex;gap:14px;align-items:flex-start}
+.tip-label{font-size:11px;font-weight:500;letter-spacing:.5px;text-transform:uppercase;color:var(--amber-mid);margin-bottom:4px}
+.tip-text{font-size:14px;color:#7A5000;line-height:1.6}
+
+.fertilizer-block{background:var(--blue-light);border-radius:var(--radius-md);padding:16px;margin-bottom:10px;border:1px solid rgba(58,123,200,0.15);display:flex;gap:14px;align-items:flex-start}
+.fertilizer-label{font-size:11px;font-weight:500;letter-spacing:.5px;text-transform:uppercase;color:var(--blue-mid);margin-bottom:4px}
+.fertilizer-text{font-size:14px;color:#1A4A80;line-height:1.6}
+
+.incomplete-banner{background:var(--red-light);border-radius:var(--radius-md);padding:14px 16px;margin-bottom:12px;border:1px solid rgba(217,64,64,0.2);font-size:14px;color:var(--red-mid);line-height:1.5}
+
+/* ── ADD ── */
+.add-header{background:var(--green-dark);padding:52px 24px 28px}
+.add-header-title{font-family:'Lora',serif;font-size:26px;font-weight:400;color:#fff}
+.add-body{padding:24px 16px;flex:1}
+
+.field-label{font-size:13px;font-weight:500;color:var(--text-soft);margin-bottom:8px;display:block}
+.field-input{width:100%;padding:14px 16px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--white);font-family:'DM Sans',sans-serif;font-size:16px;color:var(--text-main);margin-bottom:20px;outline:none;transition:border-color .15s}
+.field-input:focus{border-color:var(--green-mid)}
+.field-textarea{width:100%;padding:14px 16px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--white);font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text-main);margin-bottom:20px;outline:none;transition:border-color .15s;resize:none;line-height:1.55;min-height:80px}
+.field-textarea:focus{border-color:var(--green-mid)}
+
+.type-row{display:flex;gap:10px;margin-bottom:24px}
+.type-opt{flex:1;padding:14px 10px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text-soft);cursor:pointer;text-align:center;transition:all .15s}
+.type-opt.sel{background:var(--green-light);border-color:var(--green-mid);color:var(--green-dark);font-weight:500}
+.type-opt-icon{font-size:22px;display:block;margin-bottom:6px}
+
+.save-btn{width:100%;background:var(--green-dark);color:#fff;border:none;border-radius:var(--radius-md);padding:16px;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:500;cursor:pointer;transition:background .15s}
+.save-btn:active{background:var(--green-mid)}
+.cancel-btn{width:100%;background:none;border:1.5px solid var(--border);border-radius:var(--radius-md);padding:14px;font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text-soft);cursor:pointer;margin-top:10px}
+
+/* ── EDIT ── */
+.edit-header{background:var(--green-dark);padding:48px 24px 24px}
+.edit-header-title{font-family:'Lora',serif;font-size:24px;font-weight:400;color:#fff;margin-bottom:2px}
+.edit-header-sub{font-size:13px;color:rgba(255,255,255,0.6)}
+.edit-body{padding:20px 16px 32px;flex:1}
+.edit-section{font-size:11px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--text-hint);margin:20px 0 10px}
+.edit-section:first-child{margin-top:0}
+
+/* ── CONFIRM DELETE ── */
+.confirm-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;text-align:center}
+.confirm-icon{font-size:56px;margin-bottom:20px}
+.confirm-title{font-family:'Lora',serif;font-size:22px;color:var(--text-main);margin-bottom:10px}
+.confirm-sub{font-size:15px;color:var(--text-soft);line-height:1.6;margin-bottom:32px}
+.confirm-delete-btn{width:100%;background:var(--red-mid);color:#fff;border:none;border-radius:var(--radius-md);padding:16px;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:500;cursor:pointer}
+.confirm-cancel-btn{width:100%;background:none;border:1.5px solid var(--border);border-radius:var(--radius-md);padding:14px;font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text-soft);cursor:pointer;margin-top:10px}
+</style>
+</head>
+<body>
+
+<!-- HOME -->
+<div class="screen active" id="home">
+  <div class="home-header">
+    <div class="home-title">My Garden 🌿</div>
+    <div class="home-subtitle">Tap a plant to see how to care for it</div>
+  </div>
+  <div class="home-body">
+    <div id="plant-list"></div>
+    <button class="add-btn" onclick="go('add')">
+      <span style="font-size:20px;line-height:1">+</span> Add a new plant
+    </button>
+  </div>
+</div>
+
+<!-- DETAIL -->
+<div class="screen" id="detail">
+  <div class="detail-header">
+    <button class="back-btn light" onclick="go('home')">← Back</button>
+    <div class="detail-top">
+      <div class="detail-icon" id="d-icon"></div>
+      <div>
+        <div class="detail-plant-name" id="d-name"></div>
+        <div class="detail-plant-type" id="d-type"></div>
+      </div>
+    </div>
+  </div>
+  <div class="detail-body" id="d-body"></div>
+</div>
+
+<!-- ADD -->
+<div class="screen" id="add">
+  <div class="add-header">
+    <button class="back-btn light" onclick="go('home')">← Back</button>
+    <div class="add-header-title">Add a new plant</div>
+  </div>
+  <div class="add-body">
+    <label class="field-label">What is the plant called?</label>
+    <input class="field-input" id="new-name" type="text" placeholder="e.g. Champa, Money Plant, Aloe Vera..." />
+    <label class="field-label">Where is it kept?</label>
+    <div class="type-row">
+      <div class="type-opt sel" data-v="outdoor" onclick="pickType(this)">
+        <span class="type-opt-icon">🌤️</span>Outdoors<br><span style="font-size:11px;opacity:.7">Balcony</span>
+      </div>
+      <div class="type-opt" data-v="indoor" onclick="pickType(this)">
+        <span class="type-opt-icon">🏠</span>Indoors<br><span style="font-size:11px;opacity:.7">Inside home</span>
+      </div>
+    </div>
+    <button class="save-btn" onclick="addPlant()">Add to my garden</button>
+    <button class="cancel-btn" onclick="go('home')">Cancel</button>
+  </div>
+</div>
+
+<!-- EDIT -->
+<div class="screen" id="edit">
+  <div class="edit-header">
+    <button class="back-btn light" onclick="go('detail')">← Back</button>
+    <div class="edit-header-title" id="edit-title"></div>
+    <div class="edit-header-sub">Fill in the care details</div>
+  </div>
+  <div class="edit-body">
+
+    <div class="edit-section">How much water</div>
+    <input class="field-input" id="e-water" type="text" placeholder="e.g. 200 to 250 ml" />
+
+    <div class="edit-section">How often to water</div>
+    <input class="field-input" id="e-freq" type="text" placeholder="e.g. Every day in summer, every 2 days in winter" />
+
+    <div class="edit-section">Sunlight needed</div>
+    <input class="field-input" id="e-sun" type="text" placeholder="e.g. Full sun, 6 to 8 hours a day" />
+
+    <div class="edit-section">How to water</div>
+    <input class="field-input" id="e-pour" type="text" placeholder="e.g. Pour slowly at the base. Keep leaves dry." />
+
+    <div class="edit-section">Fertilizer</div>
+    <textarea class="field-textarea" id="e-fertilizer" placeholder="e.g. Compost once a month. Mix into top soil."></textarea>
+
+    <div class="edit-section">Good to know (tip)</div>
+    <textarea class="field-textarea" id="e-tip" placeholder="e.g. Pinch off flower buds to keep leaves healthy."></textarea>
+
+    <button class="save-btn" onclick="saveEdit()">Save details</button>
+    <button class="cancel-btn" onclick="go('detail')">Cancel</button>
+  </div>
+</div>
+
+<!-- CONFIRM DELETE -->
+<div class="screen" id="confirmdelete">
+  <div class="confirm-body">
+    <div class="confirm-icon">🗑️</div>
+    <div class="confirm-title" id="del-title">Remove this plant?</div>
+    <div class="confirm-sub" id="del-sub"></div>
+    <button class="confirm-delete-btn" onclick="confirmDelete()">Yes, remove it</button>
+    <button class="confirm-cancel-btn" onclick="go('detail')">Keep it</button>
+  </div>
+</div>
+
+<script>
+const DEFAULT_PLANTS = [
+  {name:'Tulsi',type:'outdoor',ico:'🌿',water:'200 to 250 ml',freq:'Every day in summer — every 2 days in winter',sun:'Full sun — 6 to 8 hours a day',pour:'Pour slowly at the base of the stem. Do not wet the leaves.',fertilizer:'Add compost or cow dung manure once a month. Mix a little into the top soil.',tip:'Pinch off the small flower buds as soon as you see them. This keeps the plant bushy and the leaves healthy.'},
+  {name:'Ananta',type:'outdoor',ico:'🌱',water:'150 to 200 ml',freq:'Every 2 to 3 days',sun:'Partial to full sun — 4 to 6 hours a day',pour:'Pour at the base. Let the top soil feel slightly dry before watering again.',fertilizer:'Organic manure once every 4 to 6 weeks. Easy on fertilizer — this plant does not need much.',tip:'This plant actually likes slightly dry soil. When in doubt, wait one more day before watering.'},
+  {name:'Mogra',type:'outdoor',ico:'🤍',water:'250 to 300 ml',freq:'Every day in summer — every 2 days in cooler weather',sun:'Full sun — 6 to 8 hours a day',pour:'Pour at the base. Avoid getting water on the flowers.',fertilizer:'Use a phosphorus-rich fertilizer like DAP once every two weeks during the flowering season.',tip:'Remove old flowers as soon as they wilt. New blooms will appear much faster.'},
+  {name:'Hibiscus',type:'outdoor',ico:'🌺',water:'300 to 400 ml',freq:'Every day in summer — every 2 days in cooler months',sun:'Full sun — 6 to 8 hours a day',pour:'Pour at the base of the plant.',fertilizer:'Use a potassium and phosphorus fertilizer every 2 weeks during blooming season.',tip:'After each flower falls, trim that stem slightly. This tells the plant to grow more flowers.'},
+  {name:'Gokarna',type:'outdoor',ico:'💜',water:'150 to 200 ml',freq:'Every 2 to 3 days',sun:'Full sun — 5 to 7 hours a day',pour:'Pour at the base. Let soil dry a little between waterings.',fertilizer:'Balanced NPK fertilizer once a month. Very easy — this plant does not need heavy feeding.',tip:'This is a climber. Give it a stick or a railing to grow on. It is one of the easiest plants to maintain.'},
+  {name:'Rose',type:'outdoor',ico:'🌹',water:'300 to 350 ml',freq:'Every day in summer — every 2 days otherwise',sun:'Full sun — 6 to 8 hours a day',pour:'Pour at the base only. Always keep the leaves dry — wet leaves cause disease.',fertilizer:'Use rose-specific NPK fertilizer or mustard cake solution every 2 weeks.',tip:'Water in the morning so the soil has time to absorb before the afternoon heat. Remove dead flowers regularly.'},
+  {name:'Jade Plant',type:'indoor',ico:'🪴',water:'50 to 80 ml',freq:'Every 10 to 14 days — only when the soil is completely dry',sun:'Keep near a bright window — 4 to 5 hours of indirect light',pour:'Pour slowly until water comes out of the bottom hole. Empty the tray after.',fertilizer:'Succulent fertilizer once every 6 to 8 weeks in summer. Skip completely in winter.',tip:'Do NOT spray or mist. Overwatering is the only real danger. The leaves will look slightly wrinkled when it is thirsty — that is the right time to water.'},
+  {name:'Kalanchoe',type:'indoor',ico:'🌸',water:'60 to 100 ml',freq:'Every 7 to 10 days — let the top soil dry first',sun:'Bright spot indoors — some gentle morning sun is great',pour:'Pour at soil level only. Never let water touch the leaves or the center of the plant.',fertilizer:'Liquid bloom fertilizer every 2 to 4 weeks when it is flowering.',tip:'Once the flowers drop, put it in a dark room for 6 weeks. Then bring it back to light. It will bloom again.'}
+];
+
+let garden = (() => { try { const s = localStorage.getItem('mygarden_v2'); return s ? JSON.parse(s) : JSON.parse(JSON.stringify(DEFAULT_PLANTS)); } catch(e){ return JSON.parse(JSON.stringify(DEFAULT_PLANTS)); }})();
+let _addType = 'outdoor';
+let _currentName = '';
+let _deleteTarget = '';
+
+function save(){ try { localStorage.setItem('mygarden_v2', JSON.stringify(garden)); } catch(e){} }
+
+function go(screen){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(screen).classList.add('active');
+  if(screen === 'home') renderList();
+  if(screen === 'detail') showDetail(_currentName);
+  window.scrollTo(0,0);
+}
+
+function isIncomplete(p){
+  return !p.water || p.water === 'Not filled yet' || p.water === '—';
+}
+
+function renderList(){
+  const out = garden.filter(p => p.type === 'outdoor');
+  const ind = garden.filter(p => p.type === 'indoor');
+  let html = '';
+  if(out.length){
+    html += `<div class="section-label">Outdoor · Balcony</div>`;
+    out.forEach(p => html += plantRow(p));
+  }
+  if(ind.length){
+    html += `<div class="section-label">Indoor · Inside home</div>`;
+    ind.forEach(p => html += plantRow(p));
+  }
+  document.getElementById('plant-list').innerHTML = html;
+}
+
+function plantRow(p){
+  const bg = p.type === 'outdoor' ? '#EAF3DE' : '#E6F1FB';
+  const badge = isIncomplete(p) ? `<span class="incomplete-badge">Details needed</span>` : '';
+  return `<div class="plant-row" onclick="openDetail('${p.name}')">
+    <div class="plant-emoji-wrap" style="background:${bg}"><span style="font-size:22px">${p.ico}</span></div>
+    <div>
+      <div class="plant-row-name">${p.name}</div>
+      <div class="plant-row-hint">${p.type === 'outdoor' ? 'Outdoors · Balcony' : 'Indoors · Inside home'}</div>
+      ${badge}
+    </div>
+    <span class="plant-row-arrow">›</span>
+  </div>`;
+}
+
+function openDetail(name){
+  _currentName = name;
+  showDetail(name);
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('detail').classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function showDetail(name){
+  const p = garden.find(x => x.name === name);
+  if(!p) return;
+  const bg = p.type === 'outdoor' ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.12)';
+  document.getElementById('d-icon').style.background = bg;
+  document.getElementById('d-icon').innerHTML = `<span style="font-size:28px">${p.ico}</span>`;
+  document.getElementById('d-name').textContent = p.name;
+  document.getElementById('d-type').textContent = p.type === 'outdoor' ? 'Outdoor plant · Balcony' : 'Indoor plant · Inside home';
+
+  const incomplete = isIncomplete(p);
+  const banner = incomplete ? `<div class="incomplete-banner">⚠️ Care details are not filled in yet. Tap <strong>Edit details</strong> below to add them.</div>` : '';
+
+  const val = (v, fallback) => (v && v !== 'Not filled yet' && v !== '—') ? v : `<span class="empty-value">${fallback}</span>`;
+
+  document.getElementById('d-body').innerHTML = `
+    ${banner}
+    <button class="edit-btn" onclick="openEdit('${p.name}')">✏️ Edit details</button>
+    <div class="care-block">
+      <span class="care-icon">💧</span>
+      <div>
+        <div class="care-label">How much water</div>
+        <div class="care-value">${val(p.water,'Not filled in yet')}</div>
+        <div class="care-note">${val(p.freq,'Not filled in yet')}</div>
+      </div>
+    </div>
+    <div class="care-block">
+      <span class="care-icon">☀️</span>
+      <div>
+        <div class="care-label">Sunlight needed</div>
+        <div class="care-value">${val(p.sun,'Not filled in yet')}</div>
+      </div>
+    </div>
+    <div class="care-block">
+      <span class="care-icon">🫗</span>
+      <div>
+        <div class="care-label">How to water</div>
+        <div class="care-value" style="font-size:15px;line-height:1.5">${val(p.pour,'Not filled in yet')}</div>
+      </div>
+    </div>
+    <div class="fertilizer-block">
+      <span class="care-icon">🌾</span>
+      <div>
+        <div class="fertilizer-label">Fertilizer</div>
+        <div class="fertilizer-text">${val(p.fertilizer,'Not filled in yet')}</div>
+      </div>
+    </div>
+    <div class="tip-block">
+      <span class="care-icon">💡</span>
+      <div>
+        <div class="tip-label">Good to know</div>
+        <div class="tip-text">${val(p.tip,'Not filled in yet')}</div>
+      </div>
+    </div>
+    <button class="delete-btn" onclick="askDelete('${p.name}')">Remove this plant</button>
+  `;
+}
+
+function openEdit(name){
+  _currentName = name;
+  const p = garden.find(x => x.name === name);
+  if(!p) return;
+  document.getElementById('edit-title').textContent = p.name;
+  document.getElementById('e-water').value    = (p.water && p.water !== 'Not filled yet' && p.water !== '—') ? p.water : '';
+  document.getElementById('e-freq').value     = (p.freq && p.freq !== 'Not filled yet' && p.freq !== '—') ? p.freq : '';
+  document.getElementById('e-sun').value      = (p.sun && p.sun !== 'Not filled yet' && p.sun !== '—') ? p.sun : '';
+  document.getElementById('e-pour').value     = (p.pour && p.pour !== 'Not filled yet' && p.pour !== '—') ? p.pour : '';
+  document.getElementById('e-fertilizer').value = (p.fertilizer && p.fertilizer !== 'Not filled yet' && p.fertilizer !== '—') ? p.fertilizer : '';
+  document.getElementById('e-tip').value      = (p.tip && p.tip !== 'Not filled yet' && p.tip !== '—') ? p.tip : '';
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('edit').classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function saveEdit(){
+  const p = garden.find(x => x.name === _currentName);
+  if(!p) return;
+  const w = document.getElementById('e-water').value.trim();
+  const f = document.getElementById('e-freq').value.trim();
+  const s = document.getElementById('e-sun').value.trim();
+  const po = document.getElementById('e-pour').value.trim();
+  const fe = document.getElementById('e-fertilizer').value.trim();
+  const t = document.getElementById('e-tip').value.trim();
+  if(w) p.water = w;
+  if(f) p.freq = f;
+  if(s) p.sun = s;
+  if(po) p.pour = po;
+  if(fe) p.fertilizer = fe;
+  if(t) p.tip = t;
+  save();
+  go('detail');
+}
+
+function pickType(el){
+  _addType = el.dataset.v;
+  document.querySelectorAll('.type-opt').forEach(o => o.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+function addPlant(){
+  const name = document.getElementById('new-name').value.trim();
+  if(!name){ document.getElementById('new-name').focus(); return; }
+  if(garden.find(x => x.name.toLowerCase() === name.toLowerCase())){
+    document.getElementById('new-name').style.borderColor = 'var(--red-mid)';
+    setTimeout(() => document.getElementById('new-name').style.borderColor = '', 1500);
+    return;
+  }
+  garden.push({name, type:_addType, ico: _addType === 'outdoor' ? '🌿' : '🪴', water:'Not filled yet', freq:'Not filled yet', sun: _addType === 'outdoor' ? 'Full sun outdoors' : 'Bright spot indoors', pour:'Pour at the base', fertilizer:'Not filled yet', tip:'Not filled yet'});
+  save();
+  document.getElementById('new-name').value = '';
+  _addType = 'outdoor';
+  document.querySelectorAll('.type-opt').forEach(o => o.classList.toggle('sel', o.dataset.v === 'outdoor'));
+  _currentName = name;
+  openEdit(name);
+}
+
+function askDelete(name){
+  _deleteTarget = name;
+  document.getElementById('del-title').textContent = 'Remove ' + name + '?';
+  document.getElementById('del-sub').textContent = 'This will delete ' + name + ' and all its care details from your garden. This cannot be undone.';
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('confirmdelete').classList.add('active');
+}
+
+function confirmDelete(){
+  garden = garden.filter(x => x.name !== _deleteTarget);
+  save();
+  _currentName = '';
+  go('home');
+}
+
+renderList();
+</script>
+</body>
+</html>
