@@ -4,10 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>My Garden</title>
+<meta name="theme-color" content="#2D5016">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="My Garden">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon.png">
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --green-dark:#2D5016;--green-mid:#4A7C2F;--green-light:#EAF3DE;--green-soft:#C8E6A0;
+  --green-dark:#2D5016;--green-mid:#4A7C2F;--green-light:#EAF3DE;
   --blue-light:#E6F1FB;--blue-mid:#3A7BC8;
   --amber-light:#FFF8EC;--amber-mid:#E8A020;
   --red-light:#FFF0F0;--red-mid:#D94040;
@@ -19,21 +26,18 @@
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text-main);min-height:100vh;max-width:430px;margin:0 auto}
 .screen{display:none;min-height:100vh;flex-direction:column}
 .screen.active{display:flex}
-
-/* ── SHARED ── */
 .back-btn{display:inline-flex;align-items:center;gap:6px;background:none;border:none;font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text-soft);cursor:pointer;padding:0;margin-bottom:18px}
 .back-btn.light{color:rgba(255,255,255,0.75)}
 .section-label{font-size:11px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--text-hint);margin:8px 0 10px 4px}
 .section-label:not(:first-child){margin-top:22px}
 
-/* ── HOME ── */
+/* HOME */
 .home-header{background:var(--green-dark);padding:52px 24px 28px;position:relative;overflow:hidden}
 .home-header::before{content:'';position:absolute;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,0.05);top:-60px;right:-40px}
 .home-header::after{content:'';position:absolute;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,0.04);bottom:-20px;left:30px}
 .home-title{font-family:'Lora',serif;font-size:30px;font-weight:400;color:#fff;margin-bottom:4px;position:relative}
 .home-subtitle{font-size:14px;color:rgba(255,255,255,0.65);position:relative}
 .home-body{padding:20px 16px;flex:1}
-
 .plant-row{background:var(--white);border-radius:var(--radius-md);padding:14px 16px;display:flex;align-items:center;gap:14px;margin-bottom:8px;cursor:pointer;border:1px solid var(--border);transition:transform .12s}
 .plant-row:active{transform:scale(0.98)}
 .plant-emoji-wrap{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
@@ -41,61 +45,51 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text-main
 .plant-row-hint{font-size:12px;color:var(--text-soft);margin-top:2px}
 .plant-row-arrow{margin-left:auto;font-size:20px;color:var(--text-hint)}
 .incomplete-badge{display:inline-block;background:#FFF0F0;color:var(--red-mid);font-size:11px;font-weight:500;padding:2px 8px;border-radius:20px;margin-top:3px}
-
-.add-btn{width:100%;background:var(--green-dark);color:#fff;border:none;border-radius:var(--radius-md);padding:16px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:24px;transition:background .15s}
+.add-btn{width:100%;background:var(--green-dark);color:#fff;border:none;border-radius:var(--radius-md);padding:16px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:24px}
 .add-btn:active{background:var(--green-mid)}
 
-/* ── DETAIL ── */
+/* DETAIL */
 .detail-header{background:var(--green-dark);padding:48px 24px 24px}
 .detail-top{display:flex;align-items:center;gap:16px}
 .detail-icon{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0}
 .detail-plant-name{font-family:'Lora',serif;font-size:24px;font-weight:400;color:#fff}
 .detail-plant-type{font-size:13px;color:rgba(255,255,255,0.65);margin-top:3px}
 .detail-body{padding:16px 16px 32px;flex:1}
-
 .edit-btn{width:100%;background:none;border:1.5px solid var(--green-mid);border-radius:var(--radius-md);padding:13px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;color:var(--green-dark);cursor:pointer;margin-bottom:12px;display:flex;align-items:center;justify-content:center;gap:8px}
 .edit-btn:active{background:var(--green-light)}
 .delete-btn{width:100%;background:none;border:1.5px solid rgba(217,64,64,0.3);border-radius:var(--radius-md);padding:12px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--red-mid);cursor:pointer;margin-top:8px}
-.delete-btn:active{background:var(--red-light)}
-
 .care-block{background:var(--white);border-radius:var(--radius-md);padding:16px;margin-bottom:10px;border:1px solid var(--border);display:flex;gap:14px;align-items:flex-start}
 .care-icon{font-size:24px;width:34px;text-align:center;flex-shrink:0}
 .care-label{font-size:11px;font-weight:500;letter-spacing:.5px;text-transform:uppercase;color:var(--text-hint);margin-bottom:4px}
 .care-value{font-size:15px;font-weight:500;color:var(--text-main);line-height:1.4}
 .care-note{font-size:13px;color:var(--text-soft);margin-top:4px;line-height:1.5}
 .empty-value{font-size:14px;color:var(--text-hint);font-style:italic}
-
 .tip-block{background:var(--amber-light);border-radius:var(--radius-md);padding:16px;margin-bottom:10px;border:1px solid rgba(232,160,32,0.2);display:flex;gap:14px;align-items:flex-start}
 .tip-label{font-size:11px;font-weight:500;letter-spacing:.5px;text-transform:uppercase;color:var(--amber-mid);margin-bottom:4px}
 .tip-text{font-size:14px;color:#7A5000;line-height:1.6}
-
 .fertilizer-block{background:var(--blue-light);border-radius:var(--radius-md);padding:16px;margin-bottom:10px;border:1px solid rgba(58,123,200,0.15);display:flex;gap:14px;align-items:flex-start}
 .fertilizer-label{font-size:11px;font-weight:500;letter-spacing:.5px;text-transform:uppercase;color:var(--blue-mid);margin-bottom:4px}
 .fertilizer-text{font-size:14px;color:#1A4A80;line-height:1.6}
-
 .incomplete-banner{background:var(--red-light);border-radius:var(--radius-md);padding:14px 16px;margin-bottom:12px;border:1px solid rgba(217,64,64,0.2);font-size:14px;color:var(--red-mid);line-height:1.5}
 
-/* ── ADD ── */
+/* ADD */
 .add-header{background:var(--green-dark);padding:52px 24px 28px}
 .add-header-title{font-family:'Lora',serif;font-size:26px;font-weight:400;color:#fff}
 .add-body{padding:24px 16px;flex:1}
-
 .field-label{font-size:13px;font-weight:500;color:var(--text-soft);margin-bottom:8px;display:block}
 .field-input{width:100%;padding:14px 16px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--white);font-family:'DM Sans',sans-serif;font-size:16px;color:var(--text-main);margin-bottom:20px;outline:none;transition:border-color .15s}
 .field-input:focus{border-color:var(--green-mid)}
-.field-textarea{width:100%;padding:14px 16px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--white);font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text-main);margin-bottom:20px;outline:none;transition:border-color .15s;resize:none;line-height:1.55;min-height:80px}
+.field-textarea{width:100%;padding:14px 16px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--white);font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text-main);margin-bottom:20px;outline:none;resize:none;line-height:1.55;min-height:80px;transition:border-color .15s}
 .field-textarea:focus{border-color:var(--green-mid)}
-
 .type-row{display:flex;gap:10px;margin-bottom:24px}
 .type-opt{flex:1;padding:14px 10px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text-soft);cursor:pointer;text-align:center;transition:all .15s}
 .type-opt.sel{background:var(--green-light);border-color:var(--green-mid);color:var(--green-dark);font-weight:500}
 .type-opt-icon{font-size:22px;display:block;margin-bottom:6px}
-
-.save-btn{width:100%;background:var(--green-dark);color:#fff;border:none;border-radius:var(--radius-md);padding:16px;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:500;cursor:pointer;transition:background .15s}
+.save-btn{width:100%;background:var(--green-dark);color:#fff;border:none;border-radius:var(--radius-md);padding:16px;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:500;cursor:pointer}
 .save-btn:active{background:var(--green-mid)}
 .cancel-btn{width:100%;background:none;border:1.5px solid var(--border);border-radius:var(--radius-md);padding:14px;font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text-soft);cursor:pointer;margin-top:10px}
 
-/* ── EDIT ── */
+/* EDIT */
 .edit-header{background:var(--green-dark);padding:48px 24px 24px}
 .edit-header-title{font-family:'Lora',serif;font-size:24px;font-weight:400;color:#fff;margin-bottom:2px}
 .edit-header-sub{font-size:13px;color:rgba(255,255,255,0.6)}
@@ -103,7 +97,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text-main
 .edit-section{font-size:11px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--text-hint);margin:20px 0 10px}
 .edit-section:first-child{margin-top:0}
 
-/* ── CONFIRM DELETE ── */
+/* DELETE CONFIRM */
 .confirm-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;text-align:center}
 .confirm-icon{font-size:56px;margin-bottom:20px}
 .confirm-title{font-family:'Lora',serif;font-size:22px;color:var(--text-main);margin-bottom:10px}
@@ -174,25 +168,18 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text-main
     <div class="edit-header-sub">Fill in the care details</div>
   </div>
   <div class="edit-body">
-
     <div class="edit-section">How much water</div>
     <input class="field-input" id="e-water" type="text" placeholder="e.g. 200 to 250 ml" />
-
     <div class="edit-section">How often to water</div>
     <input class="field-input" id="e-freq" type="text" placeholder="e.g. Every day in summer, every 2 days in winter" />
-
     <div class="edit-section">Sunlight needed</div>
     <input class="field-input" id="e-sun" type="text" placeholder="e.g. Full sun, 6 to 8 hours a day" />
-
     <div class="edit-section">How to water</div>
     <input class="field-input" id="e-pour" type="text" placeholder="e.g. Pour slowly at the base. Keep leaves dry." />
-
     <div class="edit-section">Fertilizer</div>
     <textarea class="field-textarea" id="e-fertilizer" placeholder="e.g. Compost once a month. Mix into top soil."></textarea>
-
     <div class="edit-section">Good to know (tip)</div>
     <textarea class="field-textarea" id="e-tip" placeholder="e.g. Pinch off flower buds to keep leaves healthy."></textarea>
-
     <button class="save-btn" onclick="saveEdit()">Save details</button>
     <button class="cancel-btn" onclick="go('detail')">Cancel</button>
   </div>
@@ -210,6 +197,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text-main
 </div>
 
 <script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(()=>{});
+  });
+}
+
 const DEFAULT_PLANTS = [
   {name:'Tulsi',type:'outdoor',ico:'🌿',water:'200 to 250 ml',freq:'Every day in summer — every 2 days in winter',sun:'Full sun — 6 to 8 hours a day',pour:'Pour slowly at the base of the stem. Do not wet the leaves.',fertilizer:'Add compost or cow dung manure once a month. Mix a little into the top soil.',tip:'Pinch off the small flower buds as soon as you see them. This keeps the plant bushy and the leaves healthy.'},
   {name:'Ananta',type:'outdoor',ico:'🌱',water:'150 to 200 ml',freq:'Every 2 to 3 days',sun:'Partial to full sun — 4 to 6 hours a day',pour:'Pour at the base. Let the top soil feel slightly dry before watering again.',fertilizer:'Organic manure once every 4 to 6 weeks. Easy on fertilizer — this plant does not need much.',tip:'This plant actually likes slightly dry soil. When in doubt, wait one more day before watering.'},
@@ -236,22 +229,14 @@ function go(screen){
   window.scrollTo(0,0);
 }
 
-function isIncomplete(p){
-  return !p.water || p.water === 'Not filled yet' || p.water === '—';
-}
+function isIncomplete(p){ return !p.water || p.water === 'Not filled yet' || p.water === '—'; }
 
 function renderList(){
   const out = garden.filter(p => p.type === 'outdoor');
   const ind = garden.filter(p => p.type === 'indoor');
   let html = '';
-  if(out.length){
-    html += `<div class="section-label">Outdoor · Balcony</div>`;
-    out.forEach(p => html += plantRow(p));
-  }
-  if(ind.length){
-    html += `<div class="section-label">Indoor · Inside home</div>`;
-    ind.forEach(p => html += plantRow(p));
-  }
+  if(out.length){ html += `<div class="section-label">Outdoor · Balcony</div>`; out.forEach(p => html += plantRow(p)); }
+  if(ind.length){ html += `<div class="section-label">Indoor · Inside home</div>`; ind.forEach(p => html += plantRow(p)); }
   document.getElementById('plant-list').innerHTML = html;
 }
 
@@ -260,11 +245,7 @@ function plantRow(p){
   const badge = isIncomplete(p) ? `<span class="incomplete-badge">Details needed</span>` : '';
   return `<div class="plant-row" onclick="openDetail('${p.name}')">
     <div class="plant-emoji-wrap" style="background:${bg}"><span style="font-size:22px">${p.ico}</span></div>
-    <div>
-      <div class="plant-row-name">${p.name}</div>
-      <div class="plant-row-hint">${p.type === 'outdoor' ? 'Outdoors · Balcony' : 'Indoors · Inside home'}</div>
-      ${badge}
-    </div>
+    <div><div class="plant-row-name">${p.name}</div><div class="plant-row-hint">${p.type === 'outdoor' ? 'Outdoors · Balcony' : 'Indoors · Inside home'}</div>${badge}</div>
     <span class="plant-row-arrow">›</span>
   </div>`;
 }
@@ -280,58 +261,22 @@ function openDetail(name){
 function showDetail(name){
   const p = garden.find(x => x.name === name);
   if(!p) return;
-  const bg = p.type === 'outdoor' ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.12)';
-  document.getElementById('d-icon').style.background = bg;
+  document.getElementById('d-icon').style.background = 'rgba(255,255,255,0.15)';
   document.getElementById('d-icon').innerHTML = `<span style="font-size:28px">${p.ico}</span>`;
   document.getElementById('d-name').textContent = p.name;
   document.getElementById('d-type').textContent = p.type === 'outdoor' ? 'Outdoor plant · Balcony' : 'Indoor plant · Inside home';
-
   const incomplete = isIncomplete(p);
   const banner = incomplete ? `<div class="incomplete-banner">⚠️ Care details are not filled in yet. Tap <strong>Edit details</strong> below to add them.</div>` : '';
-
-  const val = (v, fallback) => (v && v !== 'Not filled yet' && v !== '—') ? v : `<span class="empty-value">${fallback}</span>`;
-
+  const val = (v, fb) => (v && v !== 'Not filled yet' && v !== '—') ? v : `<span class="empty-value">${fb}</span>`;
   document.getElementById('d-body').innerHTML = `
     ${banner}
     <button class="edit-btn" onclick="openEdit('${p.name}')">✏️ Edit details</button>
-    <div class="care-block">
-      <span class="care-icon">💧</span>
-      <div>
-        <div class="care-label">How much water</div>
-        <div class="care-value">${val(p.water,'Not filled in yet')}</div>
-        <div class="care-note">${val(p.freq,'Not filled in yet')}</div>
-      </div>
-    </div>
-    <div class="care-block">
-      <span class="care-icon">☀️</span>
-      <div>
-        <div class="care-label">Sunlight needed</div>
-        <div class="care-value">${val(p.sun,'Not filled in yet')}</div>
-      </div>
-    </div>
-    <div class="care-block">
-      <span class="care-icon">🫗</span>
-      <div>
-        <div class="care-label">How to water</div>
-        <div class="care-value" style="font-size:15px;line-height:1.5">${val(p.pour,'Not filled in yet')}</div>
-      </div>
-    </div>
-    <div class="fertilizer-block">
-      <span class="care-icon">🌾</span>
-      <div>
-        <div class="fertilizer-label">Fertilizer</div>
-        <div class="fertilizer-text">${val(p.fertilizer,'Not filled in yet')}</div>
-      </div>
-    </div>
-    <div class="tip-block">
-      <span class="care-icon">💡</span>
-      <div>
-        <div class="tip-label">Good to know</div>
-        <div class="tip-text">${val(p.tip,'Not filled in yet')}</div>
-      </div>
-    </div>
-    <button class="delete-btn" onclick="askDelete('${p.name}')">Remove this plant</button>
-  `;
+    <div class="care-block"><span class="care-icon">💧</span><div><div class="care-label">How much water</div><div class="care-value">${val(p.water,'Not filled in yet')}</div><div class="care-note">${val(p.freq,'Not filled in yet')}</div></div></div>
+    <div class="care-block"><span class="care-icon">☀️</span><div><div class="care-label">Sunlight needed</div><div class="care-value">${val(p.sun,'Not filled in yet')}</div></div></div>
+    <div class="care-block"><span class="care-icon">🫗</span><div><div class="care-label">How to water</div><div class="care-value" style="font-size:15px;line-height:1.5">${val(p.pour,'Not filled in yet')}</div></div></div>
+    <div class="fertilizer-block"><span class="care-icon">🌾</span><div><div class="fertilizer-label">Fertilizer</div><div class="fertilizer-text">${val(p.fertilizer,'Not filled in yet')}</div></div></div>
+    <div class="tip-block"><span class="care-icon">💡</span><div><div class="tip-label">Good to know</div><div class="tip-text">${val(p.tip,'Not filled in yet')}</div></div></div>
+    <button class="delete-btn" onclick="askDelete('${p.name}')">Remove this plant</button>`;
 }
 
 function openEdit(name){
@@ -339,12 +284,13 @@ function openEdit(name){
   const p = garden.find(x => x.name === name);
   if(!p) return;
   document.getElementById('edit-title').textContent = p.name;
-  document.getElementById('e-water').value    = (p.water && p.water !== 'Not filled yet' && p.water !== '—') ? p.water : '';
-  document.getElementById('e-freq').value     = (p.freq && p.freq !== 'Not filled yet' && p.freq !== '—') ? p.freq : '';
-  document.getElementById('e-sun').value      = (p.sun && p.sun !== 'Not filled yet' && p.sun !== '—') ? p.sun : '';
-  document.getElementById('e-pour').value     = (p.pour && p.pour !== 'Not filled yet' && p.pour !== '—') ? p.pour : '';
-  document.getElementById('e-fertilizer').value = (p.fertilizer && p.fertilizer !== 'Not filled yet' && p.fertilizer !== '—') ? p.fertilizer : '';
-  document.getElementById('e-tip').value      = (p.tip && p.tip !== 'Not filled yet' && p.tip !== '—') ? p.tip : '';
+  const clean = v => (v && v !== 'Not filled yet' && v !== '—') ? v : '';
+  document.getElementById('e-water').value = clean(p.water);
+  document.getElementById('e-freq').value = clean(p.freq);
+  document.getElementById('e-sun').value = clean(p.sun);
+  document.getElementById('e-pour').value = clean(p.pour);
+  document.getElementById('e-fertilizer').value = clean(p.fertilizer);
+  document.getElementById('e-tip').value = clean(p.tip);
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('edit').classList.add('active');
   window.scrollTo(0,0);
@@ -353,18 +299,13 @@ function openEdit(name){
 function saveEdit(){
   const p = garden.find(x => x.name === _currentName);
   if(!p) return;
-  const w = document.getElementById('e-water').value.trim();
-  const f = document.getElementById('e-freq').value.trim();
-  const s = document.getElementById('e-sun').value.trim();
-  const po = document.getElementById('e-pour').value.trim();
-  const fe = document.getElementById('e-fertilizer').value.trim();
-  const t = document.getElementById('e-tip').value.trim();
-  if(w) p.water = w;
-  if(f) p.freq = f;
-  if(s) p.sun = s;
-  if(po) p.pour = po;
-  if(fe) p.fertilizer = fe;
-  if(t) p.tip = t;
+  const g = id => document.getElementById(id).value.trim();
+  if(g('e-water')) p.water = g('e-water');
+  if(g('e-freq')) p.freq = g('e-freq');
+  if(g('e-sun')) p.sun = g('e-sun');
+  if(g('e-pour')) p.pour = g('e-pour');
+  if(g('e-fertilizer')) p.fertilizer = g('e-fertilizer');
+  if(g('e-tip')) p.tip = g('e-tip');
   save();
   go('detail');
 }
@@ -383,11 +324,11 @@ function addPlant(){
     setTimeout(() => document.getElementById('new-name').style.borderColor = '', 1500);
     return;
   }
-  garden.push({name, type:_addType, ico: _addType === 'outdoor' ? '🌿' : '🪴', water:'Not filled yet', freq:'Not filled yet', sun: _addType === 'outdoor' ? 'Full sun outdoors' : 'Bright spot indoors', pour:'Pour at the base', fertilizer:'Not filled yet', tip:'Not filled yet'});
+  garden.push({name, type:_addType, ico: _addType==='outdoor'?'🌿':'🪴', water:'Not filled yet', freq:'Not filled yet', sun:'Not filled yet', pour:'Not filled yet', fertilizer:'Not filled yet', tip:'Not filled yet'});
   save();
   document.getElementById('new-name').value = '';
   _addType = 'outdoor';
-  document.querySelectorAll('.type-opt').forEach(o => o.classList.toggle('sel', o.dataset.v === 'outdoor'));
+  document.querySelectorAll('.type-opt').forEach(o => o.classList.toggle('sel', o.dataset.v==='outdoor'));
   _currentName = name;
   openEdit(name);
 }
