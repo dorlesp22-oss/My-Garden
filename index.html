@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>My Garden</title>
+<meta name="theme-color" content="#2D5016">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="My Garden">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--gd:#2D5016;--gm:#4A7C2F;--gl:#EAF3DE;--bl:#E6F1FB;--bm:#3A7BC8;--al:#FFF8EC;--am:#E8A020;--rl:#FFF0F0;--rm:#D94040;--t1:#1C1C1C;--t2:#6B6B6B;--t3:#9E9E9E;--bg:#F7F5F0;--wh:#FFFFFF;--br:rgba(0,0,0,0.09);--r1:10px;--r2:16px}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t1);min-height:100vh;max-width:430px;margin:0 auto}
+.screen{display:none;min-height:100vh;flex-direction:column}
+.screen.active{display:flex}
+.back{display:inline-flex;align-items:center;gap:6px;background:none;border:none;font-family:'DM Sans',sans-serif;font-size:15px;color:var(--t2);cursor:pointer;padding:0;margin-bottom:18px}
+.back.lt{color:rgba(255,255,255,0.75)}
+.slabel{font-size:11px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--t3);margin:16px 0 10px 4px}
+
+/* HEADER */
+.hdr{background:var(--gd);padding:52px 24px 28px;position:relative;overflow:hidden}
+.hdr::before{content:'';position:absolute;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,0.05);top:-60px;right:-40px}
+.hdr::after{content:'';position:absolute;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,0.04);bottom:-20px;left:30px}
+.hdr-title{font-family:'Lora',serif;font-size:28px;font-weight:400;color:#fff;margin-bottom:4px;position:relative}
+.hdr-sub{font-size:14px;color:rgba(255,255,255,0.65);position:relative}
+.body{padding:16px 16px;flex:1}
+
+/* HOME SUMMARY CARDS */
+.summary-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px}
+.scard{background:var(--wh);border-radius:var(--r1);padding:12px 8px;text-align:center;border:1px solid var(--br)}
+.scard-num{font-size:22px;font-weight:500;color:var(--t1)}
+.scard-lbl{font-size:11px;color:var(--t3);margin-top:2px}
+.scard.urgent .scard-num{color:var(--rm)}
+.scard.urgent .scard-lbl{color:var(--rm)}
+.scard.ok .scard-num{color:var(--gm)}
+.scard.ok .scard-lbl{color:var(--gm)}
+
+/* PLANT ROWS */
+.prow{background:var(--wh);border-radius:var(--r2);padding:14px 14px;display:flex;align-items:center;gap:12px;margin-bottom:8px;cursor:pointer;border:1px solid var(--br);transition:transform .12s}
+.prow:active{transform:scale(0.98)}
+.pico{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.pname{font-size:15px;font-weight:500;color:var(--t1)}
+.phint{font-size:12px;color:var(--t2);margin-top:1px}
+.pwater-status{font-size:12px;font-weight:500;margin-top:3px;display:flex;align-items:center;gap:4px}
+.status-today{color:#E8A020}
+.status-ok{color:var(--gm)}
+.status-overdue{color:var(--rm)}
+.status-never{color:var(--t3)}
+.parrow{margin-left:auto;font-size:20px;color:var(--t3);flex-shrink:0}
+
+/* BUTTONS */
+.gbtn{width:100%;background:var(--gd);color:#fff;border:none;border-radius:var(--r2);padding:15px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px}
+.gbtn:active{background:var(--gm)}
+.wbtn{width:100%;background:none;border:1.5px solid var(--br);border-radius:var(--r2);padding:13px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--t2);cursor:pointer;margin-top:10px}
+.rbtn{width:100%;background:none;border:1.5px solid rgba(217,64,64,0.3);border-radius:var(--r2);padding:12px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--rm);cursor:pointer;margin-top:8px}
+
+/* WATER BUTTON - big and tappable */
+.water-btn{width:100%;background:var(--bl);border:2px solid #3A7BC8;border-radius:var(--r2);padding:18px;font-family:'DM Sans',sans-serif;font-size:17px;font-weight:500;color:#1A4A80;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:14px}
+.water-btn:active{background:#cce0f5}
+.water-btn.watered{background:var(--gl);border-color:var(--gm);color:var(--gd)}
+
+/* DETAIL */
+.cblock{background:var(--wh);border-radius:var(--r2);padding:15px;margin-bottom:8px;border:1px solid var(--br);display:flex;gap:12px;align-items:flex-start}
+.cico{font-size:22px;width:32px;text-align:center;flex-shrink:0}
+.clabel{font-size:11px;font-weight:500;letter-spacing:.5px;text-transform:uppercase;color:var(--t3);margin-bottom:3px}
+.cval{font-size:14px;font-weight:500;color:var(--t1);line-height:1.4}
+.cnote{font-size:12px;color:var(--t2);margin-top:3px;line-height:1.5}
+.empty{font-size:13px;color:var(--t3);font-style:italic}
+.tblock{background:var(--al);border-radius:var(--r2);padding:15px;margin-bottom:8px;border:1px solid rgba(232,160,32,0.2);display:flex;gap:12px}
+.tlabel{font-size:11px;font-weight:500;letter-spacing:.5px;text-transform:uppercase;color:var(--am);margin-bottom:3px}
+.ttext{font-size:13px;color:#7A5000;line-height:1.6}
+.fblock{background:var(--bl);border-radius:var(--r2);padding:15px;margin-bottom:8px;border:1px solid rgba(58,123,200,0.15);display:flex;gap:12px}
+.flabel2{font-size:11px;font-weight:500;letter-spacing:.5px;text-transform:uppercase;color:var(--bm);margin-bottom:3px}
+.ftext{font-size:13px;color:#1A4A80;line-height:1.6}
+.ibanner{background:var(--rl);border-radius:var(--r2);padding:13px 15px;margin-bottom:10px;border:1px solid rgba(217,64,64,0.2);font-size:13px;color:var(--rm);line-height:1.5}
+
+/* WATERING HISTORY */
+.wlog{background:var(--wh);border-radius:var(--r2);padding:15px;margin-bottom:8px;border:1px solid var(--br)}
+.wlog-title{font-size:12px;font-weight:500;color:var(--t2);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px}
+.wlog-item{display:flex;align-items:center;gap:8px;padding:6px 0;border-top:1px solid var(--br);font-size:13px;color:var(--t2)}
+.wlog-item:first-child{border-top:none}
+.wlog-dot{width:8px;height:8px;border-radius:50%;background:var(--bm);flex-shrink:0}
+
+/* FORMS */
+.flabel{font-size:13px;font-weight:500;color:var(--t2);margin-bottom:8px;display:block}
+.finput{width:100%;padding:13px 15px;border-radius:var(--r1);border:1.5px solid var(--br);background:var(--wh);font-family:'DM Sans',sans-serif;font-size:15px;color:var(--t1);margin-bottom:18px;outline:none;transition:border-color .15s}
+.finput:focus{border-color:var(--gm)}
+.ftarea{width:100%;padding:13px 15px;border-radius:var(--r1);border:1.5px solid var(--br);background:var(--wh);font-family:'DM Sans',sans-serif;font-size:14px;color:var(--t1);margin-bottom:18px;outline:none;resize:none;line-height:1.55;min-height:76px;transition:border-color .15s}
+.ftarea:focus{border-color:var(--gm)}
+.trow{display:flex;gap:10px;margin-bottom:22px}
+.topt{flex:1;padding:13px 8px;border-radius:var(--r1);border:1.5px solid var(--br);background:var(--wh);font-family:'DM Sans',sans-serif;font-size:13px;color:var(--t2);cursor:pointer;text-align:center;transition:all .15s}
+.topt.sel{background:var(--gl);border-color:var(--gm);color:var(--gd);font-weight:500}
+.topt-ico{font-size:20px;display:block;margin-bottom:5px}
+.esec{font-size:11px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--t3);margin:18px 0 8px}
+.esec:first-child{margin-top:0}
+.api-box{border-radius:var(--r1);padding:12px 14px;font-size:13px;margin-bottom:12px;border:1px solid rgba(232,160,32,0.2);line-height:1.55;background:var(--al);color:#7A5000}
+.api-box.ok{background:var(--gl);color:var(--gd);border-color:rgba(74,124,47,0.2)}
+@keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+.spin{animation:spin 1.5s linear infinite;display:inline-block}
+</style>
+</head>
+<body>
+
+<!-- HOME -->
+<div class="screen active" id="home">
+  <div class="hdr">
+    <div class="hdr-title">My Garden 🌿</div>
+    <div class="hdr-sub" id="today-date"></div>
+  </div>
+  <div class="body">
+    <div class="summary-row">
+      <div class="scard urgent" id="s-overdue"><div class="scard-num" id="s-overdue-n">0</div><div class="scard-lbl">Overdue</div></div>
+      <div class="scard urgent" id="s-today"><div class="scard-num" id="s-today-n">0</div><div class="scard-lbl">Water today</div></div>
+      <div class="scard ok"><div class="scard-num" id="s-ok-n">0</div><div class="scard-lbl">All good</div></div>
+    </div>
+    <div id="plant-list"></div>
+    <button class="gbtn" onclick="go('add')"><span style="font-size:18px;line-height:1">+</span> Add a new plant</button>
+  </div>
+</div>
+
+<!-- DETAIL -->
+<div class="screen" id="detail">
+  <div class="hdr">
+    <button class="back lt" onclick="go('home')">← Back</button>
+    <div style="display:flex;align-items:center;gap:14px">
+      <div id="d-icon" style="width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;background:rgba(255,255,255,0.15)"></div>
+      <div>
+        <div style="font-family:'Lora',serif;font-size:22px;font-weight:400;color:#fff" id="d-name"></div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.65);margin-top:3px" id="d-type"></div>
+      </div>
+    </div>
+  </div>
+  <div class="body" id="d-body"></div>
+</div>
+
+<!-- ADD -->
+<div class="screen" id="add">
+  <div class="hdr">
+    <button class="back lt" onclick="go('home')">← Back</button>
+    <div style="font-family:'Lora',serif;font-size:24px;font-weight:400;color:#fff">Add a new plant</div>
+    <div style="font-size:13px;color:rgba(255,255,255,0.6);margin-top:4px">AI will fill in care details automatically</div>
+  </div>
+  <div class="body">
+    <label class="flabel">Plant name</label>
+    <input class="finput" id="new-name" type="text" placeholder="e.g. Champa, Aloe Vera, Money Plant..." />
+    <label class="flabel">Where is it kept?</label>
+    <div class="trow">
+      <div class="topt sel" data-v="outdoor" onclick="pickType(this)"><span class="topt-ico">🌤️</span>Outdoors<br><span style="font-size:11px;opacity:.7">Balcony</span></div>
+      <div class="topt" data-v="indoor" onclick="pickType(this)"><span class="topt-ico">🏠</span>Indoors<br><span style="font-size:11px;opacity:.7">Inside home</span></div>
+    </div>
+    <button class="gbtn" onclick="addPlant()">Add to my garden</button>
+    <button class="wbtn" onclick="go('home')">Cancel</button>
+  </div>
+</div>
+
+<!-- LOADING -->
+<div class="screen" id="loading">
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;text-align:center">
+    <div class="spin" style="font-size:52px;margin-bottom:20px">🌱</div>
+    <div style="font-family:'Lora',serif;font-size:20px;color:var(--t1);margin-bottom:10px" id="load-title">Looking up plant...</div>
+    <div style="font-size:14px;color:var(--t2);line-height:1.6">Asking AI for care details. Just a few seconds.</div>
+  </div>
+</div>
+
+<!-- EDIT -->
+<div class="screen" id="edit">
+  <div class="hdr">
+    <button class="back lt" onclick="go('detail')">← Back</button>
+    <div style="font-family:'Lora',serif;font-size:22px;font-weight:400;color:#fff" id="edit-title"></div>
+    <div style="font-size:13px;color:rgba(255,255,255,0.6)">Edit care details</div>
+  </div>
+  <div class="body">
+    <div class="esec">How much water</div>
+    <input class="finput" id="e-water" type="text" placeholder="e.g. 200 to 250 ml" />
+    <div class="esec">How often to water</div>
+    <input class="finput" id="e-freq" type="text" placeholder="e.g. Every day in summer" />
+    <div class="esec">Sunlight needed</div>
+    <input class="finput" id="e-sun" type="text" placeholder="e.g. Full sun, 6 to 8 hours" />
+    <div class="esec">How to water</div>
+    <input class="finput" id="e-pour" type="text" placeholder="e.g. Pour at the base" />
+    <div class="esec">Fertilizer</div>
+    <textarea class="ftarea" id="e-fert" placeholder="e.g. Compost once a month"></textarea>
+    <div class="esec">Good to know</div>
+    <textarea class="ftarea" id="e-tip" placeholder="e.g. Pinch off flower buds"></textarea>
+    <button class="gbtn" onclick="saveEdit()">Save details</button>
+    <button class="wbtn" onclick="go('detail')">Cancel</button>
+  </div>
+</div>
+
+<!-- API KEY -->
+<div class="screen" id="apikey">
+  <div class="hdr">
+    <button class="back lt" onclick="go('home')">← Back</button>
+    <div style="font-family:'Lora',serif;font-size:24px;font-weight:400;color:#fff">API Key</div>
+  </div>
+  <div class="body">
+    <div id="key-status" style="border-radius:var(--r1);padding:12px 14px;font-size:13px;margin-bottom:20px;line-height:1.55"></div>
+    <label class="flabel">Paste new API Key</label>
+    <input class="finput" id="main-api-input" type="text" placeholder="sk-ant-..." style="font-size:13px" />
+    <button class="gbtn" onclick="saveMainKey()">Save API Key</button>
+    <button class="wbtn" onclick="go('home')">Cancel</button>
+  </div>
+</div>
+
+<!-- CONFIRM DELETE -->
+<div class="screen" id="del">
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;text-align:center">
+    <div style="font-size:52px;margin-bottom:20px">🗑️</div>
+    <div style="font-family:'Lora',serif;font-size:20px;color:var(--t1);margin-bottom:10px" id="del-title"></div>
+    <div style="font-size:14px;color:var(--t2);line-height:1.6;margin-bottom:28px" id="del-sub"></div>
+    <button style="width:100%;background:var(--rm);color:#fff;border:none;border-radius:var(--r2);padding:15px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer" onclick="confirmDelete()">Yes, remove it</button>
+    <button class="wbtn" onclick="go('detail')">Keep it</button>
+  </div>
+</div>
+
+<script>
+if('serviceWorker' in navigator){ navigator.serviceWorker.getRegistrations().then(r=>r.forEach(sw=>sw.unregister())); }
+
+const DP = [];
+
+let G = (()=>{ try{ const s=localStorage.getItem('mg5'); if(s){ const parsed=JSON.parse(s); return parsed.map(p=>({...p,waterLog:p.waterLog||[],days:p.days||1})); } return JSON.parse(JSON.stringify(DP)); }catch(e){ return JSON.parse(JSON.stringify(DP)); }})();
+let _type='outdoor', _cur='', _del='';
+
+const save=()=>{ try{ localStorage.setItem('mg5',JSON.stringify(G)); }catch(e){} };
+const getKey=()=>{ try{ return localStorage.getItem('mg_key')||''; }catch(e){ return ''; } };
+const setKey=k=>{ try{ localStorage.setItem('mg_key',k); }catch(e){} };
+
+// WATERING LOGIC
+function daysSince(dateStr){
+  if(!dateStr) return null;
+  const diff = Date.now() - new Date(dateStr).getTime();
+  return Math.floor(diff / (1000*60*60*24));
+}
+
+function waterStatus(p){
+  if(!p.lastWatered) return {label:'Not watered yet', cls:'status-never', dot:'⚪', urgent:false, overdue:false};
+  const ds = daysSince(p.lastWatered);
+  const due = p.days || 1;
+  if(ds === 0) return {label:'Watered today ✓', cls:'status-ok', dot:'🟢', urgent:false, overdue:false};
+  if(ds < due) return {label:'Next watering in '+(due-ds)+' day'+(due-ds>1?'s':''), cls:'status-ok', dot:'🟢', urgent:false, overdue:false};
+  if(ds === due) return {label:'Water today!', cls:'status-today', dot:'🔵', urgent:true, overdue:false};
+  return {label:'Overdue by '+(ds-due+1)+' day'+((ds-due+1)>1?'s':'')+'!', cls:'status-overdue', dot:'🔴', urgent:true, overdue:true};
+}
+
+function go(s){
+  document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));
+  document.getElementById(s).classList.add('active');
+  if(s==='home') renderHome();
+  if(s==='detail') showDetail(_cur);
+  if(s==='add') renderAddBox();
+  if(s==='apikey') renderKeyScreen();
+  window.scrollTo(0,0);
+}
+
+function renderHome(){
+  const now = new Date();
+  document.getElementById('today-date').textContent = now.toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long'});
+
+  let overdue=0, today=0, ok=0;
+  G.forEach(p=>{ const st=waterStatus(p); if(st.overdue) overdue++; else if(st.urgent) today++; else ok++; });
+
+  document.getElementById('s-overdue-n').textContent = overdue;
+  document.getElementById('s-today-n').textContent = today;
+  document.getElementById('s-ok-n').textContent = ok;
+  document.getElementById('s-overdue').className = 'scard'+(overdue>0?' urgent':'');
+  document.getElementById('s-today').className = 'scard'+(today>0?' urgent':'');
+
+  const out=G.filter(p=>p.type==='outdoor');
+  const ind=G.filter(p=>p.type==='indoor');
+  let h='';
+  if(out.length){ h+=`<div class="slabel">Outdoor · Balcony</div>`; out.forEach(p=>h+=prow(p)); }
+  if(ind.length){ h+=`<div class="slabel">Indoor · Inside home</div>`; ind.forEach(p=>h+=prow(p)); }
+  if(!G.length){
+    h = `<div style="text-align:center;padding:40px 20px">
+      <div style="font-size:52px;margin-bottom:16px">🌱</div>
+      <div style="font-family:'Lora',serif;font-size:20px;color:var(--t1);margin-bottom:8px">Your garden is empty</div>
+      <div style="font-size:14px;color:var(--t2);line-height:1.6">Tap the button below to add your first plant.<br>AI will fill in all the care details for you.</div>
+    </div>`;
+  }
+  document.getElementById('plant-list').innerHTML=h;
+}
+
+function prow(p){
+  const bg=p.type==='outdoor'?'#EAF3DE':'#E6F1FB';
+  const st=waterStatus(p);
+  const inc=!p.water||p.water==='Not filled yet';
+  const badge=inc?`<span style="display:inline-block;background:var(--rl);color:var(--rm);font-size:11px;font-weight:500;padding:2px 8px;border-radius:20px;margin-top:3px">Details needed</span>`:'';
+  return `<div class="prow" onclick="openDetail('${p.name}')">
+    <div class="pico" style="background:${bg}"><span style="font-size:20px">${p.ico}</span></div>
+    <div style="flex:1;min-width:0">
+      <div class="pname">${p.name}</div>
+      <div class="pwater-status ${st.cls}">${st.dot} ${st.label}</div>
+      ${badge}
+    </div>
+    <span class="parrow">›</span>
+  </div>`;
+}
+
+function openDetail(name){
+  _cur=name; showDetail(name);
+  document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));
+  document.getElementById('detail').classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function showDetail(name){
+  const p=G.find(x=>x.name===name); if(!p) return;
+  document.getElementById('d-icon').innerHTML=`<span style="font-size:26px">${p.ico}</span>`;
+  document.getElementById('d-name').textContent=p.name;
+  document.getElementById('d-type').textContent=p.type==='outdoor'?'Outdoor · Balcony':'Indoor · Inside home';
+  const v=(val,fb)=>(val&&val!=='Not filled yet')?val:`<span class="empty">${fb}</span>`;
+  const inc=!p.water||p.water==='Not filled yet';
+  const st=waterStatus(p);
+
+  // Water button
+  const watered=daysSince(p.lastWatered)===0;
+  const waterBtnClass=watered?'water-btn watered':'water-btn';
+  const waterBtnText=watered?'✓ Watered today':'💧 Mark as watered';
+
+  // Last 3 watering log
+  const recentLog=(p.waterLog||[]).slice(-3).reverse();
+  const logHtml=recentLog.length?recentLog.map(d=>`<div class="wlog-item"><span class="wlog-dot"></span>${new Date(d).toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short'})}</div>`).join(''):'<div style="font-size:13px;color:var(--t3);padding:4px 0">No watering recorded yet</div>';
+
+  const banner=inc?`<div class="ibanner">⚠️ Care details not filled in yet. Tap <strong>Edit details</strong> below.</div>`:'';
+
+  document.getElementById('d-body').innerHTML=`
+    ${banner}
+    <div style="background:${st.overdue?'var(--rl)':st.urgent?'#FFF8EC':'var(--gl)'};border-radius:var(--r2);padding:14px 16px;margin-bottom:12px;border:1px solid ${st.overdue?'rgba(217,64,64,0.2)':st.urgent?'rgba(232,160,32,0.2)':'rgba(74,124,47,0.2)'};font-size:14px;font-weight:500;color:${st.overdue?'var(--rm)':st.urgent?'#7A5000':'var(--gd)'}">
+      ${st.dot} ${st.label}${p.lastWatered&&!watered?' · Last watered '+new Date(p.lastWatered).toLocaleDateString('en-IN',{day:'numeric',month:'short'}):''}
+    </div>
+    <button class="${waterBtnClass}" onclick="markWatered('${p.name}')">${waterBtnText}</button>
+    <div class="wlog">
+      <div class="wlog-title">Watering history</div>
+      ${logHtml}
+    </div>
+    <button style="width:100%;background:none;border:1.5px solid var(--gm);border-radius:var(--r2);padding:12px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:var(--gd);cursor:pointer;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:8px" onclick="openEdit('${p.name}')">✏️ Edit details</button>
+    <div class="cblock"><span class="cico">💧</span><div><div class="clabel">How much water</div><div class="cval">${v(p.water,'Not filled in yet')}</div><div class="cnote">${v(p.freq,'')}</div></div></div>
+    <div class="cblock"><span class="cico">☀️</span><div><div class="clabel">Sunlight needed</div><div class="cval">${v(p.sun,'Not filled in yet')}</div></div></div>
+    <div class="cblock"><span class="cico">🫗</span><div><div class="clabel">How to water</div><div class="cval" style="font-size:14px;line-height:1.5">${v(p.pour,'Not filled in yet')}</div></div></div>
+    <div class="fblock"><span class="cico">🌾</span><div><div class="flabel2">Fertilizer</div><div class="ftext">${v(p.fert,'Not filled in yet')}</div></div></div>
+    <div class="tblock"><span class="cico">💡</span><div><div class="tlabel">Good to know</div><div class="ttext">${v(p.tip,'Not filled in yet')}</div></div></div>
+    <button class="rbtn" onclick="askDel('${p.name}')">Remove this plant</button>`;
+}
+
+function markWatered(name){
+  const p=G.find(x=>x.name===name); if(!p) return;
+  const today=new Date().toISOString();
+  p.lastWatered=today;
+  p.waterLog=p.waterLog||[];
+  p.waterLog.push(today);
+  if(p.waterLog.length>10) p.waterLog=p.waterLog.slice(-10);
+  save();
+  showDetail(name);
+}
+
+function renderAddBox(){
+  const k=getKey();
+  const box=document.getElementById('api-box');
+  const field=document.getElementById('api-field');
+  if(k){ box.className='api-box ok'; box.textContent='✓ API key saved — details will fill automatically.'; field.style.display='none'; }
+  else { box.className='api-box'; box.textContent='Paste your Anthropic API key below. Only needed once.'; field.style.display='block'; }
+}
+
+function renderKeyScreen(){
+  const k=getKey();
+  const el=document.getElementById('key-status');
+  if(k){ el.style.cssText='background:var(--gl);color:var(--gd);border-radius:var(--r1);padding:12px 14px;font-size:13px;margin-bottom:20px;border:1px solid rgba(74,124,47,0.2)'; el.textContent='✓ API key saved: '+k.substring(0,20)+'...'; }
+  else { el.style.cssText='background:var(--rl);color:var(--rm);border-radius:var(--r1);padding:12px 14px;font-size:13px;margin-bottom:20px;border:1px solid rgba(217,64,64,0.2)'; el.textContent='No API key saved yet.'; }
+  document.getElementById('main-api-input').value='';
+}
+
+function saveMainKey(){
+  const val=document.getElementById('main-api-input').value.trim();
+  if(!val){ document.getElementById('main-api-input').focus(); return; }
+  setKey(val);
+  alert('✓ API Key saved! Details will now fill automatically when you add a plant.');
+  go('home');
+}
+
+function openEdit(name){
+  _cur=name;
+  const p=G.find(x=>x.name===name); if(!p) return;
+  document.getElementById('edit-title').textContent=p.name;
+  const c=v=>(v&&v!=='Not filled yet')?v:'';
+  document.getElementById('e-water').value=c(p.water);
+  document.getElementById('e-freq').value=c(p.freq);
+  document.getElementById('e-sun').value=c(p.sun);
+  document.getElementById('e-pour').value=c(p.pour);
+  document.getElementById('e-fert').value=c(p.fert);
+  document.getElementById('e-tip').value=c(p.tip);
+  document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));
+  document.getElementById('edit').classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function saveEdit(){
+  const p=G.find(x=>x.name===_cur); if(!p) return;
+  const g=id=>document.getElementById(id).value.trim();
+  if(g('e-water')) p.water=g('e-water');
+  if(g('e-freq')) p.freq=g('e-freq');
+  if(g('e-sun')) p.sun=g('e-sun');
+  if(g('e-pour')) p.pour=g('e-pour');
+  if(g('e-fert')) p.fert=g('e-fert');
+  if(g('e-tip')) p.tip=g('e-tip');
+  save(); go('detail');
+}
+
+function pickType(el){
+  _type=el.dataset.v;
+  document.querySelectorAll('.topt').forEach(o=>o.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+async function fetchDetails(name,type){
+  try{
+    const r=await fetch('https://winter-bonus-a90d.dorle-sp22.workers.dev',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({name,type})
+    });
+    const d=await r.json();
+    if(!r.ok){ alert('Error: '+d.error); return null; }
+    return d;
+  }catch(e){ alert('Error: '+e.message); return null; }
+}
+
+
+async function addPlant(){
+  const name=document.getElementById('new-name').value.trim();
+  if(!name){ document.getElementById('new-name').focus(); return; }
+  if(G.find(x=>x.name.toLowerCase()===name.toLowerCase())){
+    document.getElementById('new-name').style.borderColor='var(--rm)';
+    setTimeout(()=>document.getElementById('new-name').style.borderColor='',1500);
+    return;
+  }
+  const type=_type;
+  G.push({name,type,ico:type==='outdoor'?'🌿':'🪴',water:'Not filled yet',freq:'Not filled yet',sun:'Not filled yet',pour:'Not filled yet',fert:'Not filled yet',tip:'Not filled yet',days:1,lastWatered:null,waterLog:[]});
+  save();
+  document.getElementById('new-name').value='';
+  _type='outdoor';
+  document.querySelectorAll('.topt').forEach(o=>o.classList.toggle('sel',o.dataset.v==='outdoor'));
+  document.getElementById('load-title').textContent='Looking up '+name+'...';
+  document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));
+  document.getElementById('loading').classList.add('active');
+  const d=await fetchDetails(name,type);
+  const p=G.find(x=>x.name===name);
+  if(p&&d){
+    if(d.water) p.water=d.water;
+    if(d.freq) p.freq=d.freq;
+    if(d.sun) p.sun=d.sun;
+    if(d.pour) p.pour=d.pour;
+    if(d.fert) p.fert=d.fert;
+    if(d.tip) p.tip=d.tip;
+    if(d.days) p.days=parseInt(d.days)||1;
+    save();
+  }
+  _cur=name; openDetail(name);
+}
+
+function askDel(name){
+  _del=name;
+  document.getElementById('del-title').textContent='Remove '+name+'?';
+  document.getElementById('del-sub').textContent='This will delete '+name+' and all its care details and watering history. This cannot be undone.';
+  document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));
+  document.getElementById('del').classList.add('active');
+}
+
+function confirmDelete(){
+  G=G.filter(x=>x.name!==_del); save(); _cur=''; go('home');
+}
+
+renderHome();
+</script>
+</body>
+</html>
