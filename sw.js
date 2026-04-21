@@ -1,5 +1,5 @@
-const CACHE = 'my-garden-v1';
-const ASSETS = ['/My-Garden/', '/My-Garden/index.html'];
+const CACHE = 'my-garden-v2';
+const ASSETS = ['/My-Garden/', '/My-Garden/index.html', '/My-Garden/manifest.json', '/My-Garden/icon-v2.png'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));
