@@ -364,7 +364,7 @@ async function saveData() {
         nickname:p.nickname||null, water:p.water||'', freq:p.freq||'',
         sun:p.sun||'', pour:p.pour||'', fert:p.fert||'', tip:p.tip||'',
         days:p.days||1, lastWatered:p.lastWatered||null,
-        waterLog:(p.waterLog||[]).slice(-10), products:p.products||[],
+        streak:p.streak||0, products:p.products||[],
         diagnosis:p.diagnosis||null
       })),
       city: getCity(), updatedAt: new Date().toISOString()
@@ -514,10 +514,8 @@ function showDetail(name) {
   const v = (val,fb) => (val&&val!=='Not filled yet') ? val : '<span style="font-size:13px;color:var(--t3);font-style:italic">'+fb+'</span>';
   const st = wStatus(p);
   const watered = daysSince(p.lastWatered) === 0;
-  // Streak
-  const log = (p.waterLog||[]).slice().sort((a,b)=>new Date(b)-new Date(a));
-  let streak = 0;
-  if (log.length > 0) { const due=p.days||1; let prev=new Date(log[0]); streak=1; for(let i=1;i<log.length;i++){ const curr=new Date(log[i]); if(Math.round((prev-curr)/86400000)<=due+1){streak++;prev=curr;}else break;} }
+  // Streak - stored directly on plant
+  const streak = p.streak || 0;
   const lastStr = p.lastWatered ? new Date(p.lastWatered).toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long'}) : 'Never';
   const isNew = sessionStorage.getItem('np') === name;
   if (isNew) sessionStorage.removeItem('np');
@@ -540,9 +538,15 @@ function showDetail(name) {
 
 function markWatered(name) {
   const p = G.find(x => x.name === name); if (!p) return;
-  const t = new Date().toISOString();
-  p.lastWatered = t; p.waterLog = p.waterLog||[]; p.waterLog.push(t);
-  if (p.waterLog.length > 10) p.waterLog = p.waterLog.slice(-10);
+  if (daysSince(p.lastWatered) === 0) return; // Already watered today
+  const ds = daysSince(p.lastWatered);
+  const due = p.days || 1;
+  // Increment streak if watered on time, reset if missed
+  if (ds === null) p.streak = 1;
+  else if (ds <= due + 1) p.streak = (p.streak || 0) + 1;
+  else p.streak = 1;
+  p.lastWatered = new Date().toISOString();
+  p.waterLog = []; // No longer needed for streak
   saveData(); showDetail(name); updateCards();
 }
 
@@ -638,7 +642,7 @@ async function addPlant() {
   if (!name) { document.getElementById('new-name').focus(); return; }
   if (G.find(x => x.name.toLowerCase()===name.toLowerCase())) { document.getElementById('new-name').style.borderColor='var(--rm)'; setTimeout(()=>document.getElementById('new-name').style.borderColor='',1500); return; }
   const lastW = _daysAgo===0 ? new Date().toISOString() : _daysAgo===1 ? new Date(Date.now()-86400000).toISOString() : new Date(Date.now()-2*86400000).toISOString();
-  G.push({name,type:_type,ico:_type==='outdoor'?'🌿':'🪴',water:'Not filled yet',freq:'Not filled yet',sun:'Not filled yet',pour:'Not filled yet',fert:'Not filled yet',tip:'Not filled yet',days:1,lastWatered:lastW,waterLog:[lastW],products:[],diagnosis:null,nickname:null});
+  G.push({name,type:_type,ico:_type==='outdoor'?'🌿':'🪴',water:'Not filled yet',freq:'Not filled yet',sun:'Not filled yet',pour:'Not filled yet',fert:'Not filled yet',tip:'Not filled yet',days:1,lastWatered:lastW,waterLog:[],streak:0,products:[],diagnosis:null,nickname:null});
   saveData();
   document.getElementById('new-name').value='';
   _type='outdoor'; _daysAgo=0;
@@ -683,9 +687,13 @@ function renderToday() {
 
 function waterFromToday(name) {
   const p = G.find(x => x.name===name); if (!p) return;
-  const t = new Date().toISOString();
-  p.lastWatered=t; p.waterLog=p.waterLog||[]; p.waterLog.push(t);
-  if (p.waterLog.length>10) p.waterLog=p.waterLog.slice(-10);
+  if (daysSince(p.lastWatered) === 0) return; // Already watered today
+  const ds = daysSince(p.lastWatered);
+  const due = p.days || 1;
+  if (ds === null) p.streak = 1;
+  else if (ds <= due + 1) p.streak = (p.streak || 0) + 1;
+  else p.streak = 1;
+  p.lastWatered = new Date().toISOString();
   saveData(); renderToday(); updateCards();
 }
 
