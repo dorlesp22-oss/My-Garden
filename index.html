@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>My Garden</title>
+<meta name="theme-color" content="#2D5016">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gd:#2D5016;--gm:#4A7C2F;--gl:#EAF3DE;
+  --bl:#E6F1FB;--bm:#3A7BC8;
+  --al:#FFF8EC;--am:#E8A020;
+  --rl:#FFF0F0;--rm:#D94040;
+  --t1:#1C1C1C;--t2:#6B6B6B;--t3:#9E9E9E;
+  --bg:#F7F5F0;--wh:#FFFFFF;--br:rgba(0,0,0,0.08);
+  --r1:12px;--r2:18px;
+  --fh:'Fraunces',serif;
+  --fb:'Plus Jakarta Sans',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:var(--fb);background:var(--bg);color:var(--t1);min-height:100vh;max-width:430px;margin:0 auto}
+.screen{display:none;min-height:100vh;flex-direction:column}
+.screen.active{display:flex}
+.hdr{background:var(--gd);padding:52px 24px 28px;position:relative;overflow:hidden}
+.hdr::before{content:'';position:absolute;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,0.04);top:-70px;right:-50px}
+.hdr-t{font-family:var(--fh);font-size:28px;font-weight:400;color:#fff;margin-bottom:4px;position:relative}
+.hdr-s{font-size:13px;color:rgba(255,255,255,0.6);position:relative}
+.body{padding:18px 16px;flex:1}
+.has-bnav{padding-bottom:76px}
+.back{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.15);border:none;font-family:var(--fb);font-size:14px;color:#fff;cursor:pointer;padding:8px 14px 8px 10px;margin-bottom:20px;border-radius:20px;font-weight:500;backdrop-filter:blur(4px)}
+.back svg{width:18px;height:18px}
+.slabel{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--t3);margin:14px 0 8px 2px}
+.srow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px}
+.scard{background:var(--wh);border-radius:var(--r1);padding:12px 8px;text-align:center;border:1px solid var(--br)}
+.scard-n{font-size:24px;font-weight:600;color:var(--t1);font-family:var(--fh)}
+.scard-l{font-size:11px;color:var(--t3);margin-top:2px;font-weight:500}
+.scard.red .scard-n,.scard.red .scard-l{color:var(--rm)}
+.scard.grn .scard-n,.scard.grn .scard-l{color:var(--gm)}
+.prow{background:var(--wh);border-radius:var(--r2);padding:14px 16px;display:flex;align-items:center;gap:12px;margin-bottom:8px;cursor:pointer;border:1px solid var(--br)}
+.prow:active{opacity:.7}
+.pico{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.pname{font-size:15px;font-weight:600;color:var(--t1)}
+.pst{font-size:12px;font-weight:500;margin-top:3px}
+.st-ok{color:var(--gm)}.st-due{color:var(--am)}.st-ov{color:var(--rm)}.st-no{color:var(--t3)}
+.gbtn{width:100%;background:var(--gd);color:#fff;border:none;border-radius:var(--r2);padding:15px;font-family:var(--fb);font-size:15px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px}
+.gbtn:active{opacity:.85}
+.wbtn{width:100%;background:none;border:1.5px solid var(--br);border-radius:var(--r2);padding:13px;font-family:var(--fb);font-size:14px;color:var(--t2);cursor:pointer;margin-top:10px;font-weight:500}
+.rbtn{width:100%;background:none;border:1.5px solid rgba(217,64,64,0.3);border-radius:var(--r2);padding:12px;font-family:var(--fb);font-size:14px;color:var(--rm);cursor:pointer;margin-top:10px}
+.wbtn2{width:100%;background:var(--bl);border:2px solid var(--bm);border-radius:var(--r2);padding:16px;font-family:var(--fb);font-size:15px;font-weight:600;color:#1A4A80;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:12px}
+.wbtn2.done{background:var(--gl);border-color:var(--gm);color:var(--gd)}
+.cblock{background:var(--wh);border-radius:var(--r2);padding:14px;margin-bottom:8px;border:1px solid var(--br);display:flex;gap:12px}
+.cico{font-size:20px;width:32px;text-align:center;flex-shrink:0}
+.clbl{font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--t3);margin-bottom:3px}
+.cval{font-size:14px;font-weight:600;color:var(--t1);line-height:1.4}
+.cnote{font-size:12px;color:var(--t2);margin-top:3px;line-height:1.5}
+.tblock{background:var(--al);border-radius:var(--r2);padding:14px;margin-bottom:8px;border:1px solid rgba(232,160,32,0.2);display:flex;gap:12px}
+.tlbl{font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--am);margin-bottom:3px}
+.ttxt{font-size:13px;color:#7A5000;line-height:1.6}
+.fblock{background:var(--bl);border-radius:var(--r2);padding:14px;margin-bottom:8px;border:1px solid rgba(58,123,200,0.15);display:flex;gap:12px}
+.flbl{font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--bm);margin-bottom:3px}
+.ftxt{font-size:13px;color:#1A4A80;line-height:1.6}
+.shopbox{background:var(--wh);border-radius:var(--r2);padding:14px;margin-bottom:8px;border:1px solid rgba(255,153,0,0.25)}
+.shop-l{font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:#FF9900;margin-bottom:10px}
+.shop-a{display:flex;align-items:center;justify-content:space-between;padding:9px 11px;margin-bottom:5px;background:#FFF8EC;border-radius:8px;text-decoration:none;border:1px solid rgba(255,153,0,0.15)}
+.shop-an{font-size:13px;color:var(--t1);font-weight:600}
+.shop-ab{font-size:11px;color:#FF9900;font-weight:600}
+.shop-note{font-size:11px;color:var(--t3);margin-top:6px;text-align:center}
+.flabel{font-size:13px;font-weight:600;color:var(--t2);margin-bottom:8px;display:block}
+.finput{width:100%;padding:13px 15px;border-radius:var(--r1);border:1.5px solid var(--br);background:var(--wh);font-family:var(--fb);font-size:15px;color:var(--t1);margin-bottom:16px;outline:none}
+.finput:focus{border-color:var(--gm)}
+.ftarea{width:100%;padding:13px 15px;border-radius:var(--r1);border:1.5px solid var(--br);background:var(--wh);font-family:var(--fb);font-size:14px;color:var(--t1);margin-bottom:16px;outline:none;resize:none;min-height:76px;line-height:1.6}
+.trow{display:flex;gap:10px;margin-bottom:20px}
+.topt{flex:1;padding:13px 8px;border-radius:var(--r1);border:1.5px solid var(--br);background:var(--wh);font-family:var(--fb);font-size:13px;color:var(--t2);cursor:pointer;text-align:center;font-weight:500}
+.topt.sel{background:var(--gl);border-color:var(--gm);color:var(--gd);font-weight:600}
+.topt-i{font-size:20px;display:block;margin-bottom:5px}
+.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--wh);border-top:1px solid var(--br);display:none;z-index:100;padding-bottom:env(safe-area-inset-bottom)}
+.bnav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 4px 8px;cursor:pointer;border:none;background:none;gap:3px}
+.bnav-ico{font-size:22px;line-height:1}
+.bnav-lbl{font-size:10px;font-weight:600;color:var(--t3)}
+.bnav-item.active .bnav-lbl{color:var(--gd)}
+@keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+.spin{animation:spin 1.5s linear infinite;display:inline-block}
+</style>
+</head>
+<body>
+
+<div class="screen active" id="loading-auth">
+  <div style="flex:1;display:flex;align-items:center;justify-content:center">
+    <div class="spin" style="font-size:48px">🌿</div>
+  </div>
+</div>
+
+<div class="screen" id="welcome">
+  <div style="flex:1;display:flex;flex-direction:column">
+    <div style="background:var(--gd);padding:64px 32px 48px;flex:1;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden">
+      <div style="position:absolute;top:-40px;right:-40px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,0.04)"></div>
+      <svg width="160" height="130" viewBox="0 0 180 140" fill="none" style="margin-bottom:32px">
+        <path d="M65 95 L115 95 L108 128 L72 128 Z" fill="rgba(255,255,255,0.15)"/>
+        <rect x="60" y="88" width="60" height="10" rx="5" fill="rgba(255,255,255,0.2)"/>
+        <line x1="90" y1="92" x2="90" y2="48" stroke="rgba(255,255,255,0.5)" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="90" y1="70" x2="62" y2="52" stroke="rgba(255,255,255,0.4)" stroke-width="2" stroke-linecap="round"/>
+        <line x1="90" y1="62" x2="118" y2="46" stroke="rgba(255,255,255,0.4)" stroke-width="2" stroke-linecap="round"/>
+        <ellipse cx="90" cy="40" rx="16" ry="10" fill="rgba(255,255,255,0.25)" transform="rotate(-10 90 40)"/>
+        <ellipse cx="52" cy="46" rx="14" ry="8" fill="rgba(255,255,255,0.2)" transform="rotate(20 52 46)"/>
+        <ellipse cx="124" cy="40" rx="14" ry="8" fill="rgba(255,255,255,0.2)" transform="rotate(-20 124 40)"/>
+      </svg>
+      <div style="font-family:var(--fh);font-size:38px;color:#fff;margin-bottom:10px">My Garden</div>
+      <div style="font-size:17px;color:rgba(255,255,255,0.7);max-width:260px">Smart care for every plant</div>
+    </div>
+    <div style="background:var(--bg);padding:32px 24px 40px">
+      <button class="gbtn" onclick="goSignin()" style="margin-top:0;font-size:16px;padding:18px">Get started</button>
+      <div style="font-size:13px;color:var(--t3);text-align:center;margin-top:16px">Your plants will thank you</div>
+    </div>
+  </div>
+</div>
+
+<div class="screen" id="signin">
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 28px;text-align:center">
+    <div style="font-size:52px;margin-bottom:24px">🌿</div>
+    <div style="font-family:var(--fh);font-size:28px;color:var(--t1);margin-bottom:8px">Welcome</div>
+    <div style="font-size:15px;color:var(--t2);line-height:1.7;margin-bottom:40px">Sign in to save your garden and access it from any device.</div>
+    <button onclick="signInGoogle()" style="width:100%;background:var(--wh);border:1.5px solid var(--br);border-radius:var(--r2);padding:16px;font-family:var(--fb);font-size:15px;font-weight:600;color:var(--t1);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:12px">
+      <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.36-8.16 2.36-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+      Continue with Google
+    </button>
+    <div id="signin-err" style="font-size:13px;color:var(--rm);margin-top:16px;font-weight:500"></div>
+  </div>
+</div>
+
+<div class="screen" id="city">
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 28px;text-align:center">
+    <div style="font-size:48px;margin-bottom:20px">📍</div>
+    <div style="font-family:var(--fh);font-size:28px;color:var(--t1);margin-bottom:8px">Where is your garden?</div>
+    <div style="font-size:15px;color:var(--t2);line-height:1.7;margin-bottom:32px">We use your city for climate-specific care advice.</div>
+    <input class="finput" id="city-inp" type="text" placeholder="e.g. Pune, Mumbai, Delhi...">
+    <button class="gbtn" onclick="saveCity()" style="margin-top:0">Continue</button>
+  </div>
+</div>
+
+<div class="screen" id="home">
+  <div class="hdr">
+    <div class="hdr-t">My Garden 🌿</div>
+    <div class="hdr-s" id="hdr-sub"></div>
+  </div>
+  <div class="body has-bnav">
+    <div class="srow">
+      <div class="scard" id="sc-ov"><div class="scard-n" id="sc-ov-n">0</div><div class="scard-l">Overdue</div></div>
+      <div class="scard" id="sc-td"><div class="scard-n" id="sc-td-n">0</div><div class="scard-l">Water today</div></div>
+      <div class="scard grn"><div class="scard-n" id="sc-ok-n">0</div><div class="scard-l">All good</div></div>
+    </div>
+    <div id="plant-list"></div>
+    <button class="gbtn" onclick="goScreen('add')">+ Add a new plant</button>
+    <div id="shop-home" style="margin-top:8px"></div>
+  </div>
+</div>
+
+<div class="screen" id="today-screen">
+  <div class="hdr">
+    <div class="hdr-t">Water Today 💧</div>
+    <div class="hdr-s" id="today-hdr-sub"></div>
+  </div>
+  <div class="body has-bnav" id="today-body"></div>
+</div>
+
+<div class="screen" id="report-screen">
+  <div class="hdr">
+    <div class="hdr-t">Garden Report 📊</div>
+    <div class="hdr-s">Monthly overview</div>
+  </div>
+  <div class="body has-bnav" id="report-body"></div>
+</div>
+
+<div class="screen" id="profile-screen">
+  <div class="hdr">
+    <div class="hdr-t">Profile</div>
+  </div>
+  <div class="body has-bnav" id="profile-body"></div>
+</div>
+
+<div class="screen" id="detail">
+  <div class="hdr">
+    <button class="back" onclick="goTab('garden')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg> Back</button>
+    <div style="display:flex;align-items:center;gap:14px">
+      <div id="d-ico" style="width:54px;height:54px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0"></div>
+      <div>
+        <div style="font-family:var(--fh);font-size:22px;color:#fff;cursor:pointer" id="d-name" onclick="editNick()"></div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:1px" id="d-orig"></div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-top:2px" id="d-type"></div>
+      </div>
+    </div>
+  </div>
+  <div class="body" id="d-body"></div>
+</div>
+
+<div class="screen" id="add">
+  <div class="hdr">
+    <button class="back" onclick="goTab('garden')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg> Back</button>
+    <div style="font-family:var(--fh);font-size:24px;color:#fff">Add a plant</div>
+    <div style="font-size:13px;color:rgba(255,255,255,0.6);margin-top:4px">We fill in everything</div>
+  </div>
+  <div class="body">
+    <label class="flabel">Plant name</label>
+    <input class="finput" id="new-name" type="text" placeholder="e.g. Tulsi, Rose, Aloe Vera...">
+    <input type="file" id="cam-id" accept="image/*" capture="environment" style="display:none" onchange="identifyPlant(this)">
+    <button onclick="document.getElementById('cam-id').click()" style="width:100%;background:none;border:1.5px dashed var(--br);border-radius:var(--r2);padding:13px;font-family:var(--fb);font-size:14px;color:var(--t2);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:18px;font-weight:500">📷 Don't know the name? Take a photo</button>
+    <label class="flabel">Where is it kept?</label>
+    <div class="trow">
+      <div class="topt sel" data-v="outdoor" onclick="pickType(this)"><span class="topt-i">🌤️</span>Outdoors</div>
+      <div class="topt" data-v="indoor" onclick="pickType(this)"><span class="topt-i">🏠</span>Indoors</div>
+    </div>
+    <label class="flabel">When did you last water it?</label>
+    <div class="trow" id="water-row">
+      <div class="topt sel" data-w="0" onclick="pickWater(this)"><span class="topt-i">💧</span>Today</div>
+      <div class="topt" data-w="1" onclick="pickWater(this)"><span class="topt-i">🕐</span>Yesterday</div>
+      <div class="topt" data-w="2" onclick="pickWater(this)"><span class="topt-i">📅</span>2+ days</div>
+    </div>
+    <button class="gbtn" onclick="addPlant()">Add to my garden</button>
+    <button class="wbtn" onclick="goTab('garden')">Cancel</button>
+  </div>
+</div>
+
+<div class="screen" id="loading-plant">
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;text-align:center">
+    <div class="spin" style="font-size:52px;margin-bottom:20px">🌱</div>
+    <div style="font-family:var(--fh);font-size:22px;color:var(--t1)" id="load-title">Looking up plant...</div>
+  </div>
+</div>
+
+<div class="screen" id="premium">
+  <div class="hdr">
+    <button class="back" onclick="goTab('garden')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg> Back</button>
+    <div style="font-family:var(--fh);font-size:24px;color:#fff">My Garden Premium</div>
+    <div style="font-size:13px;color:rgba(255,255,255,0.6);margin-top:4px">Go deeper with your garden</div>
+  </div>
+  <div class="body">
+    <div style="background:var(--wh);border-radius:var(--r2);overflow:hidden;border:1px solid var(--br);margin-bottom:20px">
+      <div style="display:flex;align-items:flex-start;gap:12px;padding:16px;border-bottom:1px solid var(--br)">
+        <div style="width:36px;height:36px;border-radius:10px;background:var(--gl);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">📷</div>
+        <div><div style="font-size:14px;font-weight:600;color:var(--t1)">Unlimited plant identification</div><div style="font-size:12px;color:var(--t2);margin-top:3px;line-height:1.5">Snap a photo to identify any plant. Free users get 3/month.</div></div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:12px;padding:16px;border-bottom:1px solid var(--br)">
+        <div style="width:36px;height:36px;border-radius:10px;background:var(--rl);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🩺</div>
+        <div><div style="font-size:14px;font-weight:600;color:var(--t1)">Plant Doctor</div><div style="font-size:12px;color:var(--t2);margin-top:3px;line-height:1.5">Detailed diagnosis with step-by-step remedy guidance.</div></div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:12px;padding:16px">
+        <div style="width:36px;height:36px;border-radius:10px;background:var(--bl);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">📊</div>
+        <div><div style="font-size:14px;font-weight:600;color:var(--t1)">Monthly garden report</div><div style="font-size:12px;color:var(--t2);margin-top:3px;line-height:1.5">Which plants are thriving and what to focus on next month.</div></div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-bottom:20px">
+      <div style="font-family:var(--fh);font-size:32px;color:var(--t1)">₹49 <span style="font-size:16px;color:var(--t3);font-family:var(--fb)">/month</span></div>
+      <div style="font-size:13px;color:var(--t3);margin-top:4px">Less than a packet of seeds</div>
+    </div>
+    <button class="gbtn" style="margin-top:0" onclick="openPayment()">Subscribe — ₹49/month</button>
+    <div style="font-size:12px;color:var(--t3);margin-top:12px;text-align:center">After subscribing tap below to activate</div>
+    <button class="wbtn" id="paid-btn" style="display:none;border-color:var(--gm);color:var(--gd);font-weight:600" onclick="activatePremium()">I have subscribed — Activate now</button>
+    <div id="prem-status" style="font-size:13px;margin-top:14px;line-height:1.6;text-align:center"></div>
+    <button class="wbtn" onclick="goTab('garden')">Back to garden</button>
+  </div>
+</div>
+
+<div class="screen" id="del-screen">
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;text-align:center">
+    <div style="font-size:52px;margin-bottom:20px">🗑️</div>
+    <div style="font-family:var(--fh);font-size:22px;color:var(--t1);margin-bottom:10px" id="del-title"></div>
+    <div style="font-size:14px;color:var(--t2);line-height:1.6;margin-bottom:28px" id="del-sub"></div>
+    <button style="width:100%;background:var(--rm);color:#fff;border:none;border-radius:var(--r2);padding:15px;font-family:var(--fb);font-size:15px;font-weight:600;cursor:pointer" onclick="confirmDel()">Yes, remove it</button>
+    <button class="wbtn" onclick="goScreen('detail')">Keep it</button>
+  </div>
+</div>
+
+<div class="bnav" id="bnav">
+  <button class="bnav-item active" id="bnav-garden" onclick="goTab('garden')">
+    <span class="bnav-ico">🌿</span><span class="bnav-lbl">Garden</span>
+  </button>
+  <button class="bnav-item" id="bnav-today" onclick="goTab('today')">
+    <span class="bnav-ico">💧</span><span class="bnav-lbl">Water Today</span>
+  </button>
+  <button class="bnav-item" id="bnav-report" onclick="goTab('report')">
+    <span class="bnav-ico">📊</span><span class="bnav-lbl">Report</span>
+  </button>
+  <button class="bnav-item" id="bnav-profile" onclick="goTab('profile')">
+    <span class="bnav-ico" id="bnav-profile-ico">👤</span><span class="bnav-lbl">Profile</span>
+  </button>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+<script>
+firebase.initializeApp({
+  apiKey:"AIzaSyASFk-1ktL5p7eMgd08VU2uZxLV6_oGaLk",
+  authDomain:"my-garden-app-fa177.firebaseapp.com",
+  projectId:"my-garden-app-fa177",
+  storageBucket:"my-garden-app-fa177.firebasestorage.app",
+  messagingSenderId:"201846937209",
+  appId:"1:201846937209:web:94a8f46580e9544b6fe6a8"
+});
+const auth = firebase.auth();
+const db = firebase.firestore();
+const WORKER = 'https://winter-bonus-a90d.dorle-sp22.workers.dev';
+const VAPID = 'BENVOs8yFy_29fhKyHr0JJ6-nOI-frChQaR9hxl8MquMH4eoR5yY11nl4riTb4B7DTYSXungkhETo_3OkptZEGo';
+
+let G = [], _uid = null, _cur = '', _del = '', _type = 'outdoor', _daysAgo = 0;
+
+// ── HELPERS ──
+const getCity = () => { try { return localStorage.getItem('mg_city') || ''; } catch(e) { return ''; } };
+const isPremium = () => { try { return localStorage.getItem('mg_prem') === '1'; } catch(e) { return false; } };
+const getCamUsed = () => {
+  try {
+    const d = JSON.parse(localStorage.getItem('mg_cam') || '{"n":0,"m":""}');
+    return d.m === new Date().toISOString().substring(0,7) ? d.n : 0;
+  } catch(e) { return 0; }
+};
+const incCam = () => {
+  try {
+    const m = new Date().toISOString().substring(0,7);
+    localStorage.setItem('mg_cam', JSON.stringify({n: getCamUsed()+1, m}));
+  } catch(e) {}
+};
+const canCam = () => isPremium() || getCamUsed() < 3;
+const daysSince = ds => ds ? Math.floor((Date.now()-new Date(ds).getTime())/86400000) : null;
+
+// ── MIGRATE OLD DATA ──
+function migrateLocal() {
+  try {
+    for (const k of ['mg6','mg5','mg4','mg3','mg2','mg1']) {
+      const d = localStorage.getItem(k);
+      if (d) { const p = JSON.parse(d); if (p && p.length > 0) return p; }
+    }
+  } catch(e) {}
+  return [];
+}
+
+// ── FIRESTORE ──
+async function loadData(uid) {
+  try {
+    const local = migrateLocal();
+    const doc = await db.collection('users').doc(uid).get();
+    const hasFS = doc.exists && doc.data().plants && doc.data().plants.length > 0;
+    if (hasFS) {
+      const fp = doc.data().plants.map(p => ({...p, waterLog:p.waterLog||[], days:p.days||1}));
+      if (local.length > fp.length) { G = local; saveData(); }
+      else { G = fp; try { localStorage.setItem('mg6', JSON.stringify(G)); } catch(e) {} }
+      if (!getCity() && doc.data().city) localStorage.setItem('mg_city', doc.data().city);
+    } else if (local.length > 0) {
+      G = local; saveData();
+    } else { G = []; }
+  } catch(e) { G = migrateLocal(); }
+}
+
+async function saveData() {
+  try { localStorage.setItem('mg6', JSON.stringify(G)); } catch(e) {}
+  if (!_uid) return;
+  try {
+    await db.collection('users').doc(_uid).set({
+      plants: G.map(p => ({
+        name:p.name||'', type:p.type||'outdoor', ico:p.ico||'🌿',
+        nickname:p.nickname||null, water:p.water||'', freq:p.freq||'',
+        sun:p.sun||'', pour:p.pour||'', fert:p.fert||'', tip:p.tip||'',
+        days:p.days||1, lastWatered:p.lastWatered||null,
+        waterLog:(p.waterLog||[]).slice(-10), products:p.products||[],
+        diagnosis:p.diagnosis||null
+      })),
+      city: getCity(), updatedAt: new Date().toISOString()
+    }, {merge:true});
+  } catch(e) {}
+}
+
+// ── AUTH ──
+function signInGoogle() {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  document.getElementById('signin-err').textContent = '';
+  auth.signInWithPopup(provider).catch(e => {
+    document.getElementById('signin-err').textContent = 'Sign in failed. Please try again.';
+  });
+}
+
+auth.onAuthStateChanged(async user => {
+  if (user) {
+    _uid = user.uid;
+    if (user.photoURL) {
+      document.getElementById('bnav-profile-ico').innerHTML = '<img src="'+user.photoURL+'" style="width:26px;height:26px;border-radius:50%;object-fit:cover">';
+    }
+    await loadData(user.uid);
+    if (!getCity()) { goScreen('city'); hideBnav(); }
+    else { goTab('garden'); showBnav(); }
+  } else {
+    goScreen('welcome'); hideBnav();
+  }
+});
+
+// ── NAVIGATION ──
+function goScreen(s) {
+  document.querySelectorAll('.screen').forEach(x => x.classList.remove('active'));
+  document.getElementById(s).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function showBnav() { document.getElementById('bnav').style.display = 'flex'; }
+function hideBnav() { document.getElementById('bnav').style.display = 'none'; }
+
+function goTab(tab) {
+  const tabScreens = {garden:'home', today:'today-screen', report:'report-screen', profile:'profile-screen'};
+  const screenId = tabScreens[tab] || tab;
+  goScreen(screenId);
+  showBnav();
+  document.querySelectorAll('.bnav-item').forEach(b => b.classList.remove('active'));
+  const activeBtn = document.getElementById('bnav-' + tab);
+  if (activeBtn) activeBtn.classList.add('active');
+  if (tab === 'garden') renderHome();
+  if (tab === 'today') renderToday();
+  if (tab === 'report') renderReport();
+  if (tab === 'profile') renderProfile();
+}
+
+function goSignin() { goScreen('signin'); }
+
+function saveCity() {
+  const v = document.getElementById('city-inp').value.trim();
+  if (!v) { document.getElementById('city-inp').focus(); return; }
+  localStorage.setItem('mg_city', v);
+  goTab('garden'); showBnav();
+}
+
+// ── WATERING STATUS ──
+function wStatus(p) {
+  const ds = daysSince(p.lastWatered), due = p.days || 1;
+  if (ds === null) return {txt:'Not watered yet', cls:'st-no', dot:'⚪', over:false, today:false, unknown:true};
+  if (ds === 0) return {txt:'Watered today ✓', cls:'st-ok', dot:'🟢', over:false, today:false, unknown:false};
+  if (ds < due) return {txt:'Next in '+(due-ds)+' day'+(due-ds>1?'s':''), cls:'st-ok', dot:'🟢', over:false, today:false, unknown:false};
+  if (ds === due) return {txt:'Water today!', cls:'st-due', dot:'🔵', over:false, today:true, unknown:false};
+  return {txt:'Overdue '+(ds-due+1)+' day'+((ds-due+1)>1?'s':'')+'!', cls:'st-ov', dot:'🔴', over:true, today:false, unknown:false};
+}
+
+// ── HOME ──
+function updateCards() {
+  let ov=0, td=0, ok=0;
+  G.forEach(p => { const s=wStatus(p); if(s.over) ov++; else if(s.today) td++; else if(!s.unknown) ok++; });
+  document.getElementById('sc-ov-n').textContent = ov;
+  document.getElementById('sc-td-n').textContent = td;
+  document.getElementById('sc-ok-n').textContent = ok;
+  document.getElementById('sc-ov').className = 'scard' + (ov>0?' red':'');
+  document.getElementById('sc-td').className = 'scard' + (td>0?' red':'');
+}
+
+function renderHome() {
+  const city = getCity();
+  document.getElementById('hdr-sub').textContent = new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long'}) + (city ? ' · 📍'+city : '');
+  updateCards();
+  const out = G.filter(p => p.type === 'outdoor');
+  const ind = G.filter(p => p.type === 'indoor');
+  let h = '';
+  if (!G.length) {
+    h = '<div style="text-align:center;padding:48px 20px 24px"><svg width="100" height="90" viewBox="0 0 120 100" fill="none" style="margin-bottom:20px"><rect x="38" y="62" width="44" height="32" rx="6" fill="#EAF3DE"/><rect x="34" y="56" width="52" height="10" rx="5" fill="#C8E6A0"/><line x1="60" y1="60" x2="60" y2="28" stroke="#4A7C2F" stroke-width="2.5" stroke-linecap="round"/><line x1="60" y1="46" x2="40" y2="32" stroke="#4A7C2F" stroke-width="2" stroke-linecap="round"/><line x1="60" y1="38" x2="80" y2="26" stroke="#4A7C2F" stroke-width="2" stroke-linecap="round"/><ellipse cx="60" cy="22" rx="12" ry="8" fill="#5DA832" transform="rotate(-5 60 22)"/><ellipse cx="34" cy="28" rx="10" ry="7" fill="#4A9020" transform="rotate(15 34 28)"/><ellipse cx="86" cy="22" rx="10" ry="7" fill="#6ABB30" transform="rotate(-15 86 22)"/></svg><div style="font-family:var(--fh);font-size:22px;color:var(--t1);margin-bottom:8px">Your garden starts here</div><div style="font-size:14px;color:var(--t2);line-height:1.7">Just type a plant name — we fill everything automatically</div></div>';
+  } else {
+    if (out.length) { h += '<div class="slabel">Outdoor · Balcony</div>'; out.forEach(p => h += pRow(p)); }
+    if (ind.length) { h += '<div class="slabel">Indoor · Inside home</div>'; ind.forEach(p => h += pRow(p)); }
+  }
+  document.getElementById('plant-list').innerHTML = h;
+  const ess = (() => { try { return JSON.parse(localStorage.getItem('mg_ess')||'null'); } catch(e) { return null; } })();
+  if (ess) document.getElementById('shop-home').innerHTML = shopHtml(ess, '🛒 Shop gardening essentials');
+  else fetchEssentials();
+}
+
+function pRow(p) {
+  const bg = p.type === 'outdoor' ? '#EAF3DE' : '#E6F1FB';
+  const st = wStatus(p);
+  const badge = (!p.water||p.water==='Not filled yet') ? '<span style="display:inline-block;background:var(--rl);color:var(--rm);font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;margin-top:4px">Tap to set up</span>' : '';
+  return '<div class="prow" onclick="openDetail(\''+p.name+'\')"><div class="pico" style="background:'+bg+'"><span style="font-size:20px">'+p.ico+'</span></div><div style="flex:1;min-width:0"><div class="pname">'+(p.nickname||p.name)+'</div><div class="pst '+st.cls+'">'+st.dot+' '+st.txt+'</div>'+badge+'</div><span style="font-size:20px;color:var(--t3);margin-left:auto">›</span></div>';
+}
+
+function shopHtml(items, title) {
+  return '<div class="shopbox"><div class="shop-l">'+title+'</div>'+items.map(p=>'<a href="'+p.link+'" target="_blank" class="shop-a"><span class="shop-an">'+p.label+'</span><span class="shop-ab">Buy ↗</span></a>').join('')+'<div class="shop-note">Affiliate links — supports this free app</div></div>';
+}
+
+async function fetchEssentials() {
+  try {
+    const r = await fetch(WORKER);
+    const d = await r.json();
+    if (d.essentials) {
+      try { localStorage.setItem('mg_ess', JSON.stringify(d.essentials)); } catch(e) {}
+      document.getElementById('shop-home').innerHTML = shopHtml(d.essentials, '🛒 Shop gardening essentials');
+    }
+  } catch(e) {}
+}
+
+// ── DETAIL ──
+function openDetail(name) {
+  _cur = name; goScreen('detail'); hideBnav(); showDetail(name);
+}
+
+function showDetail(name) {
+  const p = G.find(x => x.name === name); if (!p) return;
+  document.getElementById('d-ico').innerHTML = '<span style="font-size:26px">'+p.ico+'</span>';
+  document.getElementById('d-name').textContent = (p.nickname||p.name) + ' ✏️';
+  document.getElementById('d-orig').textContent = p.nickname ? p.name : '';
+  document.getElementById('d-type').textContent = p.type==='outdoor' ? 'Outdoor · Balcony' : 'Indoor · Inside home';
+  const v = (val,fb) => (val&&val!=='Not filled yet') ? val : '<span style="font-size:13px;color:var(--t3);font-style:italic">'+fb+'</span>';
+  const st = wStatus(p);
+  const watered = daysSince(p.lastWatered) === 0;
+  // Streak
+  const log = (p.waterLog||[]).slice().sort((a,b)=>new Date(b)-new Date(a));
+  let streak = 0;
+  if (log.length > 0) { const due=p.days||1; let prev=new Date(log[0]); streak=1; for(let i=1;i<log.length;i++){ const curr=new Date(log[i]); if(Math.round((prev-curr)/86400000)<=due+1){streak++;prev=curr;}else break;} }
+  const lastStr = p.lastWatered ? new Date(p.lastWatered).toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long'}) : 'Never';
+  const isNew = sessionStorage.getItem('np') === name;
+  if (isNew) sessionStorage.removeItem('np');
+  document.getElementById('d-body').innerHTML =
+    ((!p.water||p.water==='Not filled yet') ? '<div style="background:var(--rl);border-radius:var(--r2);padding:12px 14px;margin-bottom:12px;border:1px solid rgba(217,64,64,0.2);font-size:13px;color:var(--rm);font-weight:500">⚠️ Care details not yet filled in.</div>' : '') +
+    '<div style="background:'+(st.over?'var(--rl)':st.today?'var(--al)':'var(--gl)')+';border-radius:var(--r2);padding:14px 16px;margin-bottom:12px;border:1px solid '+(st.over?'rgba(217,64,64,0.2)':st.today?'rgba(232,160,32,0.2)':'rgba(74,124,47,0.2)')+';font-size:14px;font-weight:600;color:'+(st.over?'var(--rm)':st.today?'#7A5000':'var(--gd)')+'">'+st.dot+' '+st.txt+(p.lastWatered&&!watered?' · Last: '+new Date(p.lastWatered).toLocaleDateString('en-IN',{day:'numeric',month:'short'}):'')+'</div>' +
+    '<button class="wbtn2'+(watered?' done':'')+'" onclick="markWatered(\''+name+'\')">'+(watered?'✓ Watered today':'💧 Mark as watered')+'</button>' +
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px"><div style="background:var(--gl);border-radius:var(--r1);padding:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:72px;text-align:center"><div style="font-family:var(--fh);font-size:28px;color:var(--gd)">'+streak+'</div><div style="font-size:11px;color:var(--gm);font-weight:600;margin-top:4px;text-transform:uppercase;letter-spacing:.5px">Day streak</div></div><div style="background:var(--bl);border-radius:var(--r1);padding:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:72px;text-align:center"><div style="font-size:13px;font-weight:600;color:#1A4A80;line-height:1.4">'+lastStr+'</div><div style="font-size:11px;color:var(--bm);font-weight:600;margin-top:4px;text-transform:uppercase;letter-spacing:.5px">Last watered</div></div></div>' +
+    '<div style="background:var(--gl);border-radius:var(--r2);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;border:1px solid rgba(74,124,47,0.2)"><div><div style="font-size:14px;font-weight:600;color:var(--gd)">How does it look today?</div><div style="font-size:12px;color:var(--gm);margin-top:2px">Take a photo for a health check</div></div><input type="file" id="diag-cam" accept="image/*" capture="environment" style="display:none" onchange="diagnosePlant(this,\''+name+'\')"><button onclick="document.getElementById(\'diag-cam\').click()" style="background:var(--gd);border:none;border-radius:10px;padding:10px 14px;font-size:13px;font-weight:600;color:#fff;cursor:pointer;white-space:nowrap;flex-shrink:0;font-family:var(--fb)">📷 Check</button></div>' +
+    (p.diagnosis ? '<div style="background:'+(p.diagnosis.healthy?'var(--gl)':'var(--rl)')+';border-radius:var(--r2);padding:16px;margin-bottom:10px;border:1px solid '+(p.diagnosis.healthy?'rgba(74,124,47,0.2)':'rgba(217,64,64,0.2)')+'"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px"><div><div style="font-size:11px;font-weight:700;color:'+(p.diagnosis.healthy?'var(--gm)':'var(--rm)')+';text-transform:uppercase;letter-spacing:.5px">'+(p.diagnosis.healthy?'✅':'⚠️')+' Health check · '+new Date(p.diagnosis.date).toLocaleDateString('en-IN',{day:'numeric',month:'short'})+'</div><div style="font-size:16px;font-weight:600;color:'+(p.diagnosis.healthy?'var(--gd)':'#8B0000')+';margin-top:4px">'+p.diagnosis.title+'</div></div><button onclick="clearDiag(\''+name+'\')" style="background:none;border:none;font-size:12px;color:var(--t3);cursor:pointer;flex-shrink:0;margin-left:8px">Clear ✕</button></div><div style="font-size:13px;color:'+(p.diagnosis.healthy?'var(--gm)':'var(--rm)')+';line-height:1.7;border-top:1px solid '+(p.diagnosis.healthy?'rgba(74,124,47,0.15)':'rgba(217,64,64,0.15)')+';padding-top:10px">'+p.diagnosis.issue+'</div>'+(p.diagnosis.remedy?'<div style="font-size:13px;color:'+(p.diagnosis.healthy?'var(--gd)':'#8B0000')+';line-height:1.7;margin-top:8px;font-weight:500;background:rgba(255,255,255,0.5);border-radius:8px;padding:10px">💡 '+p.diagnosis.remedy+'</div>':'')+'</div>' : '') +
+    '<div class="cblock"><span class="cico">💧</span><div><div class="clbl">How much water</div><div class="cval">'+v(p.water,'Not filled in yet')+'</div><div class="cnote">'+v(p.freq,'')+'</div></div></div>' +
+    '<div class="cblock"><span class="cico">☀️</span><div><div class="clbl">Sunlight needed</div><div class="cval">'+v(p.sun,'Not filled in yet')+'</div></div></div>' +
+    '<div class="cblock"><span class="cico">🫗</span><div><div class="clbl">How to water</div><div class="cval" style="font-size:13px;line-height:1.5">'+v(p.pour,'Not filled in yet')+'</div></div></div>' +
+    '<div class="fblock"><span class="cico">🌾</span><div><div class="flbl">Fertilizer</div><div class="ftxt">'+v(p.fert,'Not filled in yet')+'</div></div></div>' +
+    '<div class="tblock"><span class="cico">💡</span><div><div class="tlbl">Good to know</div><div class="ttxt">'+v(p.tip,'Not filled in yet')+'</div></div></div>' +
+    (p.products&&p.products.length ? shopHtml(p.products, '🛒 '+(isNew?'You might need these':'Shop on Amazon')) : '') +
+    '<button onclick="refetch(\''+name+'\')" style="width:100%;background:none;border:1.5px solid var(--br);border-radius:var(--r2);padding:12px;font-family:var(--fb);font-size:13px;color:var(--t2);cursor:pointer;margin-top:8px;font-weight:500">🔄 Re-fetch care details</button>' +
+    '<button class="rbtn" onclick="askDel(\''+name+'\')">Remove this plant</button>';
+}
+
+function markWatered(name) {
+  const p = G.find(x => x.name === name); if (!p) return;
+  const t = new Date().toISOString();
+  p.lastWatered = t; p.waterLog = p.waterLog||[]; p.waterLog.push(t);
+  if (p.waterLog.length > 10) p.waterLog = p.waterLog.slice(-10);
+  saveData(); showDetail(name); updateCards();
+}
+
+function editNick() {
+  const p = G.find(x => x.name === _cur); if (!p) return;
+  const v = prompt('Nickname for '+p.name+' (leave blank to remove):', p.nickname||'');
+  if (v === null) return;
+  p.nickname = v.trim() || null;
+  saveData(); showDetail(_cur);
+}
+
+function clearDiag(name) {
+  const p = G.find(x => x.name === name); if (!p) return;
+  p.diagnosis = null; saveData(); showDetail(name);
+}
+
+async function diagnosePlant(input, name) {
+  const file = input.files[0]; if (!file) return;
+  const p = G.find(x => x.name === name); if (!p) return;
+  document.getElementById('load-title').textContent = 'Analysing '+( p.nickname||name)+'...';
+  goScreen('loading-plant');
+  try {
+    const base64 = await new Promise((res,rej) => { const r=new FileReader(); r.onload=()=>res(r.result.split(',')[1]); r.onerror=rej; r.readAsDataURL(file); });
+    const resp = await fetch(WORKER, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'diagnose_plant',name,image:base64,mediaType:file.type||'image/jpeg',city:getCity()})});
+    const d = await resp.json();
+    if (d.title) { p.diagnosis = {healthy:d.healthy===true,title:d.title,issue:d.issue||'',remedy:d.remedy||'',date:new Date().toISOString()}; saveData(); }
+  } catch(e) {}
+  input.value = '';
+  openDetail(name);
+}
+
+async function refetch(name) {
+  const p = G.find(x => x.name === name); if (!p) return;
+  document.getElementById('load-title').textContent = 'Updating '+name+'...';
+  goScreen('loading-plant');
+  const d = await fetchCare(name, p.type);
+  if (d) { ['water','freq','sun','pour','fert','tip'].forEach(k=>{if(d[k])p[k]=d[k];}); if(d.days)p.days=Math.min(14,Math.max(1,parseInt(d.days)||1)); if(d.products)p.products=d.products; if(d.emoji)p.ico=d.emoji; saveData(); }
+  openDetail(name);
+}
+
+function askDel(name) {
+  _del = name;
+  document.getElementById('del-title').textContent = 'Remove '+name+'?';
+  document.getElementById('del-sub').textContent = 'This will delete '+name+' and all its watering history.';
+  goScreen('del-screen');
+}
+
+function confirmDel() {
+  G = G.filter(x => x.name !== _del); saveData(); goTab('garden');
+}
+
+// ── ADD PLANT ──
+function pickType(el) {
+  _type = el.dataset.v;
+  el.closest('.trow').querySelectorAll('.topt').forEach(o => o.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+function pickWater(el) {
+  _daysAgo = parseInt(el.dataset.w);
+  el.closest('.trow').querySelectorAll('.topt').forEach(o => o.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+async function identifyPlant(input) {
+  const file = input.files[0]; if (!file) return;
+  if (!canCam()) { alert('You have used your 3 free identifications this month. Upgrade to Premium for unlimited.'); input.value=''; return; }
+  incCam();
+  const ni = document.getElementById('new-name');
+  ni.value=''; ni.placeholder='Identifying...'; ni.disabled=true;
+  try {
+    const base64 = await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.onerror=rej;r.readAsDataURL(file);});
+    const resp = await fetch(WORKER,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'identify_plant',image:base64,mediaType:file.type||'image/jpeg'})});
+    const d = await resp.json();
+    if (d.name) { ni.value=d.name; ni.style.borderColor='var(--gm)'; setTimeout(()=>ni.style.borderColor='',2000); }
+    else ni.placeholder='Could not identify — type the name';
+  } catch(e) { ni.placeholder='Could not identify — type the name'; }
+  ni.disabled=false; input.value='';
+}
+
+async function fetchCare(name, type) {
+  try {
+    const r = await fetch(WORKER,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,type,city:getCity()})});
+    const d = await r.json();
+    if (!r.ok) return null;
+    if (d.essentials) { try{localStorage.setItem('mg_ess',JSON.stringify(d.essentials));}catch(e){} }
+    return d;
+  } catch(e) { return null; }
+}
+
+async function addPlant() {
+  const name = document.getElementById('new-name').value.trim();
+  if (!name) { document.getElementById('new-name').focus(); return; }
+  if (G.find(x => x.name.toLowerCase()===name.toLowerCase())) { document.getElementById('new-name').style.borderColor='var(--rm)'; setTimeout(()=>document.getElementById('new-name').style.borderColor='',1500); return; }
+  const lastW = _daysAgo===0 ? new Date().toISOString() : _daysAgo===1 ? new Date(Date.now()-86400000).toISOString() : new Date(Date.now()-2*86400000).toISOString();
+  G.push({name,type:_type,ico:_type==='outdoor'?'🌿':'🪴',water:'Not filled yet',freq:'Not filled yet',sun:'Not filled yet',pour:'Not filled yet',fert:'Not filled yet',tip:'Not filled yet',days:1,lastWatered:lastW,waterLog:[lastW],products:[],diagnosis:null,nickname:null});
+  saveData();
+  document.getElementById('new-name').value='';
+  _type='outdoor'; _daysAgo=0;
+  document.querySelectorAll('.trow:not(#water-row) .topt').forEach(o=>o.classList.toggle('sel',o.dataset.v==='outdoor'));
+  document.querySelectorAll('#water-row .topt').forEach(o=>o.classList.toggle('sel',o.dataset.w==='0'));
+  document.getElementById('load-title').textContent='Looking up '+name+'...';
+  goScreen('loading-plant');
+  const d = await fetchCare(name, _type);
+  const p = G.find(x => x.name===name);
+  if (p && d) { ['water','freq','sun','pour','fert','tip'].forEach(k=>{if(d[k])p[k]=d[k];}); if(d.days)p.days=Math.min(14,Math.max(1,parseInt(d.days)||1)); if(d.products)p.products=d.products; if(d.emoji)p.ico=d.emoji; saveData(); }
+  sessionStorage.setItem('np', name);
+  openDetail(name);
+}
+
+// ── TODAY ──
+function renderToday() {
+  document.getElementById('today-hdr-sub').textContent = new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long'});
+  const due = G.filter(p => { const s=wStatus(p); return s.today||s.over; });
+  const ok = G.filter(p => { const s=wStatus(p); return !s.today&&!s.over&&!s.unknown; });
+  let h = '';
+  if (!G.length) {
+    h = '<div style="text-align:center;padding:40px 20px"><div style="font-size:52px;margin-bottom:16px">🌱</div><div style="font-family:var(--fh);font-size:22px;color:var(--t1);margin-bottom:8px">No plants yet</div><div style="font-size:14px;color:var(--t2)">Add your first plant from the Garden tab.</div></div>';
+  } else if (!due.length) {
+    h = '<div style="text-align:center;padding:40px 20px"><div style="font-size:52px;margin-bottom:16px">🎉</div><div style="font-family:var(--fh);font-size:22px;color:var(--t1);margin-bottom:8px">All plants are happy!</div><div style="font-size:14px;color:var(--t2)">Nothing needs watering today.</div></div>';
+  }
+  if (due.length) {
+    h += '<div class="slabel">Needs water now</div>';
+    due.forEach(p => {
+      const st = wStatus(p);
+      h += '<div style="background:var(--wh);border-radius:var(--r2);padding:14px 16px;display:flex;align-items:center;gap:12px;margin-bottom:8px;border:1px solid '+(st.over?'rgba(217,64,64,0.3)':'rgba(232,160,32,0.3)')+'"><div style="width:44px;height:44px;border-radius:50%;background:'+(st.over?'var(--rl)':'var(--al)')+';display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">'+p.ico+'</div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--t1)">'+(p.nickname||p.name)+'</div><div style="font-size:12px;font-weight:500;color:'+(st.over?'var(--rm)':'var(--am)')+';margin-top:2px">'+st.dot+' '+st.txt+'</div></div><button onclick="waterFromToday(\''+p.name+'\')" style="background:var(--bl);border:none;border-radius:10px;padding:9px 14px;font-size:13px;font-weight:600;color:var(--bm);cursor:pointer;font-family:var(--fb);flex-shrink:0">💧 Done</button></div>';
+    });
+  }
+  if (ok.length) {
+    h += '<div class="slabel" style="margin-top:'+(due.length?'16px':'0')+'">All good today</div>';
+    ok.forEach(p => {
+      const st = wStatus(p);
+      h += '<div style="background:var(--wh);border-radius:var(--r2);padding:12px 16px;display:flex;align-items:center;gap:12px;margin-bottom:8px;border:1px solid var(--br);opacity:.7"><div style="width:40px;height:40px;border-radius:50%;background:var(--gl);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">'+p.ico+'</div><div><div style="font-size:14px;font-weight:600;color:var(--t1)">'+(p.nickname||p.name)+'</div><div style="font-size:12px;font-weight:500;color:var(--gm);margin-top:2px">🟢 '+st.txt+'</div></div></div>';
+    });
+  }
+  document.getElementById('today-body').innerHTML = h;
+}
+
+function waterFromToday(name) {
+  const p = G.find(x => x.name===name); if (!p) return;
+  const t = new Date().toISOString();
+  p.lastWatered=t; p.waterLog=p.waterLog||[]; p.waterLog.push(t);
+  if (p.waterLog.length>10) p.waterLog=p.waterLog.slice(-10);
+  saveData(); renderToday(); updateCards();
+}
+
+// ── REPORT ──
+function renderReport() {
+  const isPrem = isPremium();
+  const ov = G.filter(p=>wStatus(p).over).length;
+  const watered = G.filter(p=>daysSince(p.lastWatered)===0).length;
+  let h = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px">';
+  h += '<div style="background:var(--gl);border-radius:var(--r2);padding:16px;text-align:center"><div style="font-family:var(--fh);font-size:32px;color:var(--gd)">'+G.length+'</div><div style="font-size:12px;font-weight:600;color:var(--gm);margin-top:2px;text-transform:uppercase;letter-spacing:.5px">Total plants</div></div>';
+  h += '<div style="background:var(--bl);border-radius:var(--r2);padding:16px;text-align:center"><div style="font-family:var(--fh);font-size:32px;color:#1A4A80">'+watered+'</div><div style="font-size:12px;font-weight:600;color:var(--bm);margin-top:2px;text-transform:uppercase;letter-spacing:.5px">Watered today</div></div>';
+  h += '</div>';
+  if (!isPrem) {
+    h += '<div style="background:var(--al);border-radius:var(--r2);padding:20px;text-align:center;border:1px solid rgba(232,160,32,0.2)"><div style="font-size:32px;margin-bottom:12px">📊</div><div style="font-family:var(--fh);font-size:20px;color:var(--t1);margin-bottom:8px">Monthly Garden Report</div><div style="font-size:13px;color:var(--t2);line-height:1.7;margin-bottom:16px">Get a personalised monthly report — which plants are thriving, which need attention.</div><button onclick="goScreen(\'premium\')" style="background:var(--gd);border:none;border-radius:var(--r2);padding:13px 24px;font-family:var(--fb);font-size:14px;font-weight:600;color:#fff;cursor:pointer">Upgrade to Premium</button></div>';
+  } else {
+    h += '<div style="background:var(--wh);border-radius:var(--r2);padding:16px;border:1px solid var(--br)">';
+    h += '<div style="font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px">This month</div>';
+    h += G.map(p=>'<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--br)"><span>'+p.ico+'</span><span style="font-weight:600;color:var(--t1);flex:1">'+(p.nickname||p.name)+'</span><span style="font-size:12px;color:'+(wStatus(p).over?'var(--rm)':'var(--gm)')+'">'+( wStatus(p).over?'Needs attention':'On track')+'</span></div>').join('');
+    h += '</div>';
+  }
+  document.getElementById('report-body').innerHTML = h;
+}
+
+// ── PROFILE ──
+function renderProfile() {
+  const user = auth.currentUser; if (!user) return;
+  const city = getCity(), isPrem = isPremium(), camUsed = getCamUsed();
+  const notifOn = localStorage.getItem('mg_notif') === '1';
+  const initial = (user.displayName||user.email||'U')[0].toUpperCase();
+  const photo = user.photoURL;
+  let h = '';
+  h += '<div style="display:flex;align-items:center;gap:14px;background:var(--wh);border-radius:var(--r2);padding:16px;border:1px solid var(--br);margin-bottom:16px">';
+  h += (photo ? '<img src="'+photo+'" style="width:52px;height:52px;border-radius:50%;object-fit:cover;flex-shrink:0">' : '<div style="width:52px;height:52px;border-radius:50%;background:var(--gl);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:600;color:var(--gd);flex-shrink:0">'+initial+'</div>');
+  h += '<div><div style="font-size:16px;font-weight:600;color:var(--t1)">'+(user.displayName||'Garden User')+'</div><div style="font-size:13px;color:var(--t2);margin-top:2px">'+(user.email||'')+'</div></div></div>';
+  h += '<div style="background:var(--wh);border-radius:var(--r2);overflow:hidden;border:1px solid var(--br);margin-bottom:16px">';
+  h += '<div style="padding:14px 16px;border-bottom:1px solid var(--br);display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:13px;font-weight:600;color:var(--t1)">📍 City</div><div style="font-size:12px;color:var(--t2);margin-top:2px">'+(city||'Not set')+'</div></div><button onclick="changeCity()" style="background:none;border:1px solid var(--br);border-radius:8px;padding:6px 12px;font-size:12px;font-weight:600;color:var(--t2);cursor:pointer;font-family:var(--fb)">Change</button></div>';
+  h += '<div style="padding:14px 16px;display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:13px;font-weight:600;color:var(--t1)">🌿 Plants</div><div style="font-size:12px;color:var(--t2);margin-top:2px">'+G.length+' plants in your garden</div></div></div>';
+  h += '</div>';
+  const notifTime = localStorage.getItem('mg_notif_time') || '07:00';
+  h += '<div style="background:var(--wh);border-radius:var(--r2);overflow:hidden;border:1px solid var(--br);margin-bottom:16px">';
+  h += '<div style="padding:14px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:'+(notifOn?'1px solid var(--br)':'none')+'">';
+  h += '<div><div style="font-size:13px;font-weight:600;color:var(--t1)">🔔 Daily watering reminders</div><div style="font-size:12px;color:var(--t2);margin-top:2px">Enable daily reminders</div></div>';
+  h += '<button id="notif-btn" onclick="toggleNotif()" style="background:'+(notifOn?'var(--gl)':'var(--gd)')+';color:'+(notifOn?'var(--gd)':'#fff')+';border:none;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--fb)">'+(notifOn?'✓ Active':'Enable')+'</button>';
+  h += '</div>';
+  if (notifOn) {
+    h += '<div style="padding:12px 16px;display:flex;justify-content:space-between;align-items:center;background:#F9F9F9">';
+    h += '<div style="font-size:12px;color:var(--t2);font-weight:500">Reminder time</div>';
+    h += '<input type="time" value="'+notifTime+'" onchange="saveNotifTime(this.value)" style="border:1px solid var(--br);border-radius:8px;padding:5px 10px;font-size:13px;font-family:var(--fb);color:var(--t1);background:var(--wh);cursor:pointer">';
+    h += '</div>';
+  }
+  h += '</div>';
+  h += '<div style="background:'+(isPrem?'var(--gl)':'var(--al)')+';border-radius:var(--r2);padding:16px;border:1px solid '+(isPrem?'rgba(74,124,47,0.2)':'rgba(232,160,32,0.2)')+';margin-bottom:16px">';
+  h += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><div style="font-size:13px;font-weight:700;color:'+(isPrem?'var(--gd)':'#7A5000')+'">'+(isPrem?'✅ Premium':'Free Plan')+'</div>'+(isPrem?'':'<button onclick="goScreen(\'premium\')" style="background:var(--gd);border:none;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:600;color:#fff;cursor:pointer;font-family:var(--fb)">Upgrade ₹49</button>')+'</div>';
+  h += '<div style="font-size:12px;color:'+(isPrem?'var(--gm)':'#7A5000')+';line-height:1.8">📷 Camera ID: '+camUsed+'/3 this month'+(isPrem?' (Unlimited)':'')+'<br>📊 Monthly report: '+(isPrem?'Available':'Premium only')+'</div>';
+  h += '</div>';
+  h += '<button onclick="auth.signOut().then(()=>{ G=[]; goScreen(\'welcome\'); hideBnav(); })" style="width:100%;background:none;border:1.5px solid var(--br);border-radius:var(--r2);padding:13px;font-family:var(--fb);font-size:14px;color:var(--t2);cursor:pointer;font-weight:500">Sign out</button>';
+  document.getElementById('profile-body').innerHTML = h;
+}
+
+function changeCity() {
+  const v = prompt('Enter your city:', getCity());
+  if (v === null) return;
+  const val = v.trim();
+  if (val) { localStorage.setItem('mg_city', val); renderProfile(); renderHome(); }
+}
+
+// ── NOTIFICATIONS ──
+function saveNotifTime(val) {
+  localStorage.setItem('mg_notif_time', val);
+  // Update token registration with new time
+  const token = localStorage.getItem('mg_fcm_token');
+  if (token) {
+    fetch(WORKER, {method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({action:'register_token', token, userId:_uid||'anon', plants:G, notifTime:val})
+    });
+  }
+}
+
+async function toggleNotif() {
+  const isOn = localStorage.getItem('mg_notif') === '1';
+  if (isOn) { localStorage.removeItem('mg_notif'); renderProfile(); return; }
+  const btn = document.getElementById('notif-btn');
+  if (btn) { btn.textContent = 'Setting up...'; btn.disabled = true; }
+  try {
+    if (!window._fcmLoaded) {
+      await new Promise((res,rej) => {
+        const s = document.createElement('script');
+        s.src = 'https://www.gstatic.com/firebasejs/10.7.0/firebase-messaging-compat.js';
+        s.onload = () => { window._fcmLoaded=true; res(); }; s.onerror=rej;
+        document.head.appendChild(s);
+      });
+    }
+    const msg = firebase.messaging();
+    const perm = await Notification.requestPermission();
+    if (perm !== 'granted') { alert('Please allow notifications in Chrome settings.'); renderProfile(); return; }
+    const token = await msg.getToken({vapidKey:VAPID});
+    if (!token) { alert('Could not get token. Try again.'); renderProfile(); return; }
+    const r = await fetch(WORKER,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'register_token',token,userId:_uid||'anon',plants:G})});
+    const d = await r.json();
+    if (d.success) {
+      localStorage.setItem('mg_notif','1');
+      localStorage.setItem('mg_fcm_token',token);
+      fetch(WORKER,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'test_notification',token})});
+      alert('Reminders enabled! You will get a test notification shortly.');
+    } else { alert('Setup failed. Try again.'); }
+  } catch(e) { alert('Error: '+e.message); }
+  renderProfile();
+}
+
+// ── PREMIUM ──
+function openPayment() {
+  window.open('https://rzp.io/rzp/01nj8rH','_blank');
+  setTimeout(()=>{ const b=document.getElementById('paid-btn'); if(b) b.style.display='block'; },2000);
+}
+
+async function activatePremium() {
+  document.getElementById('prem-status').textContent = 'Activating...';
+  localStorage.setItem('mg_prem','1');
+  document.getElementById('prem-status').textContent = '✅ Premium activated! Enjoy unlimited access.';
+  document.getElementById('prem-status').style.color = 'var(--gm)';
+}
+
+// ── SWIPE BACK ──
+let _sx=0,_sy=0;
+document.addEventListener('touchstart',e=>{_sx=e.touches[0].clientX;_sy=e.touches[0].clientY;},{passive:true});
+document.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-_sx,dy=e.changedTouches[0].clientY-_sy;
+  const angle=Math.abs(Math.atan2(dy,dx)*180/Math.PI);
+  if(_sx<40&&dx>80&&angle<35){
+    const id=document.querySelector('.screen.active')?.id;
+    if(id==='detail'||id==='add'||id==='premium') goTab('garden');
+    else if(id==='signin'||id==='city') goScreen('welcome');
+  }
+},{passive:true});
+</script>
+</body>
+</html>
