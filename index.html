@@ -32,7 +32,7 @@ body{font-family:var(--fb);background:var(--bg);color:var(--t1);min-height:100vh
 .hdr-s{font-size:13px;color:rgba(255,255,255,0.6);position:relative}
 .body{padding:18px 16px;flex:1}
 .has-bnav{padding-bottom:76px}
-.back{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.15);border:none;font-family:var(--fb);font-size:14px;color:#fff;cursor:pointer;padding:8px 14px 8px 10px;margin-bottom:20px;border-radius:20px;font-weight:500;backdrop-filter:blur(4px)}
+.back{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.15);border:none;font-family:var(--fb);font-size:14px;color:#fff;cursor:pointer;padding:8px 14px 8px 10px;margin-bottom:20px;border-radius:20px;font-weight:500}
 .back svg{width:18px;height:18px}
 .slabel{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--t3);margin:14px 0 8px 2px}
 .srow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px}
@@ -52,7 +52,7 @@ body{font-family:var(--fb);background:var(--bg);color:var(--t1);min-height:100vh
 .wbtn{width:100%;background:none;border:1.5px solid var(--br);border-radius:var(--r2);padding:13px;font-family:var(--fb);font-size:14px;color:var(--t2);cursor:pointer;margin-top:10px;font-weight:500}
 .rbtn{width:100%;background:none;border:1.5px solid rgba(217,64,64,0.3);border-radius:var(--r2);padding:12px;font-family:var(--fb);font-size:14px;color:var(--rm);cursor:pointer;margin-top:10px}
 .wbtn2{width:100%;background:var(--bl);border:2px solid var(--bm);border-radius:var(--r2);padding:16px;font-family:var(--fb);font-size:15px;font-weight:600;color:#1A4A80;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:12px}
-.wbtn2.done{background:var(--gl);border-color:var(--gm);color:var(--gd)}
+.wbtn2.done{background:var(--gl);border-color:var(--gm);color:var(--gd);opacity:.7;cursor:default}
 .cblock{background:var(--wh);border-radius:var(--r2);padding:14px;margin-bottom:8px;border:1px solid var(--br);display:flex;gap:12px}
 .cico{font-size:20px;width:32px;text-align:center;flex-shrink:0}
 .clbl{font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--t3);margin-bottom:3px}
@@ -70,10 +70,9 @@ body{font-family:var(--fb);background:var(--bg);color:var(--t1);min-height:100vh
 .shop-an{font-size:13px;color:var(--t1);font-weight:600}
 .shop-ab{font-size:11px;color:#FF9900;font-weight:600}
 .shop-note{font-size:11px;color:var(--t3);margin-top:6px;text-align:center}
-.flabel{font-size:13px;font-weight:600;color:var(--t2);margin-bottom:8px;display:block}
 .finput{width:100%;padding:13px 15px;border-radius:var(--r1);border:1.5px solid var(--br);background:var(--wh);font-family:var(--fb);font-size:15px;color:var(--t1);margin-bottom:16px;outline:none}
 .finput:focus{border-color:var(--gm)}
-.ftarea{width:100%;padding:13px 15px;border-radius:var(--r1);border:1.5px solid var(--br);background:var(--wh);font-family:var(--fb);font-size:14px;color:var(--t1);margin-bottom:16px;outline:none;resize:none;min-height:76px;line-height:1.6}
+.flabel{font-size:13px;font-weight:600;color:var(--t2);margin-bottom:8px;display:block}
 .trow{display:flex;gap:10px;margin-bottom:20px}
 .topt{flex:1;padding:13px 8px;border-radius:var(--r1);border:1.5px solid var(--br);background:var(--wh);font-family:var(--fb);font-size:13px;color:var(--t2);cursor:pointer;text-align:center;font-weight:500}
 .topt.sel{background:var(--gl);border-color:var(--gm);color:var(--gd);font-weight:600}
@@ -113,7 +112,7 @@ body{font-family:var(--fb);background:var(--bg);color:var(--t1);min-height:100vh
       <div style="font-size:17px;color:rgba(255,255,255,0.7);max-width:260px">Smart care for every plant</div>
     </div>
     <div style="background:var(--bg);padding:32px 24px 40px">
-      <button class="gbtn" onclick="goSignin()" style="margin-top:0;font-size:16px;padding:18px">Get started</button>
+      <button class="gbtn" id="btn-getstarted" style="margin-top:0;font-size:16px;padding:18px">Get started</button>
       <div style="font-size:13px;color:var(--t3);text-align:center;margin-top:16px">Your plants will thank you</div>
     </div>
   </div>
@@ -124,7 +123,7 @@ body{font-family:var(--fb);background:var(--bg);color:var(--t1);min-height:100vh
     <div style="font-size:52px;margin-bottom:24px">🌿</div>
     <div style="font-family:var(--fh);font-size:28px;color:var(--t1);margin-bottom:8px">Welcome</div>
     <div style="font-size:15px;color:var(--t2);line-height:1.7;margin-bottom:40px">Sign in to save your garden and access it from any device.</div>
-    <button onclick="signInGoogle()" style="width:100%;background:var(--wh);border:1.5px solid var(--br);border-radius:var(--r2);padding:16px;font-family:var(--fb);font-size:15px;font-weight:600;color:var(--t1);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:12px">
+    <button id="btn-google" style="width:100%;background:var(--wh);border:1.5px solid var(--br);border-radius:var(--r2);padding:16px;font-family:var(--fb);font-size:15px;font-weight:600;color:var(--t1);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:12px">
       <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.36-8.16 2.36-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
       Continue with Google
     </button>
@@ -138,7 +137,7 @@ body{font-family:var(--fb);background:var(--bg);color:var(--t1);min-height:100vh
     <div style="font-family:var(--fh);font-size:28px;color:var(--t1);margin-bottom:8px">Where is your garden?</div>
     <div style="font-size:15px;color:var(--t2);line-height:1.7;margin-bottom:32px">We use your city for climate-specific care advice.</div>
     <input class="finput" id="city-inp" type="text" placeholder="e.g. Pune, Mumbai, Delhi...">
-    <button class="gbtn" onclick="saveCity()" style="margin-top:0">Continue</button>
+    <button class="gbtn" id="btn-city" style="margin-top:0">Continue</button>
   </div>
 </div>
 
@@ -154,17 +153,17 @@ body{font-family:var(--fb);background:var(--bg);color:var(--t1);min-height:100vh
       <div class="scard grn"><div class="scard-n" id="sc-ok-n">0</div><div class="scard-l">All good</div></div>
     </div>
     <div id="plant-list"></div>
-    <button class="gbtn" onclick="goScreen('add')">+ Add a new plant</button>
+    <button class="gbtn" id="btn-addplant">+ Add a new plant</button>
     <div id="shop-home" style="margin-top:8px"></div>
   </div>
 </div>
 
-<div class="screen" id="today-screen">
+<div class="screen" id="watering-screen">
   <div class="hdr">
     <div class="hdr-t">Watering 💧</div>
-    <div class="hdr-s" id="today-hdr-sub"></div>
+    <div class="hdr-s" id="watering-hdr-sub"></div>
   </div>
-  <div class="body has-bnav" id="today-body"></div>
+  <div class="body has-bnav" id="watering-body"></div>
 </div>
 
 <div class="screen" id="report-screen">
@@ -184,11 +183,11 @@ body{font-family:var(--fb);background:var(--bg);color:var(--t1);min-height:100vh
 
 <div class="screen" id="detail">
   <div class="hdr">
-    <button class="back" onclick="goTab('garden')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg> Back</button>
+    <button class="back" id="btn-detail-back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg> Back</button>
     <div style="display:flex;align-items:center;gap:14px">
       <div id="d-ico" style="width:54px;height:54px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0"></div>
       <div>
-        <div style="font-family:var(--fh);font-size:22px;color:#fff;cursor:pointer" id="d-name" onclick="editNick()"></div>
+        <div style="font-family:var(--fh);font-size:22px;color:#fff;cursor:pointer" id="d-name"></div>
         <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:1px" id="d-orig"></div>
         <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-top:2px" id="d-type"></div>
       </div>
@@ -199,28 +198,28 @@ body{font-family:var(--fb);background:var(--bg);color:var(--t1);min-height:100vh
 
 <div class="screen" id="add">
   <div class="hdr">
-    <button class="back" onclick="goTab('garden')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg> Back</button>
+    <button class="back" id="btn-add-back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg> Back</button>
     <div style="font-family:var(--fh);font-size:24px;color:#fff">Add a plant</div>
     <div style="font-size:13px;color:rgba(255,255,255,0.6);margin-top:4px">We fill in everything</div>
   </div>
   <div class="body">
     <label class="flabel">Plant name</label>
     <input class="finput" id="new-name" type="text" placeholder="e.g. Tulsi, Rose, Aloe Vera...">
-    <input type="file" id="cam-id" accept="image/*" capture="environment" style="display:none" onchange="identifyPlant(this)">
-    <button onclick="document.getElementById('cam-id').click()" style="width:100%;background:none;border:1.5px dashed var(--br);border-radius:var(--r2);padding:13px;font-family:var(--fb);font-size:14px;color:var(--t2);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:18px;font-weight:500">📷 Don't know the name? Take a photo</button>
+    <input type="file" id="cam-id" accept="image/*" capture="environment" style="display:none">
+    <button id="btn-cam-id" style="width:100%;background:none;border:1.5px dashed var(--br);border-radius:var(--r2);padding:13px;font-family:var(--fb);font-size:14px;color:var(--t2);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:18px;font-weight:500">📷 Don't know the name? Take a photo</button>
     <label class="flabel">Where is it kept?</label>
     <div class="trow">
-      <div class="topt sel" data-v="outdoor" onclick="pickType(this)"><span class="topt-i">🌤️</span>Outdoors</div>
-      <div class="topt" data-v="indoor" onclick="pickType(this)"><span class="topt-i">🏠</span>Indoors</div>
+      <div class="topt sel" data-v="outdoor" id="type-outdoor"><span class="topt-i">🌤️</span>Outdoors</div>
+      <div class="topt" data-v="indoor" id="type-indoor"><span class="topt-i">🏠</span>Indoors</div>
     </div>
     <label class="flabel">When did you last water it?</label>
     <div class="trow" id="water-row">
-      <div class="topt sel" data-w="0" onclick="pickWater(this)"><span class="topt-i">💧</span>Today</div>
-      <div class="topt" data-w="1" onclick="pickWater(this)"><span class="topt-i">🕐</span>Yesterday</div>
-      <div class="topt" data-w="2" onclick="pickWater(this)"><span class="topt-i">📅</span>2+ days</div>
+      <div class="topt sel" data-w="0" id="water-today"><span class="topt-i">💧</span>Today</div>
+      <div class="topt" data-w="1" id="water-yesterday"><span class="topt-i">🕐</span>Yesterday</div>
+      <div class="topt" data-w="2" id="water-older"><span class="topt-i">📅</span>2+ days</div>
     </div>
-    <button class="gbtn" onclick="addPlant()">Add to my garden</button>
-    <button class="wbtn" onclick="goTab('garden')">Cancel</button>
+    <button class="gbtn" id="btn-add-confirm">Add to my garden</button>
+    <button class="wbtn" id="btn-add-cancel">Cancel</button>
   </div>
 </div>
 
@@ -233,7 +232,7 @@ body{font-family:var(--fb);background:var(--bg);color:var(--t1);min-height:100vh
 
 <div class="screen" id="premium">
   <div class="hdr">
-    <button class="back" onclick="goTab('garden')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg> Back</button>
+    <button class="back" id="btn-prem-back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg> Back</button>
     <div style="font-family:var(--fh);font-size:24px;color:#fff">My Garden Premium</div>
     <div style="font-size:13px;color:rgba(255,255,255,0.6);margin-top:4px">Go deeper with your garden</div>
   </div>
@@ -256,11 +255,11 @@ body{font-family:var(--fb);background:var(--bg);color:var(--t1);min-height:100vh
       <div style="font-family:var(--fh);font-size:32px;color:var(--t1)">₹49 <span style="font-size:16px;color:var(--t3);font-family:var(--fb)">/month</span></div>
       <div style="font-size:13px;color:var(--t3);margin-top:4px">Less than a packet of seeds</div>
     </div>
-    <button class="gbtn" style="margin-top:0" onclick="openPayment()">Subscribe — ₹49/month</button>
+    <button class="gbtn" id="btn-subscribe" style="margin-top:0">Subscribe — ₹49/month</button>
     <div style="font-size:12px;color:var(--t3);margin-top:12px;text-align:center">After subscribing tap below to activate</div>
-    <button class="wbtn" id="paid-btn" style="display:none;border-color:var(--gm);color:var(--gd);font-weight:600" onclick="activatePremium()">I have subscribed — Activate now</button>
+    <button class="wbtn" id="btn-activate" style="display:none;border-color:var(--gm);color:var(--gd);font-weight:600">I have subscribed — Activate now</button>
     <div id="prem-status" style="font-size:13px;margin-top:14px;line-height:1.6;text-align:center"></div>
-    <button class="wbtn" onclick="goTab('garden')">Back to garden</button>
+    <button class="wbtn" id="btn-prem-home">Back to garden</button>
   </div>
 </div>
 
@@ -269,74 +268,153 @@ body{font-family:var(--fb);background:var(--bg);color:var(--t1);min-height:100vh
     <div style="font-size:52px;margin-bottom:20px">🗑️</div>
     <div style="font-family:var(--fh);font-size:22px;color:var(--t1);margin-bottom:10px" id="del-title"></div>
     <div style="font-size:14px;color:var(--t2);line-height:1.6;margin-bottom:28px" id="del-sub"></div>
-    <button style="width:100%;background:var(--rm);color:#fff;border:none;border-radius:var(--r2);padding:15px;font-family:var(--fb);font-size:15px;font-weight:600;cursor:pointer" onclick="confirmDel()">Yes, remove it</button>
-    <button class="wbtn" onclick="goScreen('detail')">Keep it</button>
+    <button class="gbtn" id="btn-del-confirm" style="background:var(--rm)">Yes, remove it</button>
+    <button class="wbtn" id="btn-del-cancel">Keep it</button>
   </div>
 </div>
 
 <div class="bnav" id="bnav">
-  <button class="bnav-item active" id="bnav-garden" onclick="goTab('garden')">
-    <span class="bnav-ico">🌿</span><span class="bnav-lbl">Garden</span>
-  </button>
-  <button class="bnav-item" id="bnav-today" onclick="goTab('today')">
-    <span class="bnav-ico">💧</span><span class="bnav-lbl">Watering</span>
-  </button>
-  <button class="bnav-item" id="bnav-report" onclick="goTab('report')">
-    <span class="bnav-ico">📊</span><span class="bnav-lbl">Report</span>
-  </button>
-  <button class="bnav-item" id="bnav-profile" onclick="goTab('profile')">
-    <span class="bnav-ico" id="bnav-profile-ico">👤</span><span class="bnav-lbl">Profile</span>
-  </button>
+  <button class="bnav-item active" id="bnav-garden"><span class="bnav-ico">🌿</span><span class="bnav-lbl">Garden</span></button>
+  <button class="bnav-item" id="bnav-watering"><span class="bnav-ico">💧</span><span class="bnav-lbl">Watering</span></button>
+  <button class="bnav-item" id="bnav-report"><span class="bnav-ico">📊</span><span class="bnav-lbl">Report</span></button>
+  <button class="bnav-item" id="bnav-profile"><span class="bnav-ico" id="bnav-profile-ico">👤</span><span class="bnav-lbl">Profile</span></button>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
 <script>
-// Wait for Firebase to be ready
-function initApp() {
-  if (typeof firebase === 'undefined') {
-    setTimeout(initApp, 100);
-    return;
-  }
-
-firebase.initializeApp({
+// ── CONFIG ──
+const FB_CFG = {
   apiKey:"AIzaSyASFk-1ktL5p7eMgd08VU2uZxLV6_oGaLk",
   authDomain:"my-garden-app-fa177.firebaseapp.com",
   projectId:"my-garden-app-fa177",
   storageBucket:"my-garden-app-fa177.firebasestorage.app",
   messagingSenderId:"201846937209",
   appId:"1:201846937209:web:94a8f46580e9544b6fe6a8"
-});
-const auth = firebase.auth();
-const db = firebase.firestore();
+};
 const WORKER = 'https://winter-bonus-a90d.dorle-sp22.workers.dev';
 const VAPID = 'BENVOs8yFy_29fhKyHr0JJ6-nOI-frChQaR9hxl8MquMH4eoR5yY11nl4riTb4B7DTYSXungkhETo_3OkptZEGo';
 
+// ── STATE ──
 let G = [], _uid = null, _cur = '', _del = '', _type = 'outdoor', _daysAgo = 0;
+let auth, db;
 
-// ── HELPERS ──
-const getCity = () => { try { return localStorage.getItem('mg_city') || ''; } catch(e) { return ''; } };
-const isPremium = () => { try { return localStorage.getItem('mg_prem') === '1'; } catch(e) { return false; } };
-const getCamUsed = () => {
+// ── INIT ──
+window.addEventListener('load', function() {
+  firebase.initializeApp(FB_CFG);
+  auth = firebase.auth();
+  db = firebase.firestore();
+  bindEvents();
+  auth.onAuthStateChanged(onAuthChange);
+});
+
+// ── BIND ALL EVENTS HERE ──
+function bindEvents() {
+  // Welcome
+  document.getElementById('btn-getstarted').onclick = function() { goScreen('signin'); };
+
+  // Sign in
+  document.getElementById('btn-google').onclick = signInGoogle;
+
+  // City
+  document.getElementById('btn-city').onclick = saveCity;
+  document.getElementById('city-inp').onkeydown = function(e) { if (e.key === 'Enter') saveCity(); };
+
+  // Home
+  document.getElementById('btn-addplant').onclick = function() { goScreen('add'); hideBnav(); };
+
+  // Bottom nav
+  document.getElementById('bnav-garden').onclick = function() { goTab('garden'); };
+  document.getElementById('bnav-watering').onclick = function() { goTab('watering'); };
+  document.getElementById('bnav-report').onclick = function() { goTab('report'); };
+  document.getElementById('bnav-profile').onclick = function() { goTab('profile'); };
+
+  // Detail back
+  document.getElementById('btn-detail-back').onclick = function() { goTab('garden'); };
+
+  // Add plant
+  document.getElementById('btn-cam-id').onclick = function() { document.getElementById('cam-id').click(); };
+  document.getElementById('cam-id').onchange = function() { identifyPlant(this); };
+  document.getElementById('type-outdoor').onclick = function() { pickType(this); };
+  document.getElementById('type-indoor').onclick = function() { pickType(this); };
+  document.getElementById('water-today').onclick = function() { pickWater(this); };
+  document.getElementById('water-yesterday').onclick = function() { pickWater(this); };
+  document.getElementById('water-older').onclick = function() { pickWater(this); };
+  document.getElementById('btn-add-confirm').onclick = addPlant;
+  document.getElementById('btn-add-cancel').onclick = function() { goTab('garden'); };
+  document.getElementById('btn-add-back').onclick = function() { goTab('garden'); };
+
+  // Premium
+  document.getElementById('btn-prem-back').onclick = function() { goTab('garden'); };
+  document.getElementById('btn-subscribe').onclick = openPayment;
+  document.getElementById('btn-activate').onclick = activatePremium;
+  document.getElementById('btn-prem-home').onclick = function() { goTab('garden'); };
+
+  // Delete
+  document.getElementById('btn-del-confirm').onclick = confirmDel;
+  document.getElementById('btn-del-cancel').onclick = function() { goScreen('detail'); };
+
+  // Swipe back gesture
+  let sx = 0, sy = 0;
+  document.addEventListener('touchstart', function(e) { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
+  document.addEventListener('touchend', function(e) {
+    const dx = e.changedTouches[0].clientX - sx;
+    const dy = e.changedTouches[0].clientY - sy;
+    const angle = Math.abs(Math.atan2(dy, dx) * 180 / Math.PI);
+    if (sx < 40 && dx > 80 && angle < 35) {
+      const id = document.querySelector('.screen.active') && document.querySelector('.screen.active').id;
+      if (id === 'detail' || id === 'add' || id === 'premium') goTab('garden');
+      else if (id === 'signin' || id === 'city') goScreen('welcome');
+    }
+  }, { passive: true });
+}
+
+// ── AUTH ──
+function signInGoogle() {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  document.getElementById('signin-err').textContent = '';
+  auth.signInWithPopup(provider).catch(function() {
+    document.getElementById('signin-err').textContent = 'Sign in failed. Please try again.';
+  });
+}
+
+async function onAuthChange(user) {
+  if (user) {
+    _uid = user.uid;
+    if (user.photoURL) {
+      document.getElementById('bnav-profile-ico').innerHTML = '<img src="' + user.photoURL + '" style="width:26px;height:26px;border-radius:50%;object-fit:cover">';
+    }
+    await loadData(user.uid);
+    if (!getCity()) { goScreen('city'); hideBnav(); }
+    else { goTab('garden'); showBnav(); }
+  } else {
+    goScreen('welcome');
+    hideBnav();
+  }
+}
+
+// ── DATA ──
+function getCity() { try { return localStorage.getItem('mg_city') || ''; } catch(e) { return ''; } }
+function isPremium() { try { return localStorage.getItem('mg_prem') === '1'; } catch(e) { return false; } }
+function getCamUsed() {
   try {
     const d = JSON.parse(localStorage.getItem('mg_cam') || '{"n":0,"m":""}');
     return d.m === new Date().toISOString().substring(0,7) ? d.n : 0;
   } catch(e) { return 0; }
-};
-const incCam = () => {
+}
+function incCam() {
   try {
     const m = new Date().toISOString().substring(0,7);
-    localStorage.setItem('mg_cam', JSON.stringify({n: getCamUsed()+1, m}));
+    localStorage.setItem('mg_cam', JSON.stringify({ n: getCamUsed() + 1, m: m }));
   } catch(e) {}
-};
-const canCam = () => isPremium() || getCamUsed() < 3;
-const daysSince = ds => ds ? Math.floor((Date.now()-new Date(ds).getTime())/86400000) : null;
+}
+function canCam() { return isPremium() || getCamUsed() < 3; }
+function daysSince(ds) { return ds ? Math.floor((Date.now() - new Date(ds).getTime()) / 86400000) : null; }
 
-// ── MIGRATE OLD DATA ──
 function migrateLocal() {
   try {
-    for (const k of ['mg6','mg5','mg4','mg3','mg2','mg1']) {
+    for (const k of ['mg6','mg5','mg4','mg3']) {
       const d = localStorage.getItem(k);
       if (d) { const p = JSON.parse(d); if (p && p.length > 0) return p; }
     }
@@ -344,16 +422,18 @@ function migrateLocal() {
   return [];
 }
 
-// ── FIRESTORE ──
 async function loadData(uid) {
   try {
     const local = migrateLocal();
     const doc = await db.collection('users').doc(uid).get();
     const hasFS = doc.exists && doc.data().plants && doc.data().plants.length > 0;
     if (hasFS) {
-      const fp = doc.data().plants.map(p => ({...p, waterLog:p.waterLog||[], days:p.days||1}));
+      const fp = doc.data().plants.map(function(p) { return Object.assign({ waterLog:[], days:1 }, p); });
       if (local.length > fp.length) { G = local; saveData(); }
-      else { G = fp; try { localStorage.setItem('mg6', JSON.stringify(G)); } catch(e) {} }
+      else {
+        G = fp;
+        try { localStorage.setItem('mg6', JSON.stringify(G)); } catch(e) {}
+      }
       if (!getCity() && doc.data().city) localStorage.setItem('mg_city', doc.data().city);
     } else if (local.length > 0) {
       G = local; saveData();
@@ -366,117 +446,90 @@ async function saveData() {
   if (!_uid) return;
   try {
     await db.collection('users').doc(_uid).set({
-      plants: G.map(p => ({
-        name:p.name||'', type:p.type||'outdoor', ico:p.ico||'🌿',
-        nickname:p.nickname||null, water:p.water||'', freq:p.freq||'',
-        sun:p.sun||'', pour:p.pour||'', fert:p.fert||'', tip:p.tip||'',
-        days:p.days||1, lastWatered:p.lastWatered||null,
-        streak:p.streak||0, sourceUrl:p.sourceUrl||null, products:p.products||[],
-        diagnosis:p.diagnosis||null
-      })),
-      city: getCity(), updatedAt: new Date().toISOString()
-    }, {merge:true});
+      plants: G.map(function(p) {
+        return {
+          name: p.name || '', type: p.type || 'outdoor', ico: p.ico || '🌿',
+          nickname: p.nickname || null, water: p.water || '', freq: p.freq || '',
+          sun: p.sun || '', pour: p.pour || '', fert: p.fert || '', tip: p.tip || '',
+          days: p.days || 1, lastWatered: p.lastWatered || null,
+          streak: p.streak || 0, sourceUrl: p.sourceUrl || null,
+          products: p.products || [], diagnosis: p.diagnosis || null
+        };
+      }),
+      city: getCity(),
+      updatedAt: new Date().toISOString()
+    }, { merge: true });
   } catch(e) {}
 }
 
-// ── AUTH ──
-function signInGoogle() {
-  const provider = new firebase.auth.GoogleAuthProvider();
-  document.getElementById('signin-err').textContent = '';
-  auth.signInWithPopup(provider).catch(e => {
-    document.getElementById('signin-err').textContent = 'Sign in failed. Please try again.';
-  });
-}
-
-// Kill old service workers safely
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.getRegistrations().then(regs => regs.forEach(r => r.unregister()));
-  caches.keys().then(keys => keys.forEach(k => caches.delete(k)));
-}
-
-auth.onAuthStateChanged(async user => {
-  if (user) {
-    _uid = user.uid;
-    if (user.photoURL) {
-      document.getElementById('bnav-profile-ico').innerHTML = '<img src="'+user.photoURL+'" style="width:26px;height:26px;border-radius:50%;object-fit:cover">';
-    }
-    await loadData(user.uid);
-    if (!getCity()) { goScreen('city'); hideBnav(); }
-    else { goTab('garden'); showBnav(); }
-  } else {
-    goScreen('welcome'); hideBnav();
-  }
-});
-
 // ── NAVIGATION ──
 function goScreen(s) {
-  document.querySelectorAll('.screen').forEach(x => x.classList.remove('active'));
+  document.querySelectorAll('.screen').forEach(function(x) { x.classList.remove('active'); });
   document.getElementById(s).classList.add('active');
-  window.scrollTo(0,0);
+  window.scrollTo(0, 0);
 }
 
 function showBnav() { document.getElementById('bnav').style.display = 'flex'; }
 function hideBnav() { document.getElementById('bnav').style.display = 'none'; }
 
 function goTab(tab) {
-  const tabScreens = {garden:'home', today:'today-screen', report:'report-screen', profile:'profile-screen'};
-  const screenId = tabScreens[tab] || tab;
-  goScreen(screenId);
+  const map = { garden:'home', watering:'watering-screen', report:'report-screen', profile:'profile-screen' };
+  goScreen(map[tab] || tab);
   showBnav();
-  document.querySelectorAll('.bnav-item').forEach(b => b.classList.remove('active'));
-  const activeBtn = document.getElementById('bnav-' + tab);
-  if (activeBtn) activeBtn.classList.add('active');
+  document.querySelectorAll('.bnav-item').forEach(function(b) { b.classList.remove('active'); });
+  const btn = document.getElementById('bnav-' + tab);
+  if (btn) btn.classList.add('active');
   if (tab === 'garden') renderHome();
-  if (tab === 'today') renderToday();
+  if (tab === 'watering') renderWatering();
   if (tab === 'report') renderReport();
   if (tab === 'profile') renderProfile();
 }
-
-function goSignin() { goScreen('signin'); }
 
 function saveCity() {
   const v = document.getElementById('city-inp').value.trim();
   if (!v) { document.getElementById('city-inp').focus(); return; }
   localStorage.setItem('mg_city', v);
-  goTab('garden'); showBnav();
+  goTab('garden');
+  showBnav();
 }
 
 // ── WATERING STATUS ──
 function wStatus(p) {
   const ds = daysSince(p.lastWatered), due = p.days || 1;
-  if (ds === null) return {txt:'Not watered yet', cls:'st-no', dot:'⚪', over:false, today:false, unknown:true};
-  if (ds === 0) return {txt:'Watered today ✓', cls:'st-ok', dot:'🟢', over:false, today:false, unknown:false};
-  if (ds < due) return {txt:'Next in '+(due-ds)+' day'+(due-ds>1?'s':''), cls:'st-ok', dot:'🟢', over:false, today:false, unknown:false};
-  if (ds === due) return {txt:'Water today!', cls:'st-due', dot:'🔵', over:false, today:true, unknown:false};
-  return {txt:'Overdue '+(ds-due+1)+' day'+((ds-due+1)>1?'s':'')+'!', cls:'st-ov', dot:'🔴', over:true, today:false, unknown:false};
+  if (ds === null) return { txt:'Not watered yet', cls:'st-no', dot:'⚪', over:false, today:false, unknown:true };
+  if (ds === 0) return { txt:'Watered today ✓', cls:'st-ok', dot:'🟢', over:false, today:false, unknown:false };
+  if (ds < due) return { txt:'Next in '+(due-ds)+' day'+(due-ds>1?'s':''), cls:'st-ok', dot:'🟢', over:false, today:false, unknown:false };
+  if (ds === due) return { txt:'Water today!', cls:'st-due', dot:'🔵', over:false, today:true, unknown:false };
+  return { txt:'Overdue '+(ds-due+1)+' day'+((ds-due+1)>1?'s':'')+'!', cls:'st-ov', dot:'🔴', over:true, today:false, unknown:false };
 }
 
 // ── HOME ──
 function updateCards() {
-  let ov=0, td=0, ok=0;
-  G.forEach(p => { const s=wStatus(p); if(s.over) ov++; else if(s.today) td++; else if(!s.unknown) ok++; });
+  let ov = 0, td = 0, ok = 0;
+  G.forEach(function(p) { const s = wStatus(p); if (s.over) ov++; else if (s.today) td++; else if (!s.unknown) ok++; });
   document.getElementById('sc-ov-n').textContent = ov;
   document.getElementById('sc-td-n').textContent = td;
   document.getElementById('sc-ok-n').textContent = ok;
-  document.getElementById('sc-ov').className = 'scard' + (ov>0?' red':'');
-  document.getElementById('sc-td').className = 'scard' + (td>0?' red':'');
+  document.getElementById('sc-ov').className = 'scard' + (ov > 0 ? ' red' : '');
+  document.getElementById('sc-td').className = 'scard' + (td > 0 ? ' red' : '');
 }
 
 function renderHome() {
   const city = getCity();
-  document.getElementById('hdr-sub').textContent = new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long'}) + (city ? ' · 📍'+city : '');
+  document.getElementById('hdr-sub').textContent = new Date().toLocaleDateString('en-IN', { weekday:'long', day:'numeric', month:'long' }) + (city ? ' · 📍' + city : '');
   updateCards();
-  const out = G.filter(p => p.type === 'outdoor');
-  const ind = G.filter(p => p.type === 'indoor');
+  const out = G.filter(function(p) { return p.type === 'outdoor'; });
+  const ind = G.filter(function(p) { return p.type === 'indoor'; });
   let h = '';
   if (!G.length) {
     h = '<div style="text-align:center;padding:48px 20px 24px"><svg width="100" height="90" viewBox="0 0 120 100" fill="none" style="margin-bottom:20px"><rect x="38" y="62" width="44" height="32" rx="6" fill="#EAF3DE"/><rect x="34" y="56" width="52" height="10" rx="5" fill="#C8E6A0"/><line x1="60" y1="60" x2="60" y2="28" stroke="#4A7C2F" stroke-width="2.5" stroke-linecap="round"/><line x1="60" y1="46" x2="40" y2="32" stroke="#4A7C2F" stroke-width="2" stroke-linecap="round"/><line x1="60" y1="38" x2="80" y2="26" stroke="#4A7C2F" stroke-width="2" stroke-linecap="round"/><ellipse cx="60" cy="22" rx="12" ry="8" fill="#5DA832" transform="rotate(-5 60 22)"/><ellipse cx="34" cy="28" rx="10" ry="7" fill="#4A9020" transform="rotate(15 34 28)"/><ellipse cx="86" cy="22" rx="10" ry="7" fill="#6ABB30" transform="rotate(-15 86 22)"/></svg><div style="font-family:var(--fh);font-size:22px;color:var(--t1);margin-bottom:8px">Your garden starts here</div><div style="font-size:14px;color:var(--t2);line-height:1.7">Just type a plant name — we fill everything automatically</div></div>';
   } else {
-    if (out.length) { h += '<div class="slabel">Outdoor · Balcony</div>'; out.forEach(p => h += pRow(p)); }
-    if (ind.length) { h += '<div class="slabel">Indoor · Inside home</div>'; ind.forEach(p => h += pRow(p)); }
+    if (out.length) { h += '<div class="slabel">Outdoor · Balcony</div>'; out.forEach(function(p) { h += pRow(p); }); }
+    if (ind.length) { h += '<div class="slabel">Indoor · Inside home</div>'; ind.forEach(function(p) { h += pRow(p); }); }
   }
   document.getElementById('plant-list').innerHTML = h;
-  const ess = (() => { try { return JSON.parse(localStorage.getItem('mg_ess')||'null'); } catch(e) { return null; } })();
+  // Shop essentials
+  const ess = (function() { try { return JSON.parse(localStorage.getItem('mg_ess') || 'null'); } catch(e) { return null; } })();
   if (ess) document.getElementById('shop-home').innerHTML = shopHtml(ess, '🛒 Shop gardening essentials');
   else fetchEssentials();
 }
@@ -487,13 +540,16 @@ function pRow(p) {
   const urgent = st.over || st.today;
   const needsSetup = !p.water || p.water === 'Not filled yet';
   let sub = '';
-  if (urgent) sub = '<div class="pst '+st.cls+'">'+st.dot+' '+st.txt+'</div>';
+  if (urgent) sub = '<div class="pst ' + st.cls + '">' + st.dot + ' ' + st.txt + '</div>';
   else if (needsSetup) sub = '<div style="font-size:11px;color:var(--t3);margin-top:2px;font-weight:500">Tap to set up care details</div>';
-  return '<div class="prow" onclick="openDetail(\''+p.name+'\')"><div class="pico" style="background:'+bg+'"><span style="font-size:20px">'+p.ico+'</span></div><div style="flex:1;min-width:0"><div class="pname">'+(p.nickname||p.name)+'</div>'+sub+'</div><span style="font-size:20px;color:var(--t3);margin-left:auto">›</span></div>';
+  return '<div class="prow" onclick="openDetail(\'' + p.name + '\')"><div class="pico" style="background:' + bg + '"><span style="font-size:20px">' + p.ico + '</span></div><div style="flex:1;min-width:0"><div class="pname">' + (p.nickname || p.name) + '</div>' + sub + '</div><span style="font-size:20px;color:var(--t3);margin-left:auto">›</span></div>';
 }
 
 function shopHtml(items, title) {
-  return '<div class="shopbox"><div class="shop-l">'+title+'</div>'+items.map(p=>'<a href="'+p.link+'" target="_blank" class="shop-a"><span class="shop-an">'+p.label+'</span><span class="shop-ab">Buy ↗</span></a>').join('')+'<div class="shop-note">Affiliate links — supports this free app</div></div>';
+  let h = '<div class="shopbox"><div class="shop-l">' + title + '</div>';
+  items.forEach(function(p) { h += '<a href="' + p.link + '" target="_blank" class="shop-a"><span class="shop-an">' + p.label + '</span><span class="shop-ab">Buy ↗</span></a>'; });
+  h += '<div class="shop-note">Affiliate links — supports this free app</div></div>';
+  return h;
 }
 
 async function fetchEssentials() {
@@ -509,138 +565,184 @@ async function fetchEssentials() {
 
 // ── DETAIL ──
 function openDetail(name) {
-  _cur = name; goScreen('detail'); hideBnav(); showDetail(name);
+  _cur = name;
+  goScreen('detail');
+  hideBnav();
+  showDetail(name);
 }
 
 function showDetail(name) {
-  const p = G.find(x => x.name === name); if (!p) return;
-  document.getElementById('d-ico').innerHTML = '<span style="font-size:26px">'+p.ico+'</span>';
-  document.getElementById('d-name').textContent = (p.nickname||p.name) + ' ✏️';
+  const p = G.find(function(x) { return x.name === name; });
+  if (!p) return;
+  document.getElementById('d-ico').innerHTML = '<span style="font-size:26px">' + p.ico + '</span>';
+  document.getElementById('d-name').textContent = (p.nickname || p.name) + ' ✏️';
+  document.getElementById('d-name').onclick = function() { editNick(); };
   document.getElementById('d-orig').textContent = p.nickname ? p.name : '';
-  document.getElementById('d-type').textContent = p.type==='outdoor' ? 'Outdoor · Balcony' : 'Indoor · Inside home';
-  const v = (val,fb) => (val&&val!=='Not filled yet') ? val : '<span style="font-size:13px;color:var(--t3);font-style:italic">'+fb+'</span>';
+  document.getElementById('d-type').textContent = p.type === 'outdoor' ? 'Outdoor · Balcony' : 'Indoor · Inside home';
+
+  const v = function(val, fb) { return (val && val !== 'Not filled yet') ? val : '<span style="font-size:13px;color:var(--t3);font-style:italic">' + fb + '</span>'; };
   const st = wStatus(p);
   const watered = daysSince(p.lastWatered) === 0;
-  // Streak - stored directly on plant
   const streak = p.streak || 0;
-  const lastStr = p.lastWatered ? new Date(p.lastWatered).toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long'}) : 'Never';
+  const lastStr = p.lastWatered ? new Date(p.lastWatered).toLocaleDateString('en-IN', { weekday:'long', day:'numeric', month:'long' }) : 'Never';
   const isNew = sessionStorage.getItem('np') === name;
   if (isNew) sessionStorage.removeItem('np');
-  document.getElementById('d-body').innerHTML =
-    ((!p.water||p.water==='Not filled yet') ? '<div style="background:var(--rl);border-radius:var(--r2);padding:12px 14px;margin-bottom:12px;border:1px solid rgba(217,64,64,0.2);font-size:13px;color:var(--rm);font-weight:500">⚠️ Care details not yet filled in.</div>' : '') +
-    '<div style="background:'+(st.over?'var(--rl)':st.today?'var(--al)':'var(--gl)')+';border-radius:var(--r2);padding:14px 16px;margin-bottom:12px;border:1px solid '+(st.over?'rgba(217,64,64,0.2)':st.today?'rgba(232,160,32,0.2)':'rgba(74,124,47,0.2)')+';font-size:14px;font-weight:600;color:'+(st.over?'var(--rm)':st.today?'#7A5000':'var(--gd)')+'">'+st.dot+' '+st.txt+(p.lastWatered&&!watered?' · Last: '+new Date(p.lastWatered).toLocaleDateString('en-IN',{day:'numeric',month:'short'}):'')+'</div>' +
-    '<button class="wbtn2'+(watered?' done':'')+'" onclick="markWatered(\''+name+'\')">'+(watered?'✓ Watered today':'💧 Mark as watered')+'</button>' +
-    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px"><div style="background:var(--gl);border-radius:var(--r1);padding:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:72px;text-align:center"><div style="font-family:var(--fh);font-size:28px;color:var(--gd)">'+streak+'</div><div style="font-size:11px;color:var(--gm);font-weight:600;margin-top:4px;text-transform:uppercase;letter-spacing:.5px">Day streak</div></div><div style="background:var(--bl);border-radius:var(--r1);padding:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:72px;text-align:center"><div style="font-size:13px;font-weight:600;color:#1A4A80;line-height:1.4">'+lastStr+'</div><div style="font-size:11px;color:var(--bm);font-weight:600;margin-top:4px;text-transform:uppercase;letter-spacing:.5px">Last watered</div></div></div>' +
-    '<div style="background:var(--gl);border-radius:var(--r2);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;border:1px solid rgba(74,124,47,0.2)"><div><div style="font-size:14px;font-weight:600;color:var(--gd)">How does it look today?</div><div style="font-size:12px;color:var(--gm);margin-top:2px">Take a photo for a health check</div></div><input type="file" id="diag-cam" accept="image/*" capture="environment" style="display:none" onchange="diagnosePlant(this,\''+name+'\')"><button onclick="document.getElementById(\'diag-cam\').click()" style="background:var(--gd);border:none;border-radius:10px;padding:10px 14px;font-size:13px;font-weight:600;color:#fff;cursor:pointer;white-space:nowrap;flex-shrink:0;font-family:var(--fb)">📷 Check</button></div>' +
-    (p.diagnosis ? '<div style="background:'+(p.diagnosis.healthy?'var(--gl)':'var(--rl)')+';border-radius:var(--r2);padding:16px;margin-bottom:10px;border:1px solid '+(p.diagnosis.healthy?'rgba(74,124,47,0.2)':'rgba(217,64,64,0.2)')+'"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px"><div><div style="font-size:11px;font-weight:700;color:'+(p.diagnosis.healthy?'var(--gm)':'var(--rm)')+';text-transform:uppercase;letter-spacing:.5px">'+(p.diagnosis.healthy?'✅':'⚠️')+' Health check · '+new Date(p.diagnosis.date).toLocaleDateString('en-IN',{day:'numeric',month:'short'})+'</div><div style="font-size:16px;font-weight:600;color:'+(p.diagnosis.healthy?'var(--gd)':'#8B0000')+';margin-top:4px">'+p.diagnosis.title+'</div></div><button onclick="clearDiag(\''+name+'\')" style="background:none;border:none;font-size:12px;color:var(--t3);cursor:pointer;flex-shrink:0;margin-left:8px">Clear ✕</button></div><div style="font-size:13px;color:'+(p.diagnosis.healthy?'var(--gm)':'var(--rm)')+';line-height:1.7;border-top:1px solid '+(p.diagnosis.healthy?'rgba(74,124,47,0.15)':'rgba(217,64,64,0.15)')+';padding-top:10px">'+p.diagnosis.issue+'</div>'+(p.diagnosis.remedy?'<div style="font-size:13px;color:'+(p.diagnosis.healthy?'var(--gd)':'#8B0000')+';line-height:1.7;margin-top:8px;font-weight:500;background:rgba(255,255,255,0.5);border-radius:8px;padding:10px">💡 '+p.diagnosis.remedy+'</div>':'')+'</div>' : '') +
-    '<div class="cblock"><span class="cico">💧</span><div><div class="clbl">How much water</div><div class="cval">'+v(p.water,'Not filled in yet')+'</div><div class="cnote">'+v(p.freq,'')+'</div></div></div>' +
-    '<div class="cblock"><span class="cico">☀️</span><div><div class="clbl">Sunlight needed</div><div class="cval">'+v(p.sun,'Not filled in yet')+'</div></div></div>' +
-    '<div class="cblock"><span class="cico">🫗</span><div><div class="clbl">How to water</div><div class="cval" style="font-size:13px;line-height:1.5">'+v(p.pour,'Not filled in yet')+'</div></div></div>' +
-    '<div class="fblock"><span class="cico">🌾</span><div><div class="flbl">Fertilizer</div><div class="ftxt">'+v(p.fert,'Not filled in yet')+'</div></div></div>' +
-    '<div class="tblock"><span class="cico">💡</span><div><div class="tlbl">Good to know</div><div class="ttxt">'+v(p.tip,'Not filled in yet')+'</div></div></div>' +
-    (p.products&&p.products.length ? (p.sourceUrl ? '<a href="'+p.sourceUrl+'" target="_blank" style="display:flex;align-items:center;justify-content:space-between;background:var(--wh);border-radius:var(--r2);padding:13px 16px;margin-bottom:8px;border:1px solid var(--br);text-decoration:none"><div style=\"font-size:13px;font-weight:600;color:var(--t1)\">📖 Learn more</div><span style=\"font-size:12px;color:var(--bm);font-weight:600\">Source ↗</span></a>' : '') +
-    shopHtml(p.products, '🛒 '+(isNew?'You might need these':'Shop on Amazon')) : '') +
-    '<button onclick="refetch(\''+name+'\')" style="width:100%;background:none;border:1.5px solid var(--br);border-radius:var(--r2);padding:12px;font-family:var(--fb);font-size:13px;color:var(--t2);cursor:pointer;margin-top:8px;font-weight:500">🔄 Re-fetch care details</button>' +
-    '<button class="rbtn" onclick="askDel(\''+name+'\')">Remove this plant</button>';
+
+  let h = '';
+  if (!p.water || p.water === 'Not filled yet') h += '<div style="background:var(--rl);border-radius:var(--r2);padding:12px 14px;margin-bottom:12px;border:1px solid rgba(217,64,64,0.2);font-size:13px;color:var(--rm);font-weight:500">⚠️ Care details not yet filled in.</div>';
+  h += '<div style="background:' + (st.over?'var(--rl)':st.today?'var(--al)':'var(--gl)') + ';border-radius:var(--r2);padding:14px 16px;margin-bottom:12px;border:1px solid ' + (st.over?'rgba(217,64,64,0.2)':st.today?'rgba(232,160,32,0.2)':'rgba(74,124,47,0.2)') + ';font-size:14px;font-weight:600;color:' + (st.over?'var(--rm)':st.today?'#7A5000':'var(--gd)') + '">' + st.dot + ' ' + st.txt + (p.lastWatered&&!watered?' · Last: '+new Date(p.lastWatered).toLocaleDateString('en-IN',{day:'numeric',month:'short'}):'') + '</div>';
+  h += '<button class="wbtn2' + (watered?' done':'') + '" ' + (watered?'disabled style="opacity:.6;cursor:default"':'onclick="markWatered(\'' + name + '\')"') + '>' + (watered?'✓ Watered today':'💧 Mark as watered') + '</button>';
+  h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px"><div style="background:var(--gl);border-radius:var(--r1);padding:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:72px;text-align:center"><div style="font-family:var(--fh);font-size:28px;color:var(--gd)">' + streak + '</div><div style="font-size:11px;color:var(--gm);font-weight:600;margin-top:4px;text-transform:uppercase;letter-spacing:.5px">Day streak</div></div><div style="background:var(--bl);border-radius:var(--r1);padding:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:72px;text-align:center"><div style="font-size:13px;font-weight:600;color:#1A4A80;line-height:1.4">' + lastStr + '</div><div style="font-size:11px;color:var(--bm);font-weight:600;margin-top:4px;text-transform:uppercase;letter-spacing:.5px">Last watered</div></div></div>';
+
+  // Diagnosis button
+  h += '<div style="background:var(--gl);border-radius:var(--r2);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;border:1px solid rgba(74,124,47,0.2)"><div><div style="font-size:14px;font-weight:600;color:var(--gd)">How does it look today?</div><div style="font-size:12px;color:var(--gm);margin-top:2px">Take a photo for a health check</div></div><input type="file" id="diag-cam" accept="image/*" capture="environment" style="display:none" onchange="diagnosePlant(this,\'' + name + '\')"><button onclick="document.getElementById(\'diag-cam\').click()" style="background:var(--gd);border:none;border-radius:10px;padding:10px 14px;font-size:13px;font-weight:600;color:#fff;cursor:pointer;white-space:nowrap;flex-shrink:0;font-family:var(--fb)">📷 Check</button></div>';
+
+  // Diagnosis result
+  if (p.diagnosis) {
+    const dh = p.diagnosis.healthy;
+    h += '<div style="background:' + (dh?'var(--gl)':'var(--rl)') + ';border-radius:var(--r2);padding:16px;margin-bottom:10px;border:1px solid ' + (dh?'rgba(74,124,47,0.2)':'rgba(217,64,64,0.2)') + '">';
+    h += '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px"><div><div style="font-size:11px;font-weight:700;color:' + (dh?'var(--gm)':'var(--rm)') + ';text-transform:uppercase;letter-spacing:.5px">' + (dh?'✅':'⚠️') + ' Health check · ' + new Date(p.diagnosis.date).toLocaleDateString('en-IN',{day:'numeric',month:'short'}) + '</div><div style="font-size:16px;font-weight:600;color:' + (dh?'var(--gd)':'#8B0000') + ';margin-top:4px">' + p.diagnosis.title + '</div></div><button onclick="clearDiag(\'' + name + '\')" style="background:none;border:none;font-size:12px;color:var(--t3);cursor:pointer;flex-shrink:0;margin-left:8px">Clear ✕</button></div>';
+    h += '<div style="font-size:13px;color:' + (dh?'var(--gm)':'var(--rm)') + ';line-height:1.7;border-top:1px solid ' + (dh?'rgba(74,124,47,0.15)':'rgba(217,64,64,0.15)') + ';padding-top:10px">' + p.diagnosis.issue + '</div>';
+    if (p.diagnosis.remedy) h += '<div style="font-size:13px;color:' + (dh?'var(--gd)':'#8B0000') + ';line-height:1.7;margin-top:8px;font-weight:500;background:rgba(255,255,255,0.5);border-radius:8px;padding:10px">💡 ' + p.diagnosis.remedy + '</div>';
+    h += '</div>';
+  }
+
+  // Care blocks
+  h += '<div class="cblock"><span class="cico">💧</span><div><div class="clbl">How much water</div><div class="cval">' + v(p.water,'Not filled in yet') + '</div><div class="cnote">' + v(p.freq,'') + '</div></div></div>';
+  h += '<div class="cblock"><span class="cico">☀️</span><div><div class="clbl">Sunlight needed</div><div class="cval">' + v(p.sun,'Not filled in yet') + '</div></div></div>';
+  h += '<div class="cblock"><span class="cico">🫗</span><div><div class="clbl">How to water</div><div class="cval" style="font-size:13px;line-height:1.5">' + v(p.pour,'Not filled in yet') + '</div></div></div>';
+  h += '<div class="fblock"><span class="cico">🌾</span><div><div class="flbl">Fertilizer</div><div class="ftxt">' + v(p.fert,'Not filled in yet') + '</div></div></div>';
+  h += '<div class="tblock"><span class="cico">💡</span><div><div class="tlbl">Good to know</div><div class="ttxt">' + v(p.tip,'Not filled in yet') + '</div></div></div>';
+
+  // Source link
+  if (p.sourceUrl) h += '<a href="' + p.sourceUrl + '" target="_blank" style="display:flex;align-items:center;justify-content:space-between;background:var(--wh);border-radius:var(--r2);padding:13px 16px;margin-bottom:8px;border:1px solid var(--br);text-decoration:none"><div style="font-size:13px;font-weight:600;color:var(--t1)">📖 Learn more about ' + p.name + '</div><span style="font-size:12px;color:var(--bm);font-weight:600">Source ↗</span></a>';
+
+  // Shop
+  if (p.products && p.products.length) h += shopHtml(p.products, '🛒 ' + (isNew ? 'You might need these' : 'Shop on Amazon'));
+
+  // Actions
+  h += '<button onclick="refetch(\'' + name + '\')" style="width:100%;background:none;border:1.5px solid var(--br);border-radius:var(--r2);padding:12px;font-family:var(--fb);font-size:13px;color:var(--t2);cursor:pointer;margin-top:8px;font-weight:500">🔄 Re-fetch care details</button>';
+  h += '<button class="rbtn" onclick="askDel(\'' + name + '\')">Remove this plant</button>';
+
+  document.getElementById('d-body').innerHTML = h;
 }
 
 function markWatered(name) {
-  const p = G.find(x => x.name === name); if (!p) return;
-  if (daysSince(p.lastWatered) === 0) return; // Already watered today
+  const p = G.find(function(x) { return x.name === name; });
+  if (!p) return;
+  if (daysSince(p.lastWatered) === 0) return;
   const ds = daysSince(p.lastWatered);
   const due = p.days || 1;
-  // Increment streak if watered on time, reset if missed
-  if (ds === null) p.streak = 1;
-  else if (ds <= due + 1) p.streak = (p.streak || 0) + 1;
-  else p.streak = 1;
+  p.streak = (ds !== null && ds <= due + 1) ? (p.streak || 0) + 1 : 1;
   p.lastWatered = new Date().toISOString();
-  p.waterLog = []; // No longer needed for streak
-  saveData(); showDetail(name); updateCards();
+  saveData();
+  showDetail(name);
+  updateCards();
 }
 
 function editNick() {
-  const p = G.find(x => x.name === _cur); if (!p) return;
-  const v = prompt('Nickname for '+p.name+' (leave blank to remove):', p.nickname||'');
+  const p = G.find(function(x) { return x.name === _cur; });
+  if (!p) return;
+  const v = prompt('Nickname for ' + p.name + ' (leave blank to remove):', p.nickname || '');
   if (v === null) return;
   p.nickname = v.trim() || null;
-  saveData(); showDetail(_cur);
+  saveData();
+  showDetail(_cur);
 }
 
 function clearDiag(name) {
-  const p = G.find(x => x.name === name); if (!p) return;
-  p.diagnosis = null; saveData(); showDetail(name);
+  const p = G.find(function(x) { return x.name === name; });
+  if (!p) return;
+  p.diagnosis = null;
+  saveData();
+  showDetail(name);
 }
 
 async function diagnosePlant(input, name) {
-  const file = input.files[0]; if (!file) return;
-  const p = G.find(x => x.name === name); if (!p) return;
-  document.getElementById('load-title').textContent = 'Analysing '+( p.nickname||name)+'...';
+  const file = input.files[0];
+  if (!file) return;
+  const p = G.find(function(x) { return x.name === name; });
+  if (!p) return;
+  document.getElementById('load-title').textContent = 'Analysing ' + (p.nickname || name) + '...';
   goScreen('loading-plant');
   try {
-    const base64 = await new Promise((res,rej) => { const r=new FileReader(); r.onload=()=>res(r.result.split(',')[1]); r.onerror=rej; r.readAsDataURL(file); });
-    const resp = await fetch(WORKER, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'diagnose_plant',name,image:base64,mediaType:file.type||'image/jpeg',city:getCity()})});
+    const base64 = await new Promise(function(res, rej) { const r = new FileReader(); r.onload = function() { res(r.result.split(',')[1]); }; r.onerror = rej; r.readAsDataURL(file); });
+    const resp = await fetch(WORKER, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ action:'diagnose_plant', name:name, image:base64, mediaType:file.type||'image/jpeg', city:getCity() }) });
     const d = await resp.json();
-    if (d.title) { p.diagnosis = {healthy:d.healthy===true,title:d.title,issue:d.issue||'',remedy:d.remedy||'',date:new Date().toISOString()}; saveData(); }
+    if (d.title) { p.diagnosis = { healthy:d.healthy===true, title:d.title, issue:d.issue||'', remedy:d.remedy||'', date:new Date().toISOString() }; saveData(); }
   } catch(e) {}
   input.value = '';
   openDetail(name);
 }
 
 async function refetch(name) {
-  const p = G.find(x => x.name === name); if (!p) return;
-  document.getElementById('load-title').textContent = 'Updating '+name+'...';
+  const p = G.find(function(x) { return x.name === name; });
+  if (!p) return;
+  document.getElementById('load-title').textContent = 'Updating ' + name + '...';
   goScreen('loading-plant');
   const d = await fetchCare(name, p.type);
-  if (d) { ['water','freq','sun','pour','fert','tip'].forEach(k=>{if(d[k])p[k]=d[k];}); if(d.days)p.days=Math.min(14,Math.max(1,parseInt(d.days)||1)); if(d.products)p.products=d.products; if(d.emoji)p.ico=d.emoji; if(d.sourceUrl)p.sourceUrl=d.sourceUrl; saveData(); }
+  if (d) {
+    ['water','freq','sun','pour','fert','tip'].forEach(function(k) { if (d[k]) p[k] = d[k]; });
+    if (d.days) p.days = Math.min(14, Math.max(1, parseInt(d.days) || 1));
+    if (d.products) p.products = d.products;
+    if (d.emoji) p.ico = d.emoji;
+    if (d.sourceUrl) p.sourceUrl = d.sourceUrl;
+    saveData();
+  }
   openDetail(name);
 }
 
 function askDel(name) {
   _del = name;
-  document.getElementById('del-title').textContent = 'Remove '+name+'?';
-  document.getElementById('del-sub').textContent = 'This will delete '+name+' and all its watering history.';
+  document.getElementById('del-title').textContent = 'Remove ' + name + '?';
+  document.getElementById('del-sub').textContent = 'This will delete ' + name + ' and all its watering history.';
   goScreen('del-screen');
 }
 
 function confirmDel() {
-  G = G.filter(x => x.name !== _del); saveData(); goTab('garden');
+  G = G.filter(function(x) { return x.name !== _del; });
+  saveData();
+  goTab('garden');
 }
 
 // ── ADD PLANT ──
 function pickType(el) {
   _type = el.dataset.v;
-  el.closest('.trow').querySelectorAll('.topt').forEach(o => o.classList.remove('sel'));
-  el.classList.add('sel');
+  document.getElementById('type-outdoor').classList.toggle('sel', _type === 'outdoor');
+  document.getElementById('type-indoor').classList.toggle('sel', _type === 'indoor');
 }
 
 function pickWater(el) {
   _daysAgo = parseInt(el.dataset.w);
-  el.closest('.trow').querySelectorAll('.topt').forEach(o => o.classList.remove('sel'));
-  el.classList.add('sel');
+  ['water-today','water-yesterday','water-older'].forEach(function(id) {
+    document.getElementById(id).classList.toggle('sel', document.getElementById(id).dataset.w == _daysAgo);
+  });
 }
 
 async function identifyPlant(input) {
-  const file = input.files[0]; if (!file) return;
-  if (!canCam()) { alert('You have used your 3 free identifications this month. Upgrade to Premium for unlimited.'); input.value=''; return; }
+  const file = input.files[0];
+  if (!file) return;
+  if (!canCam()) { alert('You have used your 3 free identifications this month. Upgrade to Premium for unlimited.'); input.value = ''; return; }
   incCam();
   const ni = document.getElementById('new-name');
-  ni.value=''; ni.placeholder='Identifying...'; ni.disabled=true;
+  ni.value = ''; ni.placeholder = 'Identifying...'; ni.disabled = true;
   try {
-    const base64 = await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.onerror=rej;r.readAsDataURL(file);});
-    const resp = await fetch(WORKER,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'identify_plant',image:base64,mediaType:file.type||'image/jpeg'})});
+    const base64 = await new Promise(function(res, rej) { const r = new FileReader(); r.onload = function() { res(r.result.split(',')[1]); }; r.onerror = rej; r.readAsDataURL(file); });
+    const resp = await fetch(WORKER, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ action:'identify_plant', image:base64, mediaType:file.type||'image/jpeg' }) });
     const d = await resp.json();
-    if (d.name) { ni.value=d.name; ni.style.borderColor='var(--gm)'; setTimeout(()=>ni.style.borderColor='',2000); }
-    else ni.placeholder='Could not identify — type the name';
-  } catch(e) { ni.placeholder='Could not identify — type the name'; }
-  ni.disabled=false; input.value='';
+    if (d.name) { ni.value = d.name; ni.style.borderColor = 'var(--gm)'; setTimeout(function() { ni.style.borderColor = ''; }, 2000); }
+    else ni.placeholder = 'Could not identify — type the name';
+  } catch(e) { ni.placeholder = 'Could not identify — type the name'; }
+  ni.disabled = false;
+  input.value = '';
 }
 
 async function fetchCare(name, type) {
   try {
-    const r = await fetch(WORKER,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,type,city:getCity()})});
+    const r = await fetch(WORKER, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ name:name, type:type, city:getCity() }) });
     const d = await r.json();
     if (!r.ok) return null;
-    if (d.essentials) { try{localStorage.setItem('mg_ess',JSON.stringify(d.essentials));}catch(e){} }
+    if (d.essentials) { try { localStorage.setItem('mg_ess', JSON.stringify(d.essentials)); } catch(e) {} }
     return d;
   } catch(e) { return null; }
 }
@@ -648,158 +750,160 @@ async function fetchCare(name, type) {
 async function addPlant() {
   const name = document.getElementById('new-name').value.trim();
   if (!name) { document.getElementById('new-name').focus(); return; }
-  if (G.find(x => x.name.toLowerCase()===name.toLowerCase())) { document.getElementById('new-name').style.borderColor='var(--rm)'; setTimeout(()=>document.getElementById('new-name').style.borderColor='',1500); return; }
-  const lastW = _daysAgo===0 ? new Date().toISOString() : _daysAgo===1 ? new Date(Date.now()-86400000).toISOString() : new Date(Date.now()-2*86400000).toISOString();
-  G.push({name,type:_type,ico:_type==='outdoor'?'🌿':'🪴',water:'Not filled yet',freq:'Not filled yet',sun:'Not filled yet',pour:'Not filled yet',fert:'Not filled yet',tip:'Not filled yet',days:1,lastWatered:lastW,waterLog:[],streak:0,products:[],diagnosis:null,nickname:null});
+  if (G.find(function(x) { return x.name.toLowerCase() === name.toLowerCase(); })) {
+    document.getElementById('new-name').style.borderColor = 'var(--rm)';
+    setTimeout(function() { document.getElementById('new-name').style.borderColor = ''; }, 1500);
+    return;
+  }
+  const lastW = _daysAgo === 0 ? new Date().toISOString() : _daysAgo === 1 ? new Date(Date.now()-86400000).toISOString() : new Date(Date.now()-2*86400000).toISOString();
+  G.push({ name:name, type:_type, ico:_type==='outdoor'?'🌿':'🪴', water:'Not filled yet', freq:'Not filled yet', sun:'Not filled yet', pour:'Not filled yet', fert:'Not filled yet', tip:'Not filled yet', days:1, lastWatered:lastW, streak:1, sourceUrl:null, products:[], diagnosis:null, nickname:null });
   saveData();
-  document.getElementById('new-name').value='';
-  _type='outdoor'; _daysAgo=0;
-  document.querySelectorAll('.trow:not(#water-row) .topt').forEach(o=>o.classList.toggle('sel',o.dataset.v==='outdoor'));
-  document.querySelectorAll('#water-row .topt').forEach(o=>o.classList.toggle('sel',o.dataset.w==='0'));
-  document.getElementById('load-title').textContent='Looking up '+name+'...';
+  document.getElementById('new-name').value = '';
+  _type = 'outdoor'; _daysAgo = 0;
+  document.getElementById('type-outdoor').classList.add('sel');
+  document.getElementById('type-indoor').classList.remove('sel');
+  document.getElementById('water-today').classList.add('sel');
+  document.getElementById('water-yesterday').classList.remove('sel');
+  document.getElementById('water-older').classList.remove('sel');
+  document.getElementById('load-title').textContent = 'Looking up ' + name + '...';
   goScreen('loading-plant');
   const d = await fetchCare(name, _type);
-  const p = G.find(x => x.name===name);
-  if (p && d) { ['water','freq','sun','pour','fert','tip'].forEach(k=>{if(d[k])p[k]=d[k];}); if(d.days)p.days=Math.min(14,Math.max(1,parseInt(d.days)||1)); if(d.products)p.products=d.products; if(d.emoji)p.ico=d.emoji; if(d.sourceUrl)p.sourceUrl=d.sourceUrl; saveData(); }
+  const p = G.find(function(x) { return x.name === name; });
+  if (p && d) {
+    ['water','freq','sun','pour','fert','tip'].forEach(function(k) { if (d[k]) p[k] = d[k]; });
+    if (d.days) p.days = Math.min(14, Math.max(1, parseInt(d.days) || 1));
+    if (d.products) p.products = d.products;
+    if (d.emoji) p.ico = d.emoji;
+    if (d.sourceUrl) p.sourceUrl = d.sourceUrl;
+    saveData();
+  }
   sessionStorage.setItem('np', name);
   openDetail(name);
 }
 
-// ── TODAY ──
-function renderToday() {
-  document.getElementById('today-hdr-sub').textContent = new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long'});
-  const due = G.filter(p => { const s=wStatus(p); return s.today||s.over; });
-  const ok = G.filter(p => { const s=wStatus(p); return !s.today&&!s.over&&!s.unknown; });
+// ── WATERING TAB ──
+function renderWatering() {
+  document.getElementById('watering-hdr-sub').textContent = new Date().toLocaleDateString('en-IN', { weekday:'long', day:'numeric', month:'long' });
+  const due = G.filter(function(p) { const s = wStatus(p); return s.today || s.over; });
+  const ok = G.filter(function(p) { const s = wStatus(p); return !s.today && !s.over && !s.unknown; });
   let h = '';
   if (!G.length) {
     h = '<div style="text-align:center;padding:40px 20px"><div style="font-size:52px;margin-bottom:16px">🌱</div><div style="font-family:var(--fh);font-size:22px;color:var(--t1);margin-bottom:8px">No plants yet</div><div style="font-size:14px;color:var(--t2)">Add your first plant from the Garden tab.</div></div>';
   } else if (!due.length) {
-    const waterTools = [
-      { label: '💧 Watering can', link: 'https://www.amazon.in/s?k=plant+watering+can&tag=mygardenapp-21' },
-      { label: '🌡️ Soil moisture meter', link: 'https://www.amazon.in/s?k=soil+moisture+meter&tag=mygardenapp-21' },
-      { label: '🪣 Plant mister spray', link: 'https://www.amazon.in/s?k=plant+mister+spray+bottle&tag=mygardenapp-21' },
-      { label: '🧪 Liquid fertilizer', link: 'https://www.amazon.in/s?k=liquid+fertilizer+for+plants&tag=mygardenapp-21' },
-    ];
     h = '<div style="text-align:center;padding:40px 20px 24px"><div style="font-size:52px;margin-bottom:16px">🎉</div><div style="font-family:var(--fh);font-size:22px;color:var(--t1);margin-bottom:8px">All plants are happy!</div><div style="font-size:14px;color:var(--t2);margin-bottom:0">Nothing needs watering today.</div></div>';
-    h += '<div class="shopbox"><div class="shop-l">🛒 Watering essentials</div>';
-    waterTools.forEach(p => { h += '<a href="'+p.link+'" target="_blank" class="shop-a"><span class="shop-an">'+p.label+'</span><span class="shop-ab">Buy ↗</span></a>'; });
-    h += '<div class="shop-note">Affiliate links — supports this free app</div></div>';
+    const waterTools = [
+      { label:'💧 Watering can', link:'https://www.amazon.in/s?k=plant+watering+can&tag=mygardenapp-21' },
+      { label:'🌡️ Soil moisture meter', link:'https://www.amazon.in/s?k=soil+moisture+meter&tag=mygardenapp-21' },
+      { label:'🪣 Plant mister spray', link:'https://www.amazon.in/s?k=plant+mister+spray+bottle&tag=mygardenapp-21' },
+      { label:'🧪 Liquid fertilizer', link:'https://www.amazon.in/s?k=liquid+fertilizer+for+plants&tag=mygardenapp-21' }
+    ];
+    h += shopHtml(waterTools, '🛒 Watering essentials');
   }
   if (due.length) {
     h += '<div class="slabel">Needs water now</div>';
-    due.forEach(p => {
+    due.forEach(function(p) {
       const st = wStatus(p);
-      h += '<div style="background:var(--wh);border-radius:var(--r2);padding:14px 16px;display:flex;align-items:center;gap:12px;margin-bottom:8px;border:1px solid '+(st.over?'rgba(217,64,64,0.3)':'rgba(232,160,32,0.3)')+'"><div style="width:44px;height:44px;border-radius:50%;background:'+(st.over?'var(--rl)':'var(--al)')+';display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">'+p.ico+'</div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--t1)">'+(p.nickname||p.name)+'</div><div style="font-size:12px;font-weight:500;color:'+(st.over?'var(--rm)':'var(--am)')+';margin-top:2px">'+st.dot+' '+st.txt+'</div></div><button onclick="waterFromToday(\''+p.name+'\')" style="background:var(--bl);border:none;border-radius:10px;padding:9px 14px;font-size:13px;font-weight:600;color:var(--bm);cursor:pointer;font-family:var(--fb);flex-shrink:0">💧 Done</button></div>';
+      h += '<div style="background:var(--wh);border-radius:var(--r2);padding:14px 16px;display:flex;align-items:center;gap:12px;margin-bottom:8px;border:1px solid ' + (st.over?'rgba(217,64,64,0.3)':'rgba(232,160,32,0.3)') + '"><div style="width:44px;height:44px;border-radius:50%;background:' + (st.over?'var(--rl)':'var(--al)') + ';display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">' + p.ico + '</div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--t1)">' + (p.nickname||p.name) + '</div><div style="font-size:12px;font-weight:500;color:' + (st.over?'var(--rm)':'var(--am)') + ';margin-top:2px">' + st.dot + ' ' + st.txt + '</div></div><button onclick="waterFromWatering(\'' + p.name + '\')" style="background:var(--bl);border:none;border-radius:10px;padding:9px 14px;font-size:13px;font-weight:600;color:var(--bm);cursor:pointer;font-family:var(--fb);flex-shrink:0">💧 Done</button></div>';
     });
   }
   if (ok.length) {
-    h += '<div class="slabel" style="margin-top:'+(due.length?'16px':'0')+'">All good today</div>';
-    ok.forEach(p => {
+    h += '<div class="slabel" style="margin-top:' + (due.length?'16px':'0') + '">All good today</div>';
+    ok.forEach(function(p) {
       const st = wStatus(p);
-      h += '<div style="background:var(--wh);border-radius:var(--r2);padding:12px 16px;display:flex;align-items:center;gap:12px;margin-bottom:8px;border:1px solid var(--br);opacity:.7"><div style="width:40px;height:40px;border-radius:50%;background:var(--gl);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">'+p.ico+'</div><div><div style="font-size:14px;font-weight:600;color:var(--t1)">'+(p.nickname||p.name)+'</div><div style="font-size:12px;font-weight:500;color:var(--gm);margin-top:2px">🟢 '+st.txt+'</div></div></div>';
+      h += '<div style="background:var(--wh);border-radius:var(--r2);padding:12px 16px;display:flex;align-items:center;gap:12px;margin-bottom:8px;border:1px solid var(--br);opacity:.7"><div style="width:40px;height:40px;border-radius:50%;background:var(--gl);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">' + p.ico + '</div><div><div style="font-size:14px;font-weight:600;color:var(--t1)">' + (p.nickname||p.name) + '</div><div style="font-size:12px;font-weight:500;color:var(--gm);margin-top:2px">🟢 ' + st.txt + '</div></div></div>';
     });
   }
-  document.getElementById('today-body').innerHTML = h;
+  document.getElementById('watering-body').innerHTML = h;
 }
 
-function waterFromToday(name) {
-  const p = G.find(x => x.name===name); if (!p) return;
-  if (daysSince(p.lastWatered) === 0) return; // Already watered today
+function waterFromWatering(name) {
+  const p = G.find(function(x) { return x.name === name; });
+  if (!p) return;
+  if (daysSince(p.lastWatered) === 0) return;
   const ds = daysSince(p.lastWatered);
   const due = p.days || 1;
-  if (ds === null) p.streak = 1;
-  else if (ds <= due + 1) p.streak = (p.streak || 0) + 1;
-  else p.streak = 1;
+  p.streak = (ds !== null && ds <= due + 1) ? (p.streak || 0) + 1 : 1;
   p.lastWatered = new Date().toISOString();
-  saveData(); renderToday(); updateCards();
+  saveData();
+  renderWatering();
+  updateCards();
 }
 
-// ── REPORT ──
+// ── REPORT TAB ──
 function renderReport() {
   const isPrem = isPremium();
-  const ov = G.filter(p=>wStatus(p).over).length;
-  const watered = G.filter(p=>daysSince(p.lastWatered)===0).length;
+  const watered = G.filter(function(p) { return daysSince(p.lastWatered) === 0; }).length;
   let h = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px">';
-  h += '<div style="background:var(--gl);border-radius:var(--r2);padding:16px;text-align:center"><div style="font-family:var(--fh);font-size:32px;color:var(--gd)">'+G.length+'</div><div style="font-size:12px;font-weight:600;color:var(--gm);margin-top:2px;text-transform:uppercase;letter-spacing:.5px">Total plants</div></div>';
-  h += '<div style="background:var(--bl);border-radius:var(--r2);padding:16px;text-align:center"><div style="font-family:var(--fh);font-size:32px;color:#1A4A80">'+watered+'</div><div style="font-size:12px;font-weight:600;color:var(--bm);margin-top:2px;text-transform:uppercase;letter-spacing:.5px">Watered today</div></div>';
+  h += '<div style="background:var(--gl);border-radius:var(--r2);padding:16px;text-align:center"><div style="font-family:var(--fh);font-size:32px;color:var(--gd)">' + G.length + '</div><div style="font-size:12px;font-weight:600;color:var(--gm);margin-top:2px;text-transform:uppercase;letter-spacing:.5px">Total plants</div></div>';
+  h += '<div style="background:var(--bl);border-radius:var(--r2);padding:16px;text-align:center"><div style="font-family:var(--fh);font-size:32px;color:#1A4A80">' + watered + '</div><div style="font-size:12px;font-weight:600;color:var(--bm);margin-top:2px;text-transform:uppercase;letter-spacing:.5px">Watered today</div></div>';
   h += '</div>';
   if (!isPrem) {
-    h += '<div style="background:var(--al);border-radius:var(--r2);padding:20px;text-align:center;border:1px solid rgba(232,160,32,0.2)"><div style="font-size:32px;margin-bottom:12px">📊</div><div style="font-family:var(--fh);font-size:20px;color:var(--t1);margin-bottom:8px">Monthly Garden Report</div><div style="font-size:13px;color:var(--t2);line-height:1.7;margin-bottom:16px">Get a personalised monthly report — which plants are thriving, which need attention.</div><button onclick="goScreen(\'premium\')" style="background:var(--gd);border:none;border-radius:var(--r2);padding:13px 24px;font-family:var(--fb);font-size:14px;font-weight:600;color:#fff;cursor:pointer">Upgrade to Premium</button></div>';
+    h += '<div style="background:var(--al);border-radius:var(--r2);padding:20px;text-align:center;border:1px solid rgba(232,160,32,0.2);margin-bottom:16px"><div style="font-size:32px;margin-bottom:12px">📊</div><div style="font-family:var(--fh);font-size:20px;color:var(--t1);margin-bottom:8px">Monthly Garden Report</div><div style="font-size:13px;color:var(--t2);line-height:1.7;margin-bottom:16px">Get a personalised monthly report — which plants are thriving, which need attention.</div><button onclick="goScreen(\'premium\')" style="background:var(--gd);border:none;border-radius:var(--r2);padding:13px 24px;font-family:var(--fb);font-size:14px;font-weight:600;color:#fff;cursor:pointer">Upgrade to Premium</button></div>';
   } else {
-    h += '<div style="background:var(--wh);border-radius:var(--r2);padding:16px;border:1px solid var(--br)">';
+    h += '<div style="background:var(--wh);border-radius:var(--r2);padding:16px;border:1px solid var(--br);margin-bottom:16px">';
     h += '<div style="font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px">This month</div>';
-    h += G.map(p=>'<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--br)"><span>'+p.ico+'</span><span style="font-weight:600;color:var(--t1);flex:1">'+(p.nickname||p.name)+'</span><span style="font-size:12px;color:'+(wStatus(p).over?'var(--rm)':'var(--gm)')+'">'+( wStatus(p).over?'Needs attention':'On track')+'</span></div>').join('');
+    G.forEach(function(p) { h += '<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--br)"><span>' + p.ico + '</span><span style="font-weight:600;color:var(--t1);flex:1">' + (p.nickname||p.name) + '</span><span style="font-size:12px;color:' + (wStatus(p).over?'var(--rm)':'var(--gm)') + '">' + (wStatus(p).over?'Needs attention':'On track') + '</span></div>'; });
     h += '</div>';
   }
-  // Seasonal products based on current month
+  // Seasonal affiliate products
   const month = new Date().getMonth();
   let seasonLabel, seasonProducts;
   if (month >= 2 && month <= 5) {
     seasonLabel = '☀️ Summer care essentials';
     seasonProducts = [
-      { label: '🌡️ Soil moisture meter', link: 'https://www.amazon.in/s?k=soil+moisture+meter&tag=mygardenapp-21' },
-      { label: '☀️ Shade net for plants', link: 'https://www.amazon.in/s?k=shade+net+for+plants&tag=mygardenapp-21' },
-      { label: '💧 Drip irrigation kit', link: 'https://www.amazon.in/s?k=drip+irrigation+kit&tag=mygardenapp-21' },
-      { label: '🧴 Anti-transpirant spray', link: 'https://www.amazon.in/s?k=anti+transpirant+spray+plants&tag=mygardenapp-21' },
+      { label:'🌡️ Soil moisture meter', link:'https://www.amazon.in/s?k=soil+moisture+meter&tag=mygardenapp-21' },
+      { label:'☀️ Shade net for plants', link:'https://www.amazon.in/s?k=shade+net+for+plants&tag=mygardenapp-21' },
+      { label:'💧 Drip irrigation kit', link:'https://www.amazon.in/s?k=drip+irrigation+kit&tag=mygardenapp-21' },
+      { label:'🧴 Anti-transpirant spray', link:'https://www.amazon.in/s?k=anti+transpirant+spray+plants&tag=mygardenapp-21' }
     ];
   } else if (month >= 6 && month <= 9) {
     seasonLabel = '🌧️ Monsoon gardening essentials';
     seasonProducts = [
-      { label: '🍄 Anti-fungal spray', link: 'https://www.amazon.in/s?k=anti+fungal+spray+plants&tag=mygardenapp-21' },
-      { label: '🪨 Perlite for drainage', link: 'https://www.amazon.in/s?k=perlite+for+plants&tag=mygardenapp-21' },
-      { label: '🌱 Raised planter box', link: 'https://www.amazon.in/s?k=raised+planter+box&tag=mygardenapp-21' },
-      { label: '✂️ Pruning shears', link: 'https://www.amazon.in/s?k=pruning+shears+garden&tag=mygardenapp-21' },
+      { label:'🍄 Anti-fungal spray', link:'https://www.amazon.in/s?k=anti+fungal+spray+plants&tag=mygardenapp-21' },
+      { label:'🪨 Perlite for drainage', link:'https://www.amazon.in/s?k=perlite+for+plants&tag=mygardenapp-21' },
+      { label:'🌱 Raised planter box', link:'https://www.amazon.in/s?k=raised+planter+box&tag=mygardenapp-21' },
+      { label:'✂️ Pruning shears', link:'https://www.amazon.in/s?k=pruning+shears+garden&tag=mygardenapp-21' }
     ];
   } else {
     seasonLabel = '❄️ Winter care essentials';
     seasonProducts = [
-      { label: '🌿 Liquid fertilizer', link: 'https://www.amazon.in/s?k=liquid+fertilizer+plants&tag=mygardenapp-21' },
-      { label: '🪴 Self-watering pots', link: 'https://www.amazon.in/s?k=self+watering+pots&tag=mygardenapp-21' },
-      { label: '🌞 Grow light for plants', link: 'https://www.amazon.in/s?k=grow+light+for+indoor+plants&tag=mygardenapp-21' },
-      { label: '🧤 Gardening gloves', link: 'https://www.amazon.in/s?k=gardening+gloves&tag=mygardenapp-21' },
+      { label:'🌿 Liquid fertilizer', link:'https://www.amazon.in/s?k=liquid+fertilizer+plants&tag=mygardenapp-21' },
+      { label:'🪴 Self-watering pots', link:'https://www.amazon.in/s?k=self+watering+pots&tag=mygardenapp-21' },
+      { label:'🌞 Grow light for plants', link:'https://www.amazon.in/s?k=grow+light+indoor+plants&tag=mygardenapp-21' },
+      { label:'🧤 Gardening gloves', link:'https://www.amazon.in/s?k=gardening+gloves&tag=mygardenapp-21' }
     ];
   }
-
-  h += '<div class="shopbox" style="margin-top:16px"><div class="shop-l">'+seasonLabel+'</div>';
-  seasonProducts.forEach(p => { h += '<a href="'+p.link+'" target="_blank" class="shop-a"><span class="shop-an">'+p.label+'</span><span class="shop-ab">Buy ↗</span></a>'; });
-  h += '<div class="shop-note">Affiliate links — supports this free app</div></div>';
-
+  h += shopHtml(seasonProducts, seasonLabel);
   document.getElementById('report-body').innerHTML = h;
 }
 
-// ── PROFILE ──
+// ── PROFILE TAB ──
 function renderProfile() {
-  const user = auth.currentUser; if (!user) return;
+  const user = auth.currentUser;
+  if (!user) return;
   const city = getCity(), isPrem = isPremium(), camUsed = getCamUsed();
   const notifOn = localStorage.getItem('mg_notif') === '1';
-  const initial = (user.displayName||user.email||'U')[0].toUpperCase();
-  const photo = user.photoURL;
+  const notifTime = localStorage.getItem('mg_notif_time') || '07:00';
+  const initial = (user.displayName || user.email || 'U')[0].toUpperCase();
   let h = '';
   h += '<div style="display:flex;align-items:center;gap:14px;background:var(--wh);border-radius:var(--r2);padding:16px;border:1px solid var(--br);margin-bottom:16px">';
-  h += (photo ? '<img src="'+photo+'" style="width:52px;height:52px;border-radius:50%;object-fit:cover;flex-shrink:0">' : '<div style="width:52px;height:52px;border-radius:50%;background:var(--gl);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:600;color:var(--gd);flex-shrink:0">'+initial+'</div>');
-  h += '<div><div style="font-size:16px;font-weight:600;color:var(--t1)">'+(user.displayName||'Garden User')+'</div><div style="font-size:13px;color:var(--t2);margin-top:2px">'+(user.email||'')+'</div></div></div>';
+  h += (user.photoURL ? '<img src="' + user.photoURL + '" style="width:52px;height:52px;border-radius:50%;object-fit:cover;flex-shrink:0">' : '<div style="width:52px;height:52px;border-radius:50%;background:var(--gl);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:600;color:var(--gd);flex-shrink:0">' + initial + '</div>');
+  h += '<div><div style="font-size:16px;font-weight:600;color:var(--t1)">' + (user.displayName || 'Garden User') + '</div><div style="font-size:13px;color:var(--t2);margin-top:2px">' + (user.email || '') + '</div></div></div>';
   h += '<div style="background:var(--wh);border-radius:var(--r2);overflow:hidden;border:1px solid var(--br);margin-bottom:16px">';
-  h += '<div style="padding:14px 16px;border-bottom:1px solid var(--br);display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:13px;font-weight:600;color:var(--t1)">📍 City</div><div style="font-size:12px;color:var(--t2);margin-top:2px">'+(city||'Not set')+'</div></div><button onclick="changeCity()" style="background:none;border:1px solid var(--br);border-radius:8px;padding:6px 12px;font-size:12px;font-weight:600;color:var(--t2);cursor:pointer;font-family:var(--fb)">Change</button></div>';
-  h += '<div style="padding:14px 16px;display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:13px;font-weight:600;color:var(--t1)">🌿 Plants</div><div style="font-size:12px;color:var(--t2);margin-top:2px">'+G.length+' plants in your garden</div></div></div>';
+  h += '<div style="padding:14px 16px;border-bottom:1px solid var(--br);display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:13px;font-weight:600;color:var(--t1)">📍 City</div><div style="font-size:12px;color:var(--t2);margin-top:2px">' + (city || 'Not set') + '</div></div><button onclick="changeCity()" style="background:none;border:1px solid var(--br);border-radius:8px;padding:6px 12px;font-size:12px;font-weight:600;color:var(--t2);cursor:pointer;font-family:var(--fb)">Change</button></div>';
+  h += '<div style="padding:14px 16px;display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:13px;font-weight:600;color:var(--t1)">🌿 Plants</div><div style="font-size:12px;color:var(--t2);margin-top:2px">' + G.length + ' plants in your garden</div></div></div>';
   h += '</div>';
-  const notifTime = localStorage.getItem('mg_notif_time') || '07:00';
+  // Notifications
   h += '<div style="background:var(--wh);border-radius:var(--r2);overflow:hidden;border:1px solid var(--br);margin-bottom:16px">';
-  h += '<div style="padding:14px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:'+(notifOn?'1px solid var(--br)':'none')+'">';
-  h += '<div><div style="font-size:13px;font-weight:600;color:var(--t1)">🔔 Daily watering reminders</div><div style="font-size:12px;color:var(--t2);margin-top:2px">Enable daily reminders</div></div>';
-  h += '<button id="notif-btn" onclick="toggleNotif()" style="background:'+(notifOn?'var(--gl)':'var(--gd)')+';color:'+(notifOn?'var(--gd)':'#fff')+';border:none;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--fb)">'+(notifOn?'✓ Active':'Enable')+'</button>';
+  h += '<div style="padding:14px 16px;display:flex;justify-content:space-between;align-items:center' + (notifOn?';border-bottom:1px solid var(--br)':'') + '"><div><div style="font-size:13px;font-weight:600;color:var(--t1)">🔔 Enable daily reminders</div><div style="font-size:12px;color:var(--t2);margin-top:2px">Free — sends when plants need water</div></div><button onclick="toggleNotif()" style="background:' + (notifOn?'var(--gl)':'var(--gd)') + ';color:' + (notifOn?'var(--gd)':'#fff') + ';border:none;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--fb)">' + (notifOn?'✓ Active':'Enable') + '</button></div>';
+  if (notifOn) h += '<div style="padding:12px 16px;display:flex;justify-content:space-between;align-items:center;background:#F9F9F9"><div style="font-size:12px;color:var(--t2);font-weight:500">Reminder time</div><input type="time" value="' + notifTime + '" onchange="saveNotifTime(this.value)" style="border:1px solid var(--br);border-radius:8px;padding:5px 10px;font-size:13px;font-family:var(--fb);color:var(--t1);background:var(--wh);cursor:pointer"></div>';
   h += '</div>';
-  if (notifOn) {
-    h += '<div style="padding:12px 16px;display:flex;justify-content:space-between;align-items:center;background:#F9F9F9">';
-    h += '<div style="font-size:12px;color:var(--t2);font-weight:500">Reminder time</div>';
-    h += '<input type="time" value="'+notifTime+'" onchange="saveNotifTime(this.value)" style="border:1px solid var(--br);border-radius:8px;padding:5px 10px;font-size:13px;font-family:var(--fb);color:var(--t1);background:var(--wh);cursor:pointer">';
-    h += '</div>';
-  }
+  // Plan
+  h += '<div style="background:' + (isPrem?'var(--gl)':'var(--al)') + ';border-radius:var(--r2);padding:16px;border:1px solid ' + (isPrem?'rgba(74,124,47,0.2)':'rgba(232,160,32,0.2)') + ';margin-bottom:16px">';
+  h += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><div style="font-size:13px;font-weight:700;color:' + (isPrem?'var(--gd)':'#7A5000') + '">' + (isPrem?'✅ Premium':'Free Plan') + '</div>' + (isPrem?'':'<button onclick="goScreen(\'premium\')" style="background:var(--gd);border:none;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:600;color:#fff;cursor:pointer;font-family:var(--fb)">Upgrade ₹49</button>') + '</div>';
+  h += '<div style="font-size:12px;color:' + (isPrem?'var(--gm)':'#7A5000') + ';line-height:1.8">📷 Camera ID: ' + camUsed + '/3 this month' + (isPrem?' (Unlimited)':'') + '<br>📊 Monthly report: ' + (isPrem?'Available':'Premium only') + '</div>';
   h += '</div>';
-  h += '<div style="background:'+(isPrem?'var(--gl)':'var(--al)')+';border-radius:var(--r2);padding:16px;border:1px solid '+(isPrem?'rgba(74,124,47,0.2)':'rgba(232,160,32,0.2)')+';margin-bottom:16px">';
-  h += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><div style="font-size:13px;font-weight:700;color:'+(isPrem?'var(--gd)':'#7A5000')+'">'+(isPrem?'✅ Premium':'Free Plan')+'</div>'+(isPrem?'':'<button onclick="goScreen(\'premium\')" style="background:var(--gd);border:none;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:600;color:#fff;cursor:pointer;font-family:var(--fb)">Upgrade ₹49</button>')+'</div>';
-  h += '<div style="font-size:12px;color:'+(isPrem?'var(--gm)':'#7A5000')+';line-height:1.8">📷 Camera ID: '+camUsed+'/3 this month'+(isPrem?' (Unlimited)':'')+'<br>📊 Monthly report: '+(isPrem?'Available':'Premium only')+'</div>';
-  h += '</div>';
-  h += '<button onclick="auth.signOut().then(()=>{ G=[]; goScreen(\'welcome\'); hideBnav(); })" style="width:100%;background:none;border:1.5px solid var(--br);border-radius:var(--r2);padding:13px;font-family:var(--fb);font-size:14px;color:var(--t2);cursor:pointer;font-weight:500">Sign out</button>';
+  h += '<button onclick="doSignOut()" style="width:100%;background:none;border:1.5px solid var(--br);border-radius:var(--r2);padding:13px;font-family:var(--fb);font-size:14px;color:var(--t2);cursor:pointer;font-weight:500">Sign out</button>';
   document.getElementById('profile-body').innerHTML = h;
 }
 
@@ -810,76 +914,58 @@ function changeCity() {
   if (val) { localStorage.setItem('mg_city', val); renderProfile(); renderHome(); }
 }
 
+function doSignOut() {
+  auth.signOut().then(function() { G = []; goScreen('welcome'); hideBnav(); });
+}
+
 // ── NOTIFICATIONS ──
 function saveNotifTime(val) {
   localStorage.setItem('mg_notif_time', val);
-  // Update token registration with new time
   const token = localStorage.getItem('mg_fcm_token');
-  if (token) {
-    fetch(WORKER, {method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({action:'register_token', token, userId:_uid||'anon', plants:G, notifTime:val})
-    });
-  }
+  if (token) fetch(WORKER, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ action:'register_token', token:token, userId:_uid||'anon', plants:G, notifTime:val }) });
 }
 
 async function toggleNotif() {
   const isOn = localStorage.getItem('mg_notif') === '1';
   if (isOn) { localStorage.removeItem('mg_notif'); renderProfile(); return; }
-  const btn = document.getElementById('notif-btn');
-  if (btn) { btn.textContent = 'Setting up...'; btn.disabled = true; }
   try {
     if (!window._fcmLoaded) {
-      await new Promise((res,rej) => {
+      await new Promise(function(res, rej) {
         const s = document.createElement('script');
         s.src = 'https://www.gstatic.com/firebasejs/10.7.0/firebase-messaging-compat.js';
-        s.onload = () => { window._fcmLoaded=true; res(); }; s.onerror=rej;
+        s.onload = function() { window._fcmLoaded = true; res(); };
+        s.onerror = rej;
         document.head.appendChild(s);
       });
     }
     const msg = firebase.messaging();
     const perm = await Notification.requestPermission();
     if (perm !== 'granted') { alert('Please allow notifications in Chrome settings.'); renderProfile(); return; }
-    const token = await msg.getToken({vapidKey:VAPID});
+    const token = await msg.getToken({ vapidKey: VAPID });
     if (!token) { alert('Could not get token. Try again.'); renderProfile(); return; }
-    const r = await fetch(WORKER,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'register_token',token,userId:_uid||'anon',plants:G})});
+    const r = await fetch(WORKER, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ action:'register_token', token:token, userId:_uid||'anon', plants:G }) });
     const d = await r.json();
     if (d.success) {
-      localStorage.setItem('mg_notif','1');
-      localStorage.setItem('mg_fcm_token',token);
-      fetch(WORKER,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'test_notification',token})});
-      alert('Reminders enabled! You will get a test notification shortly.');
+      localStorage.setItem('mg_notif', '1');
+      localStorage.setItem('mg_fcm_token', token);
+      fetch(WORKER, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ action:'test_notification', token:token }) });
+      alert('✅ Reminders enabled! You will get a test notification shortly.');
     } else { alert('Setup failed. Try again.'); }
-  } catch(e) { alert('Error: '+e.message); }
+  } catch(e) { alert('Error: ' + e.message); }
   renderProfile();
 }
 
 // ── PREMIUM ──
 function openPayment() {
-  window.open('https://rzp.io/rzp/01nj8rH','_blank');
-  setTimeout(()=>{ const b=document.getElementById('paid-btn'); if(b) b.style.display='block'; },2000);
+  window.open('https://rzp.io/rzp/01nj8rH', '_blank');
+  setTimeout(function() { const b = document.getElementById('btn-activate'); if (b) b.style.display = 'block'; }, 2000);
 }
 
-async function activatePremium() {
-  document.getElementById('prem-status').textContent = 'Activating...';
-  localStorage.setItem('mg_prem','1');
-  document.getElementById('prem-status').textContent = '✅ Premium activated! Enjoy unlimited access.';
+function activatePremium() {
+  localStorage.setItem('mg_prem', '1');
+  document.getElementById('prem-status').textContent = '✅ Premium activated!';
   document.getElementById('prem-status').style.color = 'var(--gm)';
 }
-
-// ── SWIPE BACK ──
-let _sx=0,_sy=0;
-document.addEventListener('touchstart',e=>{_sx=e.touches[0].clientX;_sy=e.touches[0].clientY;},{passive:true});
-document.addEventListener('touchend',e=>{
-  const dx=e.changedTouches[0].clientX-_sx,dy=e.changedTouches[0].clientY-_sy;
-  const angle=Math.abs(Math.atan2(dy,dx)*180/Math.PI);
-  if(_sx<40&&dx>80&&angle<35){
-    const id=document.querySelector('.screen.active')?.id;
-    if(id==='detail'||id==='add'||id==='premium') goTab('garden');
-    else if(id==='signin'||id==='city') goScreen('welcome');
-  }
-},{passive:true});
-} // end initApp
-initApp();
 </script>
 </body>
 </html>
