@@ -293,6 +293,13 @@ body{font-family:var(--fb);background:var(--bg);color:var(--t1);min-height:100vh
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
 <script>
+// Wait for Firebase to be ready
+function initApp() {
+  if (typeof firebase === 'undefined') {
+    setTimeout(initApp, 100);
+    return;
+  }
+
 firebase.initializeApp({
   apiKey:"AIzaSyASFk-1ktL5p7eMgd08VU2uZxLV6_oGaLk",
   authDomain:"my-garden-app-fa177.firebaseapp.com",
@@ -364,7 +371,7 @@ async function saveData() {
         nickname:p.nickname||null, water:p.water||'', freq:p.freq||'',
         sun:p.sun||'', pour:p.pour||'', fert:p.fert||'', tip:p.tip||'',
         days:p.days||1, lastWatered:p.lastWatered||null,
-        streak:p.streak||0, products:p.products||[],
+        streak:p.streak||0, sourceUrl:p.sourceUrl||null, products:p.products||[],
         diagnosis:p.diagnosis||null
       })),
       city: getCity(), updatedAt: new Date().toISOString()
@@ -531,7 +538,8 @@ function showDetail(name) {
     '<div class="cblock"><span class="cico">🫗</span><div><div class="clbl">How to water</div><div class="cval" style="font-size:13px;line-height:1.5">'+v(p.pour,'Not filled in yet')+'</div></div></div>' +
     '<div class="fblock"><span class="cico">🌾</span><div><div class="flbl">Fertilizer</div><div class="ftxt">'+v(p.fert,'Not filled in yet')+'</div></div></div>' +
     '<div class="tblock"><span class="cico">💡</span><div><div class="tlbl">Good to know</div><div class="ttxt">'+v(p.tip,'Not filled in yet')+'</div></div></div>' +
-    (p.products&&p.products.length ? shopHtml(p.products, '🛒 '+(isNew?'You might need these':'Shop on Amazon')) : '') +
+    (p.products&&p.products.length ? (p.sourceUrl ? '<a href="'+p.sourceUrl+'" target="_blank" style="display:flex;align-items:center;justify-content:space-between;background:var(--wh);border-radius:var(--r2);padding:13px 16px;margin-bottom:8px;border:1px solid var(--br);text-decoration:none"><div style=\"font-size:13px;font-weight:600;color:var(--t1)\">📖 Learn more</div><span style=\"font-size:12px;color:var(--bm);font-weight:600\">Source ↗</span></a>' : '') +
+    shopHtml(p.products, '🛒 '+(isNew?'You might need these':'Shop on Amazon')) : '') +
     '<button onclick="refetch(\''+name+'\')" style="width:100%;background:none;border:1.5px solid var(--br);border-radius:var(--r2);padding:12px;font-family:var(--fb);font-size:13px;color:var(--t2);cursor:pointer;margin-top:8px;font-weight:500">🔄 Re-fetch care details</button>' +
     '<button class="rbtn" onclick="askDel(\''+name+'\')">Remove this plant</button>';
 }
@@ -583,7 +591,7 @@ async function refetch(name) {
   document.getElementById('load-title').textContent = 'Updating '+name+'...';
   goScreen('loading-plant');
   const d = await fetchCare(name, p.type);
-  if (d) { ['water','freq','sun','pour','fert','tip'].forEach(k=>{if(d[k])p[k]=d[k];}); if(d.days)p.days=Math.min(14,Math.max(1,parseInt(d.days)||1)); if(d.products)p.products=d.products; if(d.emoji)p.ico=d.emoji; saveData(); }
+  if (d) { ['water','freq','sun','pour','fert','tip'].forEach(k=>{if(d[k])p[k]=d[k];}); if(d.days)p.days=Math.min(14,Math.max(1,parseInt(d.days)||1)); if(d.products)p.products=d.products; if(d.emoji)p.ico=d.emoji; if(d.sourceUrl)p.sourceUrl=d.sourceUrl; saveData(); }
   openDetail(name);
 }
 
@@ -652,7 +660,7 @@ async function addPlant() {
   goScreen('loading-plant');
   const d = await fetchCare(name, _type);
   const p = G.find(x => x.name===name);
-  if (p && d) { ['water','freq','sun','pour','fert','tip'].forEach(k=>{if(d[k])p[k]=d[k];}); if(d.days)p.days=Math.min(14,Math.max(1,parseInt(d.days)||1)); if(d.products)p.products=d.products; if(d.emoji)p.ico=d.emoji; saveData(); }
+  if (p && d) { ['water','freq','sun','pour','fert','tip'].forEach(k=>{if(d[k])p[k]=d[k];}); if(d.days)p.days=Math.min(14,Math.max(1,parseInt(d.days)||1)); if(d.products)p.products=d.products; if(d.emoji)p.ico=d.emoji; if(d.sourceUrl)p.sourceUrl=d.sourceUrl; saveData(); }
   sessionStorage.setItem('np', name);
   openDetail(name);
 }
@@ -666,7 +674,16 @@ function renderToday() {
   if (!G.length) {
     h = '<div style="text-align:center;padding:40px 20px"><div style="font-size:52px;margin-bottom:16px">🌱</div><div style="font-family:var(--fh);font-size:22px;color:var(--t1);margin-bottom:8px">No plants yet</div><div style="font-size:14px;color:var(--t2)">Add your first plant from the Garden tab.</div></div>';
   } else if (!due.length) {
-    h = '<div style="text-align:center;padding:40px 20px"><div style="font-size:52px;margin-bottom:16px">🎉</div><div style="font-family:var(--fh);font-size:22px;color:var(--t1);margin-bottom:8px">All plants are happy!</div><div style="font-size:14px;color:var(--t2)">Nothing needs watering today.</div></div>';
+    const waterTools = [
+      { label: '💧 Watering can', link: 'https://www.amazon.in/s?k=plant+watering+can&tag=mygardenapp-21' },
+      { label: '🌡️ Soil moisture meter', link: 'https://www.amazon.in/s?k=soil+moisture+meter&tag=mygardenapp-21' },
+      { label: '🪣 Plant mister spray', link: 'https://www.amazon.in/s?k=plant+mister+spray+bottle&tag=mygardenapp-21' },
+      { label: '🧪 Liquid fertilizer', link: 'https://www.amazon.in/s?k=liquid+fertilizer+for+plants&tag=mygardenapp-21' },
+    ];
+    h = '<div style="text-align:center;padding:40px 20px 24px"><div style="font-size:52px;margin-bottom:16px">🎉</div><div style="font-family:var(--fh);font-size:22px;color:var(--t1);margin-bottom:8px">All plants are happy!</div><div style="font-size:14px;color:var(--t2);margin-bottom:0">Nothing needs watering today.</div></div>';
+    h += '<div class="shopbox"><div class="shop-l">🛒 Watering essentials</div>';
+    waterTools.forEach(p => { h += '<a href="'+p.link+'" target="_blank" class="shop-a"><span class="shop-an">'+p.label+'</span><span class="shop-ab">Buy ↗</span></a>'; });
+    h += '<div class="shop-note">Affiliate links — supports this free app</div></div>';
   }
   if (due.length) {
     h += '<div class="slabel">Needs water now</div>';
@@ -714,6 +731,39 @@ function renderReport() {
     h += G.map(p=>'<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--br)"><span>'+p.ico+'</span><span style="font-weight:600;color:var(--t1);flex:1">'+(p.nickname||p.name)+'</span><span style="font-size:12px;color:'+(wStatus(p).over?'var(--rm)':'var(--gm)')+'">'+( wStatus(p).over?'Needs attention':'On track')+'</span></div>').join('');
     h += '</div>';
   }
+  // Seasonal products based on current month
+  const month = new Date().getMonth();
+  let seasonLabel, seasonProducts;
+  if (month >= 2 && month <= 5) {
+    seasonLabel = '☀️ Summer care essentials';
+    seasonProducts = [
+      { label: '🌡️ Soil moisture meter', link: 'https://www.amazon.in/s?k=soil+moisture+meter&tag=mygardenapp-21' },
+      { label: '☀️ Shade net for plants', link: 'https://www.amazon.in/s?k=shade+net+for+plants&tag=mygardenapp-21' },
+      { label: '💧 Drip irrigation kit', link: 'https://www.amazon.in/s?k=drip+irrigation+kit&tag=mygardenapp-21' },
+      { label: '🧴 Anti-transpirant spray', link: 'https://www.amazon.in/s?k=anti+transpirant+spray+plants&tag=mygardenapp-21' },
+    ];
+  } else if (month >= 6 && month <= 9) {
+    seasonLabel = '🌧️ Monsoon gardening essentials';
+    seasonProducts = [
+      { label: '🍄 Anti-fungal spray', link: 'https://www.amazon.in/s?k=anti+fungal+spray+plants&tag=mygardenapp-21' },
+      { label: '🪨 Perlite for drainage', link: 'https://www.amazon.in/s?k=perlite+for+plants&tag=mygardenapp-21' },
+      { label: '🌱 Raised planter box', link: 'https://www.amazon.in/s?k=raised+planter+box&tag=mygardenapp-21' },
+      { label: '✂️ Pruning shears', link: 'https://www.amazon.in/s?k=pruning+shears+garden&tag=mygardenapp-21' },
+    ];
+  } else {
+    seasonLabel = '❄️ Winter care essentials';
+    seasonProducts = [
+      { label: '🌿 Liquid fertilizer', link: 'https://www.amazon.in/s?k=liquid+fertilizer+plants&tag=mygardenapp-21' },
+      { label: '🪴 Self-watering pots', link: 'https://www.amazon.in/s?k=self+watering+pots&tag=mygardenapp-21' },
+      { label: '🌞 Grow light for plants', link: 'https://www.amazon.in/s?k=grow+light+for+indoor+plants&tag=mygardenapp-21' },
+      { label: '🧤 Gardening gloves', link: 'https://www.amazon.in/s?k=gardening+gloves&tag=mygardenapp-21' },
+    ];
+  }
+
+  h += '<div class="shopbox" style="margin-top:16px"><div class="shop-l">'+seasonLabel+'</div>';
+  seasonProducts.forEach(p => { h += '<a href="'+p.link+'" target="_blank" class="shop-a"><span class="shop-an">'+p.label+'</span><span class="shop-ab">Buy ↗</span></a>'; });
+  h += '<div class="shop-note">Affiliate links — supports this free app</div></div>';
+
   document.getElementById('report-body').innerHTML = h;
 }
 
@@ -828,6 +878,8 @@ document.addEventListener('touchend',e=>{
     else if(id==='signin'||id==='city') goScreen('welcome');
   }
 },{passive:true});
+} // end initApp
+initApp();
 </script>
 </body>
 </html>
